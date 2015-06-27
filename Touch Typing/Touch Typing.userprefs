@@ -1,11 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\controllerScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\charScript.cs">
     <Files>
-      <File FileName="Assets\Scripts\cameraScript.cs" Line="55" Column="6" />
-      <File FileName="Assets\Scripts\charScript.cs" Line="84" Column="97" />
-      <File FileName="Assets\Scripts\TextMeshSharpener.cs" Line="10" Column="4" />
-      <File FileName="Assets\Scripts\controllerScript.cs" Line="70" Column="32" />
+      <File FileName="Assets\Scripts\cameraScript.cs" Line="25" Column="3" />
+      <File FileName="Assets\Scripts\charScript.cs" Line="13" Column="64" />
+      <File FileName="Assets\Scripts\controllerScript.cs" Line="8" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

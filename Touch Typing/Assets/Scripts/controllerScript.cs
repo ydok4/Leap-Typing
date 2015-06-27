@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class controllerScript : MonoBehaviour {
 
-	Camera camera; 
+	//Camera camera; 
 	//Set these two variables inside the editor
 	public Mesh characterMesh;
 	public Material characterMaterial;
@@ -50,7 +50,7 @@ public class controllerScript : MonoBehaviour {
 		//Goal is when the next character will spawn. Need to update the decrement as well.
 		goal = 58;
 		//Stores the camera in a variable
-		camera= gameObject.GetComponent<Camera>();
+		//camera= gameObject.GetComponent<Camera>();
 		//Sets the players model to where the camera is
 		GameObject.Find ("Body").GetComponent<Transform> ().position=GameObject.Find ("Main Camera").GetComponent<Camera> ().transform.position;
 	}
@@ -139,13 +139,16 @@ public class controllerScript : MonoBehaviour {
 
 				//Spawns the new character. v3Pos is where it spawns in the world
 				characters newChar=new characters(characterList.Count, c,v3Pos);
+
+				//Adds them to the list which keeps track of all active characters
 				characterList.Add(newChar);
 
 				//DECREMENT: should match the interval between the initial time and intial goal.
 				goal-=2;
 			}
 		}
-
-
+	}
+	void OnTriggerEnter(Collider other) {
+		Debug.Log("Collision1");
 	}
 }

@@ -10,6 +10,9 @@ public class charScript : MonoBehaviour {
 	Font myFont = Resources.Load<Font> ("PoisonHope-Regular");
 	// Use this for initialization
 	void Start () {
+		gameObject.transform.position = GameObject.Find ("Main Camera").GetComponent<controllerScript> ().transform.position;
+		gameObject.transform.parent = GameObject.Find ("Main Camera").transform;
+		gameObject.transform.localPosition = start;
 		//Adds components to character object
 		gameObject.AddComponent<MeshFilter> ();
 		gameObject.AddComponent<MeshRenderer> ();
@@ -20,7 +23,7 @@ public class charScript : MonoBehaviour {
 		gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterial;
 
 		text = new GameObject ();
-		gameObject.transform.position = start;
+
 
 		text.transform.parent=gameObject.transform;
 		//Adds components to text
@@ -63,14 +66,16 @@ public class charScript : MonoBehaviour {
 		gameObject.transform.LookAt(Camera.main.transform.position); 
 		//Uses the start location to determine what direction to move
 		if(start.x<0)
-			gameObject.transform.position += -transform.right * Time.deltaTime;
+			gameObject.transform.position += -transform.right * Time.deltaTime *2;
 		else if(start.x>0)
-			gameObject.transform.position += transform.right * Time.deltaTime;
+			gameObject.transform.position += transform.right * Time.deltaTime *2;
+		if (gameObject.transform.localPosition.z < 1)
+			destroyCharacter ();
 		//gameObject.transform.position += transform.forward * Time.deltaTime * 2;
 
 	}
 	void OnTriggerEnter(Collider other) {
-		//Debug.Log("Collision");
+		Debug.Log("Collision");
 		//If the object hits a trigger attached to the camera then it will be destroyed
 		if (other.name == "Main Camera") {
 			destroyCharacter();
