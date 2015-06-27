@@ -58,7 +58,8 @@ public class charScript : MonoBehaviour {
 
 		if (Input.GetKeyDown (val)) {
 			//Debug.Log("Add Score");
-			GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score+=1;
+			//GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score+=1; //OLD SCORE
+			ScoreUpdater.score += 1;
 			//Debug.Log("Destroy Attempt");
 			destroyCharacter();
 		}

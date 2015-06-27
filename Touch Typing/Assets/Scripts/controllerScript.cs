@@ -22,7 +22,7 @@ public class controllerScript : MonoBehaviour {
 	public List <characters> characterList=new List<characters>();
 
 	//Players score
-	public int score;
+	//public int score; //OLD SCORE
 
 	public class characters {
 		public GameObject charObj;
