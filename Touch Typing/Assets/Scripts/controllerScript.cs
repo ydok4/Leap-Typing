@@ -13,14 +13,15 @@ public class controllerScript : MonoBehaviour {
 	public Mesh projectileMesh;
 	public Material projectileMaterial;
 	//The potential alphabet of the lesson
-	public string alpha = "abcdefghijklmnopqrstuvwxyz";
+	public string alpha = "abcdefghijklmnopqrstuvwxyz[];',.";
 	//"Top keyboard row"
-	public string alpha1="qwertyuiop";
-	public string alpha2="asdfghjkl";
-	public string alpha3="zxcvbnm";
+	public string alpha1;
+	public string alpha2;
+	public string alpha3;
 	public float time;
 	public float goal; 
-
+	public int missed;
+	public int delay;
 	//Contains a list of all the currenlty active characters
 	public List <characters> characterList=new List<characters>();
 
@@ -48,20 +49,43 @@ public class controllerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		//Sets up alphabet
+		alpha1="qwertyuiop[]";
+		alpha2="asdfghjkl;'";
+		alpha3="zxcvbnm,.";
+
+
+		//Sets variables to default
+		Reset ();
+		//Sets the players model to where the camera is
+		GameObject.Find ("Body").GetComponent<Transform> ().position=GameObject.Find ("Main Camera").GetComponent<Camera> ().transform.position;
+	}
+	void Reset()
+	{
+		//Sets the number of missed variables to zero
+		missed = 0;	
 		//Time is total time for the lesson
 		time = 60;
 		//Goal is when the next character will spawn. Need to update the decrement as well.
 		goal = 58;
-		//Stores the camera in a variable
-		//camera= gameObject.GetComponent<Camera>();
-		//Sets the players model to where the camera is
-		GameObject.Find ("Body").GetComponent<Transform> ().position=GameObject.Find ("Main Camera").GetComponent<Camera> ().transform.position;
 	}
-	
 	// Update is called once per frame
 	void Update () {
 		if (time > 0) {
 			time -= Time.deltaTime;
+
+			if (Input.anyKeyDown) {
+				bool found=false;
+				foreach(characters c in characterList)
+				{
+					if(c.chars==Input.inputString)
+						found=true;
+				}
+				if(found==false)
+					missed++;
+			}
+
+
 			if ((int)time < goal && characterList.Count!=26) {
 				Vector3 v3Pos=new Vector3(0,0,0);
 				string c="a";
@@ -75,7 +99,7 @@ public class controllerScript : MonoBehaviour {
 				{
 					case 0:  
 							
-							for(int j=0;j<26;j++)
+							for(int j=0;j<33;j++)
 							{
 								bool found=false;
 								side=Random.Range(0,alpha1.Length);
@@ -94,7 +118,7 @@ public class controllerScript : MonoBehaviour {
 								v3Pos=new Vector3(8.0f,2.5f,1.5f);
 							break;
 					case 1: 
-							for(int j=0;j<26;j++)
+							for(int j=0;j<33;j++)
 							{
 								bool found=false;
 								side=Random.Range(0,alpha2.Length);
@@ -113,7 +137,7 @@ public class controllerScript : MonoBehaviour {
 								v3Pos=new Vector3(8.0f,1.0f,1.5f);
 								break;
 					case 2: 
-							for(int j=0;j<26;j++)
+							for(int j=0;j<22;j++)
 							{
 								bool found=false;
 								side=Random.Range(0,alpha3.Length);

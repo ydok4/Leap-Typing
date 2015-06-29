@@ -7,6 +7,7 @@ public class charScript : MonoBehaviour {
 	GameObject model;
 	GameObject text;
 	public Vector3 start;
+
 	Font myFont = Resources.Load<Font> ("PoisonHope-Regular");
 	// Use this for initialization
 	void Start () {
@@ -56,15 +57,17 @@ public class charScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetKeyDown (val)) {
-			//GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score+=1; //OLD SCORE
-			//Creates a projectile object which will move towards this character
-			GameObject projectile=new GameObject();
+		//if (Input.anyKeyDown) {
+			if (Input.GetKeyDown (val)) {
+				//GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score+=1; //OLD SCORE
+				//Creates a projectile object which will move towards this character
+				GameObject projectile = new GameObject ();
 
-			projectile.AddComponent<projectileScript>();
-			projectile.GetComponent<projectileScript>().target=val;
+				projectile.AddComponent<projectileScript> ();
+				projectile.GetComponent<projectileScript> ().target = val;
 
-		}
+
+			}
 		//Makes sure the object is looking at the camera
 		gameObject.transform.LookAt(Camera.main.transform.position); 
 		//Uses the start location to determine what direction to move
