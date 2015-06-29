@@ -9,6 +9,9 @@ public class controllerScript : MonoBehaviour {
 	//Set these two variables inside the editor
 	public Mesh characterMesh;
 	public Material characterMaterial;
+
+	public Mesh projectileMesh;
+	public Material projectileMaterial;
 	//The potential alphabet of the lesson
 	public string alpha = "abcdefghijklmnopqrstuvwxyz";
 	//"Top keyboard row"
@@ -149,6 +152,6 @@ public class controllerScript : MonoBehaviour {
 		}
 	}
 	void OnTriggerEnter(Collider other) {
-		Debug.Log("Collision1");
+		//Debug.Log("Collision1");
 	}
 }

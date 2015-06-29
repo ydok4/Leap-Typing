@@ -57,28 +57,36 @@ public class charScript : MonoBehaviour {
 	void Update () {
 
 		if (Input.GetKeyDown (val)) {
-			//Debug.Log("Add Score");
 			//GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score+=1; //OLD SCORE
-			ScoreUpdater.score += 1;
-			//Debug.Log("Destroy Attempt");
-			destroyCharacter();
+			//Creates a projectile object which will move towards this character
+			GameObject projectile=new GameObject();
+
+			projectile.AddComponent<projectileScript>();
+			projectile.GetComponent<projectileScript>().target=val;
+
 		}
 		//Makes sure the object is looking at the camera
 		gameObject.transform.LookAt(Camera.main.transform.position); 
 		//Uses the start location to determine what direction to move
 		if(start.x<0)
-			gameObject.transform.position += -transform.right * Time.deltaTime *2;
+			gameObject.transform.position += -transform.right * Time.deltaTime * 2;
 		else if(start.x>0)
-			gameObject.transform.position += transform.right * Time.deltaTime *2;
-		if (gameObject.transform.localPosition.z < 1)
+			gameObject.transform.position += transform.right * Time.deltaTime * 2;
+		if (gameObject.transform.localPosition.z < 1) {
+
+			if(GameObject.Find ("Projectile :"+val)!=null)
+			{
+				Destroy(GameObject.Find ("Projectile :"+val));
+			}
 			destroyCharacter ();
+		}
 		//gameObject.transform.position += transform.forward * Time.deltaTime * 2;
 
 	}
 	void OnTriggerEnter(Collider other) {
-		Debug.Log("Collision");
-		//If the object hits a trigger attached to the camera then it will be destroyed
-		if (other.name == "Main Camera") {
+		//If the object is hit by the projectile it will update the score and destroy itself
+		if (other.name == "Projectile :"+val) {
+			ScoreUpdater.score += 1;
 			destroyCharacter();
 
 		}
@@ -87,6 +95,7 @@ public class charScript : MonoBehaviour {
 	{
 		for(int i=0;i<GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.Count;i++)
 		{
+			//Finds the character object in the list and removes itself from it
 			if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[i].chars==val)
 				GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.RemoveAt(i);
 		}
