@@ -2,12 +2,19 @@
 using System.Collections;
 using UnityEngine.UI;
 public class charScript : MonoBehaviour {
+	//The character that this object is
 	public string val;
+	//Where this character is stored in the characterlist
 	public int loc;
-	GameObject model;
+	//GameObject model;
+	//The text object attached to the game object
 	GameObject text;
+
+	//Set in controller script this determines where the object starts
 	public Vector3 start;
 
+	//checks whether there is already a projectile heading for that character
+	public bool fired;
 	Font myFont = Resources.Load<Font> ("PoisonHope-Regular");
 	// Use this for initialization
 	void Start () {
@@ -52,36 +59,40 @@ public class charScript : MonoBehaviour {
 
 		//Makes character look at camera
 		gameObject.transform.LookAt(Camera.main.transform.position); 
+		fired = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		//if (Input.anyKeyDown) {
-			if (Input.GetKeyDown (val)) {
+		//Checks if game is paused
+		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == false) {
+			if (Input.GetKeyDown (val) && fired == false) {
 				//GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score+=1; //OLD SCORE
+
 				//Creates a projectile object which will move towards this character
 				GameObject projectile = new GameObject ();
 
 				projectile.AddComponent<projectileScript> ();
 				projectile.GetComponent<projectileScript> ().target = val;
+				fired=true;
 
 
 			}
-		//Makes sure the object is looking at the camera
-		gameObject.transform.LookAt(Camera.main.transform.position); 
-		//Uses the start location to determine what direction to move
-		if(start.x<0)
-			gameObject.transform.position += -transform.right * Time.deltaTime * 2;
-		else if(start.x>0)
-			gameObject.transform.position += transform.right * Time.deltaTime * 2;
-		if (gameObject.transform.localPosition.z < 1) {
+			//Makes sure the object is looking at the camera
+			gameObject.transform.LookAt (Camera.main.transform.position); 
+			//Uses the start location to determine what direction to move
+			if (start.x < 0)
+				gameObject.transform.position += -transform.right * Time.deltaTime * 2;
+			else if (start.x > 0)
+				gameObject.transform.position += transform.right * Time.deltaTime * 2;
+			if (gameObject.transform.localPosition.z < 1) {
 
-			if(GameObject.Find ("Projectile :"+val)!=null)
-			{
-				Destroy(GameObject.Find ("Projectile :"+val));
+				if (GameObject.Find ("Projectile :" + val) != null) {
+					Destroy (GameObject.Find ("Projectile :" + val));
+				}
+				destroyCharacter ();
 			}
-			destroyCharacter ();
 		}
 		//gameObject.transform.position += transform.forward * Time.deltaTime * 2;
 

@@ -25,6 +25,9 @@ public class controllerScript : MonoBehaviour {
 	//Contains a list of all the currenlty active characters
 	public List <characters> characterList=new List<characters>();
 
+	//Set to true to pause game
+	public bool paused;
+
 	//Players score
 	//public int score; //OLD SCORE
 
@@ -71,7 +74,15 @@ public class controllerScript : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		if (time > 0) {
+		//Pauses or unpauses the game if escape is pressed
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			if (paused == false)
+				paused = true;
+			else
+				paused = false;
+		}
+		//Checks if there is any more time for the game to run or if the game is paused
+		if (time > 0 && paused==false) {
 			time -= Time.deltaTime;
 
 			if (Input.anyKeyDown) {
