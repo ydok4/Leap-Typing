@@ -13,7 +13,8 @@ public class controllerScript : MonoBehaviour {
 	public Mesh projectileMesh;
 	public Material projectileMaterial;
 	//The potential alphabet of the lesson
-	public string alpha = "abcdefghijklmnopqrstuvwxyz[];',.";
+	public string alpha;
+	
 	//"Top keyboard row"
 	public string alpha1;
 	public string alpha2;
@@ -21,13 +22,20 @@ public class controllerScript : MonoBehaviour {
 	public float time;
 	public float goal; 
 	public int missed;
-	public int delay;
-	//Contains a list of all the currenlty active characters
+	public float delay;
+	float delayGoal;
+
+	//Contains a list of all the currenlty active character strings
 	public List <characters> characterList=new List<characters>();
+
+	//Contains a list of active single characters. Needed for multi character strings, although still used by single char strings
+	public List <string> charList=new List<string>();
 
 	//Set to true to pause game
 	public bool paused;
 
+	//The current Character string that a player is typing. Used for detecting misses and resetting progress
+	public string currentCharTyping;
 	//Players score
 	public int score;
 
@@ -53,10 +61,13 @@ public class controllerScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//Sets up alphabet
-		alpha1="qwertyuiop[]";
-		alpha2="asdfghjkl;'";
-		alpha3="zxcvbnm,.";
-
+		Camera.main.fieldOfView = 180.0f;
+		//alpha = "abcdefghjklmnopqrstuvwxyz[];',.";
+		alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
+		alpha1="qwertyuiop[]QWERTYUIOP{}";
+		alpha2="asdfghjkl;'ASDFGHJKL:\"";
+		alpha3="zxcvbnm,./ZXCVBNM<>?";
+		currentCharTyping = "-1";
 
 		//Sets variables to default
 		Reset ();
@@ -65,16 +76,34 @@ public class controllerScript : MonoBehaviour {
 	}
 	void Reset()
 	{
+		//controls Speed of the FoV Zoom effect
+		delay = 5;
+		delayGoal =4;
 		//Sets the number of missed variables to zero
 		missed = 0;	
 		//Time is total time for the lesson
 		time = 60;
 		//Goal is when the next character will spawn. Need to update the decrement as well.
-		goal = 58;
+		goal = 57;
+	}
+	void FixedUpdate()
+	{
+		if (delay > 0) {
+			
+			delay -= Time.deltaTime;
+			//Controls rate of FoV effect
+			Camera.main.fieldOfView-=0.44f;
+			if(delay<delayGoal)
+			{
+				delayGoal-=1;
+
+			}
+		}
 	}
 	// Update is called once per frame
 	void Update () {
 		//Pauses or unpauses the game if escape is pressed
+
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			if (paused == false)
 				paused = true;
@@ -82,17 +111,30 @@ public class controllerScript : MonoBehaviour {
 				paused = false;
 		}
 		//Checks if there is any more time for the game to run or if the game is paused
-		if (time > 0 && paused==false) {
+		if (time > 0 && paused==false && delay<=0) {
 			time -= Time.deltaTime;
 
-			if (Input.anyKeyDown) {
+			if (Input.anyKeyDown ) {
 				bool found=false;
-				foreach(characters c in characterList)
+				if(Input.GetKey (KeyCode.LeftShift))
 				{
-					if(c.chars==Input.inputString)
-						found=true;
+					foreach(string c in charList)
+					{
+						if(c ==(Input.inputString))
+							if(c==c.ToUpper())
+								found=true;
+					}
 				}
-				if(found==false)
+				else
+				{
+					foreach(string c in charList)
+					{
+						if(c ==(Input.inputString))
+							found=true;
+					}
+				}
+				currentCharTyping="-1";
+				if(found==false && !Input.GetKeyDown (KeyCode.LeftShift))
 					missed++;
 			}
 
@@ -148,7 +190,7 @@ public class controllerScript : MonoBehaviour {
 								v3Pos=new Vector3(8.0f,1.0f,1.5f);
 								break;
 					case 2: 
-							for(int j=0;j<22;j++)
+							for(int j=0;j<33;j++)
 							{
 								bool found=false;
 								side=Random.Range(0,alpha3.Length);
@@ -169,6 +211,13 @@ public class controllerScript : MonoBehaviour {
 						default:
 							break;
 				}
+				//#############################################################Used for testing strings with multiple chars and cases.
+				//Comment out for loop if you want only 1 char
+				for(int i=0;i<2;i++)
+				{
+					c+=alpha[Random.Range(0,alpha.Length)].ToString ();
+				}
+
 				//Spawns characters outside the camera range. Comment out if not desired behaviour
 				//v3Pos = new Vector3(0.857f, 0.857f, 0.0f);
 				//v3Pos = Quaternion.AngleAxis(Random.Range(0.0f, 360.0f), Vector3.forward) * v3Pos;
@@ -182,7 +231,7 @@ public class controllerScript : MonoBehaviour {
 				characterList.Add(newChar);
 
 				//DECREMENT: should match the interval between the initial time and intial goal.
-				goal-=2;
+				goal-=3;
 			}
 		}
 	}
