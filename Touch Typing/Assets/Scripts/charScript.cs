@@ -100,7 +100,7 @@ public class charScript : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		//If the object is hit by the projectile it will update the score and destroy itself
 		if (other.name == "Projectile :"+val) {
-			ScoreUpdater.score += 1;
+			GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score += 1;
 			destroyCharacter();
 
 		}

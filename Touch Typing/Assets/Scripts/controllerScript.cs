@@ -29,7 +29,7 @@ public class controllerScript : MonoBehaviour {
 	public bool paused;
 
 	//Players score
-	//public int score; //OLD SCORE
+	public int score;
 
 	public class characters {
 		public GameObject charObj;
