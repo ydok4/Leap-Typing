@@ -63,7 +63,7 @@ public class controllerScript : MonoBehaviour {
 		//Sets up alphabet
 		Camera.main.fieldOfView = 180.0f;
 		//alpha = "abcdefghjklmnopqrstuvwxyz[];',.";
-		alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
+		alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
 		alpha1="qwertyuiop[]QWERTYUIOP{}";
 		alpha2="asdfghjkl;'ASDFGHJKL:\"";
 		alpha3="zxcvbnm,./ZXCVBNM<>?";
@@ -88,7 +88,7 @@ public class controllerScript : MonoBehaviour {
 	}
 	void FixedUpdate()
 	{
-		if (delay > 0) {
+		if (delay > 0 && paused==false) {
 			
 			delay -= Time.deltaTime;
 			//Controls rate of FoV effect

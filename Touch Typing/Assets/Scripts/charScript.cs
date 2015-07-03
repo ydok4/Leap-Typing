@@ -202,23 +202,24 @@ public class charScript : MonoBehaviour {
 					ResetString ();
 			}
 
+
+
+			//Makes sure the object is looking at the camera
+			gameObject.transform.LookAt (Camera.main.transform.position); 
+			//Uses the start location to determine what direction to move
+			if (start.x < 0)
+				gameObject.transform.position += -transform.right * Time.deltaTime * 1.5f;
+			else if (start.x > 0)
+				gameObject.transform.position += transform.right * Time.deltaTime * 1.5f;
+			if (gameObject.transform.localPosition.z < 1) {
+
+				if (GameObject.Find ("Projectile :" + val) != null) {
+					Destroy (GameObject.Find ("Projectile :" + val));
+				}
+				destroyCharacterString ();
+				removeCharacter();
+			}	
 		}
-
-		//Makes sure the object is looking at the camera
-		gameObject.transform.LookAt (Camera.main.transform.position); 
-		//Uses the start location to determine what direction to move
-		if (start.x < 0)
-			gameObject.transform.position += -transform.right * Time.deltaTime * 1.5f;
-		else if (start.x > 0)
-			gameObject.transform.position += transform.right * Time.deltaTime * 1.5f;
-		if (gameObject.transform.localPosition.z < 1) {
-
-			if (GameObject.Find ("Projectile :" + val) != null) {
-				Destroy (GameObject.Find ("Projectile :" + val));
-			}
-			destroyCharacterString ();
-			removeCharacter();
-		}	
 	}
 	//Makes string go back to default value if typo is detected. Also resets the currentCharTyping string
 	void ResetString()
