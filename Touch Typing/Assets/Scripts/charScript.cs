@@ -93,8 +93,6 @@ public class charScript : MonoBehaviour {
 			//Checks if the the key pressed meets conditions to be considered for checking. Ie A button has been pressed, the word is not completed and the current typing char is empty or already set to the current char
 			if ((Input.anyKeyDown) && fired == false && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1" || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping==val))
 			{
-
-				//Checks if the char is the first char of the string and that there is string currently being typed and sets the the current typed string to this objects value
 				bool foundLetter=false;
 				bool continueOn=false;
 				//Checks if the NonAlpha char button has actually been pressed and determines which one is correct. This had to be done non-standard due to unity not recognising {}
@@ -146,7 +144,7 @@ public class charScript : MonoBehaviour {
 					else
 						Debug.Log("NOT FOUND");
 				}
-				else if(checkChar!="{" && checkChar!="}")
+				else if(checkChar!="{" && checkChar!="}")//Needed because unity doesnt recognise "{" or "}" and throws a bitch fit
 				{
 					//Used for alpha characters. If only NonAlpha characters worked the same way
 					if(Input.GetKeyDown (checkChar.ToLower ()))
@@ -155,10 +153,11 @@ public class charScript : MonoBehaviour {
 						foundLetter=true;
 					}
 				}
+				//Checks if the char is the first char of the string and that there is string currently being typed and sets the the current typed string to this objects value
 				if(checkedChar==0 && val.Length!=1 && GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1")
 					GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=val;
 
-				//Checks to make sure the case is correct and that the character pressed is correct
+				//Checks to make sure the case is correct and that the character pressed is correct. It double checks uppercase nonAlpha characters, probably should fix at some point but it works atm.
 				if(((Input.GetKey (KeyCode.LeftShift) && charUpper==true && foundLetter==true )|| (charUpper==false && !Input.GetKey (KeyCode.LeftShift))&& isNonAlpha==false && foundLetter==true)|| (continueOn==true && (Input.GetKey (KeyCode.LeftShift) && isNonAlphaUpper==true || isNonAlphaUpper==false && !Input.GetKey (KeyCode.LeftShift))))
 				{
 
@@ -181,9 +180,13 @@ public class charScript : MonoBehaviour {
 
 						//Removes current character from charList. So it is once again a non missable character
 						removeCharacter();
+						//Gets the next char in the string by passing it the index of the current char
 						NextLetter(checkedChar);
+
 						//Change character/mesh colour 
 						//apply small explosion / shake effect 
+
+						//Updates displayed text
 						text.GetComponent<Text>().text="";
 						for(int i=checkedChar;i<val.Length;i++)
 						{
@@ -245,7 +248,7 @@ public class charScript : MonoBehaviour {
 		string testChar="{";
 		if (checkChar == checkChar.ToUpper()) {
 			charUpper=true;
-			//Sets the correct charUpper for non alphanumeric characters
+			//Sets the correct charUpper for non alphanumeric characters and checks if the nonAlpha is uppercase. Ie {}:"<>?
 			if(checkChar == "[" || checkChar == "]" || checkChar == ";" || checkChar == "'" || checkChar == "," || checkChar == "." || checkChar == "/")
 			{
 				charUpper=false;
@@ -261,7 +264,7 @@ public class charScript : MonoBehaviour {
 		}
 	}
 	void OnTriggerEnter(Collider other) {
-		//If the object is hit by the projectile it will update the score and destroy itself
+		//If the object is hit by the projectile it will update the score and destroy itself.
 		if (other.name == "Projectile :"+val) {
 			GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score += 1;
 			destroyCharacterString();
@@ -269,7 +272,7 @@ public class charScript : MonoBehaviour {
 
 		}
 	}
-	void destroyCharacterString()
+	void destroyCharacterString() //Called whenever the string is destroyed. Ie hit by projectile or moves into the kill zone.
 	{
 		for(int i=0;i<GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.Count;i++)
 		{
@@ -279,7 +282,7 @@ public class charScript : MonoBehaviour {
 		}
 		Destroy (this.gameObject);
 	}
-	void removeCharacter()
+	void removeCharacter() //Removes the current character from the active characterlist. Could probably be made redundant at some point. Although it is useful for finding missed keys
 	{
 		for(int i=0;i<GameObject.Find ("Main Camera").GetComponent<controllerScript> ().charList.Count;i++)
 		{

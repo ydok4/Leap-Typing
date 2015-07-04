@@ -3,19 +3,27 @@ using System.Collections;
 
 public class projectileScript : MonoBehaviour {
 	public string target;
+	string spawn;
+	public Vector3 start;
 	// Use this for initialization
 	void Start () {
+		//Sets target to lower case version so it comes out the right place
+		spawn = target.ToLower ();
+
 		//Sets up naming conventions, starting location and rigidbodys and colliders
 		gameObject.transform.position=Camera.main.transform.position;
+
 		gameObject.name = "Projectile :" + target;
 		gameObject.AddComponent<BoxCollider> ();
 		gameObject.AddComponent<Rigidbody> ();
 		gameObject.GetComponent<Rigidbody> ().useGravity = false;
 		gameObject.GetComponent<BoxCollider> ().isTrigger=true;
 
+
+
 		//Creates a second gameobject parented to the other which controls the projectile meshes visuals
 		GameObject objectMesh=new GameObject();
-		objectMesh.transform.position = gameObject.transform.position;
+
 		objectMesh.transform.parent = gameObject.transform;
 		objectMesh.name = "Projectile " + target + " Mesh";
 		objectMesh.AddComponent<MeshFilter> ();
@@ -24,32 +32,36 @@ public class projectileScript : MonoBehaviour {
 		objectMesh.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().projectileMaterial;
 		objectMesh.transform.rotation = Quaternion.Euler(0, 90, 90);
 
+		//Changes the scale of the mesh it matches better
+		objectMesh .transform.localScale = new Vector3 (0.2f, 0.2f, 0.2f);
+		objectMesh.transform.position = gameObject.transform.position;
 
 		//Changes X spawn point depending on what the target is. This is also where you would change the colour of the materials
-		if (target == "q" || target == "a" || target == "z") {
-			gameObject.transform.position+=new Vector3(-3,0,0);
+		if (spawn == "q" || spawn == "a" || spawn == "z") {
+			gameObject.transform.position=GameObject.Find ("shipGunL4").transform.position;
 		}
-		else if (target == "w" || target == "s" || target == "x") {
-			gameObject.transform.position+=new Vector3(-2,0,0);
+		else if (spawn == "w" || spawn == "s" || spawn == "x") {
+			gameObject.transform.position=GameObject.Find ("shipGunL3").transform.position;
 		}
-		else if (target == "e" || target == "d" || target == "c") {
-			gameObject.transform.position+=new Vector3(-1,0,0);
+		else if (spawn == "e" || spawn == "d" || spawn == "c") {
+			gameObject.transform.position=GameObject.Find ("shipGunL2").transform.position;
 		}
-		else if (target == "r" || target == "f" || target == "v" || target == "t" || target == "g" || target == "v") {
-			
+		else if (spawn == "r" || spawn == "f" || spawn == "v" || spawn == "t" || spawn == "g" || spawn == "v") {
+			gameObject.transform.position=GameObject.Find ("shipGunL1").transform.position;
 		}
-		else if (target == "y" || target == "h" || target == "n" || target == "u" || target == "j" || target == "m") {
-			gameObject.transform.position+=new Vector3(1,0,0);
+		else if (spawn == "y" || spawn == "h" || spawn == "n" || spawn == "u" || spawn == "j" || spawn == "m") {
+			gameObject.transform.position=GameObject.Find ("shipGunR1").transform.position;
 		}
-		else if (target == "i" || target == "k" || target == ",") {
-			gameObject.transform.position+=new Vector3(2,0,0);
+		else if (spawn == "i" || spawn == "k" || spawn == "," || spawn == "<") {
+			gameObject.transform.position=GameObject.Find ("shipGunR2").transform.position;
 		}
-		else if (target == "o" || target == "l" || target == ".") {
-			gameObject.transform.position+=new Vector3(3,0,0);
+		else if (spawn == "o" || spawn == "l" || spawn == "." || spawn == ">") {
+			gameObject.transform.position=GameObject.Find ("shipGunR3").transform.position;
 		}
-		else if (target == "p" || target == ";" || target == "/" || target == "[" || target == "'" || target == "]") {
-			gameObject.transform.position+=new Vector3(4,0,0);
+		else if (spawn == "p" || spawn == ";" || spawn == "/" || spawn == "[" || spawn == "'" || spawn == "]" || spawn == "{" || spawn == "}" || spawn == ":" || spawn == "\"" || spawn == "/" || spawn == "?") {
+			gameObject.transform.position=GameObject.Find ("shipGunR4").transform.position;
 		}
+		start = gameObject.transform.position;
 	}
 	
 	// Update is called once per frame

@@ -24,6 +24,7 @@ public class controllerScript : MonoBehaviour {
 	public int missed;
 	public float delay;
 	float delayGoal;
+	
 
 	//Contains a list of all the currenlty active character strings
 	public List <characters> characterList=new List<characters>();
@@ -62,12 +63,21 @@ public class controllerScript : MonoBehaviour {
 	void Start () {
 		//Sets up alphabet
 		Camera.main.fieldOfView = 180.0f;
+		//UPPER and Lower Case
 		//alpha = "abcdefghjklmnopqrstuvwxyz[];',.";
-		alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
+		/*alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
 		alpha1="qwertyuiop[]QWERTYUIOP{}";
 		alpha2="asdfghjkl;'ASDFGHJKL:\"";
-		alpha3="zxcvbnm,./ZXCVBNM<>?";
-		currentCharTyping = "-1";
+		alpha3="zxcvbnm,./ZXCVBNM<>?";*/
+		alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
+		alpha1="uiop[]";
+		alpha2="hjkl;'";
+		alpha3="nm,./Z";
+		/*alpha = "abcdefghijklmnopqrstuvwxyz";
+		alpha1="qwertyuiop";
+		alpha2="asdfghjkl;";
+		alpha3="zxcvbnm";
+		currentCharTyping = "-1";*/
 
 		//Sets variables to default
 		Reset ();
@@ -203,7 +213,7 @@ public class controllerScript : MonoBehaviour {
 								if(found!=true)
 									break;
 							}
-							if(side<=4)
+							if(side<=5)
 								v3Pos=new Vector3(-6.0f,-0.5f,1.5f);
 							else
 								v3Pos=new Vector3(8.0f,-0.5f,1.5f);
@@ -213,16 +223,16 @@ public class controllerScript : MonoBehaviour {
 				}
 				//#############################################################Used for testing strings with multiple chars and cases.
 				//Comment out for loop if you want only 1 char
-				for(int i=0;i<2;i++)
+				/*for(int i=0;i<2;i++)
 				{
 					c+=alpha[Random.Range(0,alpha.Length)].ToString ();
-				}
+				}*/
 
 				//Spawns characters outside the camera range. Comment out if not desired behaviour
-				//v3Pos = new Vector3(0.857f, 0.857f, 0.0f);
-				//v3Pos = Quaternion.AngleAxis(Random.Range(0.0f, 360.0f), Vector3.forward) * v3Pos;
-				//v3Pos += new Vector3(0.5f, 0.5f, 6.0f);
-				//v3Pos = Camera.main.ViewportToWorldPoint(v3Pos);
+				/*v3Pos = new Vector3(0.857f, 0.857f, 0.0f);
+				v3Pos = Quaternion.AngleAxis(Random.Range(0.0f, 360.0f), Vector3.forward) * v3Pos;
+				v3Pos += new Vector3(0.5f, 0.5f, 6.0f);
+				v3Pos = Camera.main.ViewportToWorldPoint(v3Pos);*/
 
 				//Spawns the new character. v3Pos is where it spawns in the world
 				characters newChar=new characters(characterList.Count, c,v3Pos);
