@@ -46,8 +46,12 @@ public class charScript : MonoBehaviour {
 		gameObject.GetComponent<MeshFilter> ().mesh=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMesh;
 		gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterial;
 
+		//Modify Asteroid Scale
+		gameObject.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
 		text = new GameObject ();
-
+		//ModifyAsteroidRotation - WIP. Issue is text wont orientate correctly
+		//Vector3 asRotate = new Vector3 (Random.Range (0, 360), Random.Range (0, 360), Random.Range (0, 360));
+		//gameObject.transform.localRotation = Quaternion.Euler (asRotate);
 
 		text.transform.parent=gameObject.transform;
 		//Adds components to text
@@ -62,11 +66,11 @@ public class charScript : MonoBehaviour {
 		text.GetComponent<Text> ().horizontalOverflow = HorizontalWrapMode.Overflow;
 		text.GetComponent<Text> ().verticalOverflow = VerticalWrapMode.Overflow;
 		text.GetComponent<Text>().text=val;
-		text.GetComponent<Text> ().fontSize = 1;
-		text.GetComponent<CanvasScaler> ().dynamicPixelsPerUnit = 60;
+		text.GetComponent<Text> ().fontSize = 3;
+		text.GetComponent<CanvasScaler> ().dynamicPixelsPerUnit = 80;
 		text.GetComponent<Text> ().alignment = TextAnchor.MiddleCenter;
 		text.GetComponent<Text> ().name="Character Text";
-		text.GetComponent<RectTransform> ().localPosition += new Vector3 (0.0f, 0.0f, 0.501f);
+		text.GetComponent<RectTransform> ().localPosition += new Vector3 (0.0f, 0.0f, 6.501f);
 		Vector3 rotate=text.GetComponent<RectTransform> ().localRotation.eulerAngles;
 		rotate += new Vector3 (0.0f, 180.0f, 0.0f);
 		text.GetComponent<RectTransform> ().localRotation=Quaternion.Euler(rotate);

@@ -1,27 +1,15 @@
 fileFormatVersion: 2
-guid: f80922be63848c84bbac8b84d03ea63b
-timeCreated: 1435982271
+guid: 58c6af45956c7e044bcd7025ee4abc85
+timeCreated: 1436071118
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: Empty_Mesh
-    100002: Empty_Mesh_1
-    100004: Empty_Mesh_2
-    100006: //RootNode
-    400000: Empty_Mesh
-    400002: Empty_Mesh_1
-    400004: Empty_Mesh_2
-    400006: //RootNode
-    2300000: Empty_Mesh
-    2300002: Empty_Mesh_1
-    2300004: Empty_Mesh_2
-    3300000: Empty_Mesh
-    3300002: Empty_Mesh_1
-    3300004: Empty_Mesh_2
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
     4300000: Empty_Mesh
-    4300002: Empty_Mesh_1
-    4300004: Empty_Mesh_2
     9500000: //RootNode
   materials:
     importMaterials: 1

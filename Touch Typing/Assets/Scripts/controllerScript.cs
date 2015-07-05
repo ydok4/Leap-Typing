@@ -65,19 +65,19 @@ public class controllerScript : MonoBehaviour {
 		Camera.main.fieldOfView = 180.0f;
 		//UPPER and Lower Case
 		//alpha = "abcdefghjklmnopqrstuvwxyz[];',.";
-		/*alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
+		alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
 		alpha1="qwertyuiop[]QWERTYUIOP{}";
 		alpha2="asdfghjkl;'ASDFGHJKL:\"";
-		alpha3="zxcvbnm,./ZXCVBNM<>?";*/
-		alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
+		alpha3="zxcvbnm,./ZXCVBNM<>?";
+		/*alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
 		alpha1="uiop[]";
 		alpha2="hjkl;'";
-		alpha3="nm,./Z";
+		alpha3="nm,./Z";*/
 		/*alpha = "abcdefghijklmnopqrstuvwxyz";
 		alpha1="qwertyuiop";
 		alpha2="asdfghjkl;";
-		alpha3="zxcvbnm";
-		currentCharTyping = "-1";*/
+		alpha3="zxcvbnm";*/
+		currentCharTyping = "-1";
 
 		//Sets variables to default
 		Reset ();
@@ -223,10 +223,10 @@ public class controllerScript : MonoBehaviour {
 				}
 				//#############################################################Used for testing strings with multiple chars and cases.
 				//Comment out for loop if you want only 1 char
-				/*for(int i=0;i<2;i++)
+				for(int i=0;i<2;i++)
 				{
 					c+=alpha[Random.Range(0,alpha.Length)].ToString ();
-				}*/
+				}
 
 				//Spawns characters outside the camera range. Comment out if not desired behaviour
 				/*v3Pos = new Vector3(0.857f, 0.857f, 0.0f);

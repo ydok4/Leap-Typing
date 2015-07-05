@@ -1,24 +1,31 @@
 fileFormatVersion: 2
-guid: 73f425b451677c74e977c3cbc9597802
-timeCreated: 1435983045
+guid: 7bb4e51cda7f67f438668372256ea749
+timeCreated: 1436067584
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: Camera
-    100004: Light
-    100006: shipGun
-    400000: //RootNode
-    400002: Camera
-    400004: Light
-    400006: shipGun
-    2300000: //RootNode
-    2300002: shipGun
-    3300000: //RootNode
-    3300002: shipGun
-    4300000: SpaceShip_v002_Collapsed
-    4300002: shipGun
+    100000: Camera
+    100002: Light
+    100004: SpaceShip_v003:Layer1
+    100006: SpaceShip_v003:Layer2
+    100008: SpaceShip_v003:Layer3
+    100010: //RootNode
+    400000: Camera
+    400002: Light
+    400004: SpaceShip_v003:Layer1
+    400006: SpaceShip_v003:Layer2
+    400008: SpaceShip_v003:Layer3
+    400010: //RootNode
+    2300000: SpaceShip_v003:Layer1
+    2300002: SpaceShip_v003:Layer2
+    2300004: SpaceShip_v003:Layer3
+    3300000: SpaceShip_v003:Layer1
+    3300002: SpaceShip_v003:Layer2
+    3300004: SpaceShip_v003:Layer3
+    4300000: SpaceShip_v003:Layer1
+    4300002: SpaceShip_v003:Layer2
+    4300004: SpaceShip_v003:Layer3
     9500000: //RootNode
   materials:
     importMaterials: 1
