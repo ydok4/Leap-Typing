@@ -5,9 +5,12 @@ using System.Collections;
 public class HUDUpdater : MonoBehaviour {
 	
 	public Text scoreText, missedText, timeText;
-
+	void Start () {
+		//GameObject.Find ("PauseMenu").GetComponent<Canvas> ().SetActive(false);
+	}
 	// Update is called once per frame
 	void Update () {
+		//udate HUD score, time and missed values
 		if(scoreText!=null)
 			scoreText.text = "Score: " +  GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score;
 		if(missedText!=null)
@@ -17,9 +20,13 @@ public class HUDUpdater : MonoBehaviour {
 			if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().time < 0)
 				timeText.text = "Time: 0";
 		}
-		if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == true)
-			this.GetComponent<CanvasGroup>().alpha = 1f;
-		else
-			this.GetComponent<CanvasGroup>().alpha = 0f;
+		//toggle pause menu
+		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == true)
+			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = true;
+		 else 
+			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = false;
+
 	}
+
+
 }

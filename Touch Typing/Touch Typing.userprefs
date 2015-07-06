@@ -1,12 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\controllerScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\HUDUpdater.cs">
     <Files>
-      <File FileName="Assets\Scripts\charScript.cs" Line="277" Column="74" />
+      <File FileName="Assets\Scripts\HUDUpdater.cs" Line="13" Column="44" />
+      <File FileName="Assets\Scripts\charScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\controllerScript.cs" Line="229" Column="6" />
-      <File FileName="Assets\LeapMotion\Scripts\HandController.cs" Line="22" Column="35" />
-      <File FileName="Assets\Scripts\HUDUpdater.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\projectileScript.cs" Line="44" Column="24" />
+      <File FileName="Assets\LeapMotion\Scripts\HandController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\projectileScript.cs" Line="4" Column="48" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
