@@ -13,12 +13,12 @@ public class controllerScript : MonoBehaviour {
 	public Mesh projectileMesh;
 	public Material projectileMaterial;
 	//The potential alphabet of the lesson
-	public string alpha;
+	public static string alpha;
 	
 	//"Top keyboard row"
-	public string alpha1;
-	public string alpha2;
-	public string alpha3;
+	public static string alpha1;
+	public static string alpha2;
+	public static string alpha3;
 	public float time;
 	public float goal; 
 	public int missed;
@@ -50,7 +50,6 @@ public class controllerScript : MonoBehaviour {
 			location = l;
 			chars = c;
 			charObj = new GameObject ();
-
 			charObj.name = c;
 			charObj.AddComponent<charScript>();
 			charObj.GetComponent<charScript> ().start=cameraOut;
@@ -65,18 +64,18 @@ public class controllerScript : MonoBehaviour {
 		Camera.main.fieldOfView = 180.0f;
 		//UPPER and Lower Case
 		//alpha = "abcdefghjklmnopqrstuvwxyz[];',.";
-		alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
+		/*alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
 		alpha1="qwertyuiop[]QWERTYUIOP{}";
 		alpha2="asdfghjkl;'ASDFGHJKL:\"";
-		alpha3="zxcvbnm,./ZXCVBNM<>?";
-		/*alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
+		alpha3="zxcvbnm,./ZXCVBNM<>?";*/
+		/*alpha = "abcdefghjklmnopqrstuvwxyz[];',.";
 		alpha1="uiop[]";
 		alpha2="hjkl;'";
 		alpha3="nm,./Z";*/
-		/*alpha = "abcdefghijklmnopqrstuvwxyz";
-		alpha1="qwertyuiop";
-		alpha2="asdfghjkl;";
-		alpha3="zxcvbnm";*/
+		alpha = "abcdefghijklmnopqrstuvwxyz";
+		alpha1="qwertyuiop[]";
+		alpha2="asdfghjkl;'";
+		alpha3="zxcvbnm,./";
 		currentCharTyping = "-1";
 
 		//Sets variables to default
@@ -94,7 +93,7 @@ public class controllerScript : MonoBehaviour {
 		//Time is total time for the lesson
 		time = 60;
 		//Goal is when the next character will spawn. Need to update the decrement as well.
-		goal = 57;
+		goal = 58;
 	}
 	void FixedUpdate()
 	{
@@ -126,7 +125,7 @@ public class controllerScript : MonoBehaviour {
 
 			if (Input.anyKeyDown ) {
 				bool found=false;
-				if(Input.GetKey (KeyCode.LeftShift))
+				if(Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift))
 				{
 					foreach(string c in charList)
 					{
@@ -144,7 +143,7 @@ public class controllerScript : MonoBehaviour {
 					}
 				}
 				currentCharTyping="-1";
-				if(found==false && !Input.GetKeyDown (KeyCode.LeftShift))
+				if(found==false && (!Input.GetKeyDown (KeyCode.LeftShift)&&!Input.GetKey (KeyCode.RightShift)))
 					missed++;
 			}
 
@@ -219,15 +218,15 @@ public class controllerScript : MonoBehaviour {
 								v3Pos=new Vector3(8.0f,-0.5f,1.5f);
 								break;
 						default:
-							break;
+								Debug.Log("Default");
+								break;
 				}
 				//#############################################################Used for testing strings with multiple chars and cases.
 				//Comment out for loop if you want only 1 char
-				for(int i=0;i<2;i++)
+				/*for(int i=0;i<2;i++)
 				{
 					c+=alpha[Random.Range(0,alpha.Length)].ToString ();
-				}
-
+				}*/
 				//Spawns characters outside the camera range. Comment out if not desired behaviour
 				/*v3Pos = new Vector3(0.857f, 0.857f, 0.0f);
 				v3Pos = Quaternion.AngleAxis(Random.Range(0.0f, 360.0f), Vector3.forward) * v3Pos;
@@ -241,7 +240,7 @@ public class controllerScript : MonoBehaviour {
 				characterList.Add(newChar);
 
 				//DECREMENT: should match the interval between the initial time and intial goal.
-				goal-=3;
+				goal-=2;
 			}
 		}
 	}

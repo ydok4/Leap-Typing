@@ -32,9 +32,13 @@ public class charScript : MonoBehaviour {
 	bool isNonAlphaUpper;
 	//Tells the word to start from the beginning
 	public bool reset;
+
+	public float aliveTime;
+
 	// Use this for initialization
 	void Start () {
-		gameObject.transform.position = GameObject.Find ("Main Camera").GetComponent<controllerScript> ().transform.position;
+		aliveTime = 12f;
+		gameObject.transform.position = GameObject.Find ("Main Camera").transform.position;
 		gameObject.transform.parent = GameObject.Find ("Main Camera").transform;
 		gameObject.transform.localPosition = start;
 		//Adds components to character object
@@ -86,6 +90,7 @@ public class charScript : MonoBehaviour {
 		NextLetter(checkedChar);
 
 		reset = false;
+		gameObject.transform.parent = null;
 	}
 	
 	// Update is called once per frame
@@ -102,51 +107,49 @@ public class charScript : MonoBehaviour {
 				//Checks if the NonAlpha char button has actually been pressed and determines which one is correct. This had to be done non-standard due to unity not recognising {}
 				if(isNonAlpha==true)
 				{
-					if(checkChar=="{" && Input.GetKeyDown("[") && Input.GetKey (KeyCode.LeftShift))
+					if(checkChar=="{" && Input.GetKeyDown("[") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
 						//Debug.Log("KEY { CHECKED");
 						continueOn=true;
 					}
-					else if(checkChar=="}" && Input.GetKeyDown("]") && Input.GetKey (KeyCode.LeftShift))
+					else if(checkChar=="}" && Input.GetKeyDown("]") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
 						//Debug.Log("KEY } CHECKED");
 						continueOn=true;
 					}
-					else if(checkChar==":" && Input.GetKeyDown(";") && Input.GetKey (KeyCode.LeftShift))
+					else if(checkChar==":" && Input.GetKeyDown(";") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
 						//Debug.Log("KEY : CHECKED");
 						continueOn=true;
 					}
-					else if(checkChar=="\"" && Input.GetKeyDown("'") && Input.GetKey (KeyCode.LeftShift))
+					else if(checkChar=="\"" && Input.GetKeyDown("'") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
 						//Debug.Log("KEY \" CHECKED");
 						continueOn=true;
 					}
-					else if(checkChar=="<" && Input.GetKeyDown(",") && Input.GetKey (KeyCode.LeftShift))
+					else if(checkChar=="<" && Input.GetKeyDown(",") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
 						//Debug.Log("KEY < CHECKED");
 						continueOn=true;
 					}
-					else if(checkChar==">" && Input.GetKeyDown(".") && Input.GetKey (KeyCode.LeftShift))
+					else if(checkChar==">" && Input.GetKeyDown(".") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
 						//Debug.Log("KEY > CHECKED");
 						continueOn=true;
 					}
-					else if(checkChar=="?" && Input.GetKeyDown("/") && Input.GetKey (KeyCode.LeftShift))
+					else if(checkChar=="?" && Input.GetKeyDown("/") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
 						//Debug.Log("KEY ? CHECKED");
 						continueOn=true;
 					}
 					else if(checkChar!="{" && checkChar!="}")
 					{
-						if (Input.GetKeyDown (checkChar) &&!Input.GetKey (KeyCode.LeftShift) )
+						if (Input.GetKeyDown (checkChar) &&!Input.GetKey (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
 						{
 							//Debug.Log("STANDARD NONALPHA CHECKING METHOD CHECKED");
 							continueOn=true;
 						}
 					}
-					else
-						Debug.Log("NOT FOUND");
 				}
 				else if(checkChar!="{" && checkChar!="}")//Needed because unity doesnt recognise "{" or "}" and throws a bitch fit
 				{
@@ -162,7 +165,7 @@ public class charScript : MonoBehaviour {
 					GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=val;
 
 				//Checks to make sure the case is correct and that the character pressed is correct. It double checks uppercase nonAlpha characters, probably should fix at some point but it works atm.
-				if(((Input.GetKey (KeyCode.LeftShift) && charUpper==true && foundLetter==true )|| (charUpper==false && !Input.GetKey (KeyCode.LeftShift))&& isNonAlpha==false && foundLetter==true)|| (continueOn==true && (Input.GetKey (KeyCode.LeftShift) && isNonAlphaUpper==true || isNonAlphaUpper==false && !Input.GetKey (KeyCode.LeftShift))))
+				if((((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && charUpper==true && foundLetter==true )|| (charUpper==false && !Input.GetKey (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))&& isNonAlpha==false && foundLetter==true)|| (continueOn==true && ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && isNonAlphaUpper==true || isNonAlphaUpper==false && !Input.GetKey (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))))
 				{
 
 					//Checks if the character pressed was the last char and spawns a projectile to kill it
@@ -172,7 +175,15 @@ public class charScript : MonoBehaviour {
 						GameObject projectile = new GameObject ();
 
 						projectile.AddComponent<projectileScript> ();
-						projectile.GetComponent<projectileScript> ().target = val;
+						//Special case for / because unity cant find the object by name ie /
+						if(val=="/")
+						{
+							gameObject.name="slash";
+							projectile.GetComponent<projectileScript> ().target="slash";
+							val="slash";
+						}
+						else
+							projectile.GetComponent<projectileScript> ().target = val;
 						fired=true;
 						removeCharacter();
 						GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping="-1";
@@ -198,14 +209,14 @@ public class charScript : MonoBehaviour {
 						}
 					}
 				}
-				else if(!Input.GetKeyDown (KeyCode.LeftShift))
+				else if(!Input.GetKeyDown (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
 					ResetString ();
 			}
 			//This checks to see if the character string should reset to its original value due to a typo
 			else if(checkedChar>0 && Input.anyKeyDown)
 			{
 				//Makes sure left shift (by itself) doesnt reset char string
-				if(!Input.GetKeyDown (KeyCode.LeftShift))
+				if(!Input.GetKeyDown (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
 					ResetString ();
 			}
 
@@ -218,11 +229,14 @@ public class charScript : MonoBehaviour {
 				gameObject.transform.position += -transform.right * Time.deltaTime * 1.5f;
 			else if (start.x > 0)
 				gameObject.transform.position += transform.right * Time.deltaTime * 1.5f;
-			if (gameObject.transform.localPosition.z < 1) {
+			aliveTime-= Time.deltaTime;
+
+			if (aliveTime<=0 && GetComponent<Renderer>().isVisible==false) {
 
 				if (GameObject.Find ("Projectile :" + val) != null) {
 					Destroy (GameObject.Find ("Projectile :" + val));
 				}
+				GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed++;
 				destroyCharacterString ();
 				removeCharacter();
 			}	
