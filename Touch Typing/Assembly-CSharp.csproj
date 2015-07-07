@@ -147,6 +147,7 @@
      <Compile Include="Assets\OVR\Scripts\Util\OVRVisionGuide.cs" />
      <Compile Include="Assets\Scripts\HUDUpdater.cs" />
      <Compile Include="Assets\Scripts\LoadOnClick.cs" />
+     <Compile Include="Assets\Scripts\RadialSelection.cs" />
      <Compile Include="Assets\Scripts\TextMeshSharpener.cs" />
      <Compile Include="Assets\Scripts\calibration.cs" />
      <Compile Include="Assets\Scripts\cameraScript.cs" />
