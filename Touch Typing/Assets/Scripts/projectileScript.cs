@@ -14,7 +14,6 @@ public class projectileScript : MonoBehaviour {
 		gameObject.transform.position=Camera.main.transform.position;
 
 		gameObject.name = "Projectile :" + target;
-
 		gameObject.AddComponent<BoxCollider> ();
 		gameObject.AddComponent<Rigidbody> ();
 		gameObject.GetComponent<Rigidbody> ().useGravity = false;
@@ -59,11 +58,10 @@ public class projectileScript : MonoBehaviour {
 		else if (spawn == "o" || spawn == "l" || spawn == "." || spawn == ">") {
 			gameObject.transform.position=GameObject.Find ("shipGunR3").transform.position;
 		}
-		else if (spawn == "p" || spawn == ";" || spawn == "slash" || spawn == "[" || spawn == "'" || spawn == "]" || spawn == "{" || spawn == "}" || spawn == ":" || spawn == "\"" || spawn == "/" || spawn == "?") {
+		else if (spawn == "p" || spawn == ";" || spawn == "/" || spawn == "[" || spawn == "'" || spawn == "]" || spawn == "{" || spawn == "}" || spawn == ":" || spawn == "\"" || spawn == "/" || spawn == "?") {
 			gameObject.transform.position=GameObject.Find ("shipGunR4").transform.position;
 		}
 		start = gameObject.transform.position;
-
 	}
 	
 	// Update is called once per frame
