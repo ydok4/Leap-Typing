@@ -41,7 +41,7 @@ public class calibration : MonoBehaviour {
 
 		if (Finish & KeyPos.Count < 5) {
 			Calibrate();
-			//Application.LoadLevel("Main");
+			Application.LoadLevel("Main");
 		}else if (Input.GetKeyDown (Key [index])) {
 			RightIndexPosition ();
 			if(index == 3)
@@ -51,6 +51,7 @@ public class calibration : MonoBehaviour {
 		}
 	}
 
+	//Returns the leap controller from HandController 
 	Controller CurrentLeap(){
 		GameObject go = GameObject.Find ("Calibration");
 		HandController speedController = go.GetComponent <HandController> ();
@@ -58,6 +59,7 @@ public class calibration : MonoBehaviour {
 		return leap_controller;
 	} 
 
+	//Finds and stores the xyz of the right index finger
 	void RightIndexPosition(){
 		Frame frame = leap_controller.Frame();
 		foreach (Hand hand in frame.Hands) {
@@ -72,14 +74,18 @@ public class calibration : MonoBehaviour {
 		}
 	}
 
+	//Sets up everything to calibrates the keyboard into xyz
 	void Calibrate(){
 		for (int i = 0; i < 2; i++) {
 			Vector3 tmp = Position (KeyPos [i], KeyPos [i+2]);
 			KeyPos.Insert (i+2, tmp);
 		}
-		CalibrateKeyboard (KeyPos[0], KeyPos[1], 11);
+		CalibrateKeyboard (KeyPos[0], KeyPos[1], 11, 1);	
+		CalibrateKeyboard (KeyPos[12], KeyPos[13], 10, 13);
+		CalibrateKeyboard (KeyPos[23], KeyPos[24], 9, 24);
 	}
 
+	//Returns a vector3 that holds the xyz of either a or '
 	Vector3 Position(Vector3 left, Vector3 right){
 		float x = (left.x + right.x) / 2;
 		float y = (left.y + right.y) / 2;
@@ -88,7 +94,8 @@ public class calibration : MonoBehaviour {
 		return tmp;
 	}
 
-	void CalibrateKeyboard(Vector3 left, Vector3 right, int Row){
+	//Calibrates the keyboard into xyz
+	void CalibrateKeyboard(Vector3 left, Vector3 right, int Row, int Pos){
 		float distx = Math.Abs(left.x - right.x)/Row;
 		float x = left.x;
 		float disty = Math.Abs(left.y - right.y)/Row;
@@ -101,7 +108,7 @@ public class calibration : MonoBehaviour {
 			y -= disty;
 			z -= distz;
 			Vector3 tmp = new Vector3(x,y,z);
-			KeyPos.Add(tmp);
+			KeyPos.Insert(Pos + i, tmp);
 		}
 
 		//*****also have to move a and z

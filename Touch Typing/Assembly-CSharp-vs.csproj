@@ -153,6 +153,7 @@
      <Compile Include="Assets\Scripts\cameraScript.cs" />
      <Compile Include="Assets\Scripts\charScript.cs" />
      <Compile Include="Assets\Scripts\controllerScript.cs" />
+     <Compile Include="Assets\Scripts\gestures.cs" />
      <Compile Include="Assets\Scripts\projectileScript.cs" />
      <None Include="Assets\Plugins\donotdelete.txt" />
      <None Include="Assets\LeapMotion\Materials\Sources\Shaders\Toony-Basic.shader" />
