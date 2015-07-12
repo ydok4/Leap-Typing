@@ -65,7 +65,7 @@ public class charScript : MonoBehaviour {
 
 		//Sets up components
 		text.transform.localPosition = Vector3.zero;
-		Font myFont = Resources.Load<Font> ("DigitaldreamFatNarrowModified");
+		Font myFont = Resources.Load<Font> ("Neuton-Regular");
 		text.GetComponent<Text> ().font = myFont;
 		text.GetComponent<Text> ().horizontalOverflow = HorizontalWrapMode.Overflow;
 		text.GetComponent<Text> ().verticalOverflow = VerticalWrapMode.Overflow;

@@ -9,6 +9,14 @@ public class controllerScript : MonoBehaviour {
 	//Set these two variables inside the editor
 	public Mesh characterMesh;
 	public Material characterMaterial;
+	public Material characterMaterialRed;
+	public Material characterMaterialLightRed;
+	public Material characterMaterialYellow;
+	public Material characterMaterialDarkYellow;
+	public Material characterMaterialAqua;
+	public Material characterMaterialSkyBlue;
+	public Material characterMaterialGreen;
+	public Material characterMaterialLime;
 
 	public Mesh projectileMesh;
 	public Material projectileMaterial;
@@ -64,18 +72,18 @@ public class controllerScript : MonoBehaviour {
 		Camera.main.fieldOfView = 180.0f;
 		//UPPER and Lower Case
 		//alpha = "abcdefghjklmnopqrstuvwxyz[];',.";
-		/*alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
+		alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
 		alpha1="qwertyuiop[]QWERTYUIOP{}";
 		alpha2="asdfghjkl;'ASDFGHJKL:\"";
-		alpha3="zxcvbnm,./ZXCVBNM<>?";*/
+		alpha3="zxcvbnm,./ZXCVBNM<>?";
 		/*alpha = "abcdefghjklmnopqrstuvwxyz[];',.";
 		alpha1="uiop[]";
 		alpha2="hjkl;'";
 		alpha3="nm,./Z";*/
-		alpha = "abcdefghijklmnopqrstuvwxyz";
-		alpha1="qwertyuiop[]";
-		alpha2="asdfghjkl;'";
-		alpha3="zxcvbnm,./";
+		//alpha = "abcdefghijklmnopqrstuvwxyz";
+		//alpha1="qwertyuiop[]";
+		//alpha2="asdfghjkl;'";
+		//alpha3="zxcvbnm,./";
 		currentCharTyping = "-1";
 
 		//Sets variables to default
@@ -174,6 +182,7 @@ public class controllerScript : MonoBehaviour {
 								if(found!=true)
 									break;
 							}
+							side=sideLocation(c);
 							if(side<=5)
 								v3Pos=new Vector3(-6.0f,2.5f,1.5f);
 							else
@@ -193,6 +202,7 @@ public class controllerScript : MonoBehaviour {
 								if(found!=true)
 									break;
 							}
+							side=sideLocation(c);
 							if(side<=5)
 								v3Pos=new Vector3(-6.0f,1.0f,1.5f);
 							else
@@ -212,6 +222,7 @@ public class controllerScript : MonoBehaviour {
 								if(found!=true)
 									break;
 							}
+							side=sideLocation(c);
 							if(side<=5)
 								v3Pos=new Vector3(-6.0f,-0.5f,1.5f);
 							else
@@ -243,6 +254,35 @@ public class controllerScript : MonoBehaviour {
 				goal-=2;
 			}
 		}
+	}
+	int sideLocation(string letter)
+	{
+		letter = letter.ToLower ();
+		if (letter[0] == 'q' || letter[0] == 'a' || letter[0] == 'z') {
+			return 1;
+		}
+		else if (letter[0] == 'w' || letter[0] == 's' || letter[0] == 'x') {
+			return 2;
+		}
+		else if (letter[0] == 'e' || letter[0] == 'd' || letter[0] == 'c') {
+			return 3;
+		}
+		else if (letter[0] == 'r' || letter[0] == 'f' || letter[0] == 'v' || letter[0] == 't' || letter[0] == 'g' || letter[0] == 'v') {
+			return 4;
+		}
+		else if (letter[0] == 'y' || letter[0] == 'h' || letter[0] == 'n' || letter[0] == 'u' || letter[0] == 'j' || letter[0] == 'm') {
+			return 5;
+		}
+		else if (letter[0] == 'i' || letter[0] == 'k' || letter[0] == ',' || letter[0] == '<') {
+			return 6;
+		}
+		else if (letter[0] == 'o' || letter[0] == 'l' || letter[0] == '.' || letter[0] == '>') {
+			return 7;
+		}
+		else if (letter[0] == 'p' || letter[0] == ';' || letter[0] == '[' || letter[0] == '\'' || letter[0] == ']' || letter[0] == '{' || letter[0] == '}' || letter[0] == ':' || letter[0] == '\"' || letter[0] == '/' || letter[0] == '?') {
+			return 8;
+		}
+		return 0;
 	}
 	void OnTriggerEnter(Collider other) {
 		//Debug.Log("Collision1");
