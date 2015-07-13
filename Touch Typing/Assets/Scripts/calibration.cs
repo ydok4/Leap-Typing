@@ -29,7 +29,7 @@ public class calibration : MonoBehaviour {
 
 	/*Inialises the starting condition*/
 	void Start(){
-		leap_controller = CurrentLeap();
+		CurrentLeap();
 	}
 
 	// Update is called once per frame
@@ -52,11 +52,10 @@ public class calibration : MonoBehaviour {
 	}
 
 	//Returns the leap controller from HandController 
-	Controller CurrentLeap(){
+	void CurrentLeap(){
 		GameObject go = GameObject.Find ("Calibration");
 		HandController speedController = go.GetComponent <HandController> ();
-		Controller leap_controller = speedController.leap_controller_;
-		return leap_controller;
+		leap_controller = speedController.leap_controller_;
 	} 
 
 	//Finds and stores the xyz of the right index finger
