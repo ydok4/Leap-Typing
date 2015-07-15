@@ -25,7 +25,7 @@ public class HUDUpdater : MonoBehaviour {
 			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = true;
 		 else 
 			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = false;
-
+		//toggle debug log
 	}
 
 

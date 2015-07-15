@@ -32,8 +32,10 @@ public class controllerScript : MonoBehaviour {
 	public int missed;
 	public float delay;
 	float delayGoal;
-	
 
+	//Stores leap checking functions
+	public FingerPosition finger;
+	public IsLeapConnected con;
 	//Contains a list of all the currenlty active character strings
 	public List <characters> characterList=new List<characters>();
 
@@ -68,6 +70,11 @@ public class controllerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		//Sets up function resevoir
+		finger=new FingerPosition();
+		con = new IsLeapConnected ();
+
 		//Sets up alphabet
 		Camera.main.fieldOfView = 180.0f;
 		//UPPER and Lower Case

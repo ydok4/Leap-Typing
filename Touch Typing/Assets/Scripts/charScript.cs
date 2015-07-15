@@ -102,115 +102,121 @@ public class charScript : MonoBehaviour {
 			//Checks if the the key pressed meets conditions to be considered for checking. Ie A button has been pressed, the word is not completed and the current typing char is empty or already set to the current char
 			if ((Input.anyKeyDown) && fired == false && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1" || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping==val))
 			{
-				bool foundLetter=false;
-				bool continueOn=false;
-				//Checks if the NonAlpha char button has actually been pressed and determines which one is correct. This had to be done non-standard due to unity not recognising {}
-				if(isNonAlpha==true)
+
+				int findFinger=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().finger.IsPressed(val[checkedChar].ToString());
+				if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false)
 				{
-					if(checkChar=="{" && Input.GetKeyDown("[") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
+					bool foundLetter=false;
+					bool continueOn=false;
+					//Checks if the NonAlpha char button has actually been pressed and determines which one is correct. This had to be done non-standard due to unity not recognising {}
+					if(isNonAlpha==true)
 					{
-						//Debug.Log("KEY { CHECKED");
-						continueOn=true;
-					}
-					else if(checkChar=="}" && Input.GetKeyDown("]") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
-					{
-						//Debug.Log("KEY } CHECKED");
-						continueOn=true;
-					}
-					else if(checkChar==":" && Input.GetKeyDown(";") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
-					{
-						//Debug.Log("KEY : CHECKED");
-						continueOn=true;
-					}
-					else if(checkChar=="\"" && Input.GetKeyDown("'") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
-					{
-						//Debug.Log("KEY \" CHECKED");
-						continueOn=true;
-					}
-					else if(checkChar=="<" && Input.GetKeyDown(",") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
-					{
-						//Debug.Log("KEY < CHECKED");
-						continueOn=true;
-					}
-					else if(checkChar==">" && Input.GetKeyDown(".") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
-					{
-						//Debug.Log("KEY > CHECKED");
-						continueOn=true;
-					}
-					else if(checkChar=="?" && Input.GetKeyDown("/") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
-					{
-						//Debug.Log("KEY ? CHECKED");
-						continueOn=true;
-					}
-					else if(checkChar!="{" && checkChar!="}")
-					{
-						if (Input.GetKeyDown (checkChar) &&!Input.GetKey (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
+						if(checkChar=="{" && Input.GetKeyDown("[") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 						{
-							//Debug.Log("STANDARD NONALPHA CHECKING METHOD CHECKED");
+							//Debug.Log("KEY { CHECKED");
 							continueOn=true;
 						}
-					}
-				}
-				else if(checkChar!="{" && checkChar!="}")//Needed because unity doesnt recognise "{" or "}" and throws a bitch fit
-				{
-					//Used for alpha characters. If only NonAlpha characters worked the same way
-					if(Input.GetKeyDown (checkChar.ToLower ()))
-					{
-						//Debug.Log("STANDARD LETTER CHECKING METHOD CHECKED");
-						foundLetter=true;
-					}
-				}
-				//Checks if the char is the first char of the string and that there is string currently being typed and sets the the current typed string to this objects value
-				if(checkedChar==0 && val.Length!=1 && GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1")
-					GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=val;
-
-				//Checks to make sure the case is correct and that the character pressed is correct. It double checks uppercase nonAlpha characters, probably should fix at some point but it works atm.
-				if((((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && charUpper==true && foundLetter==true )|| (charUpper==false && !Input.GetKey (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))&& isNonAlpha==false && foundLetter==true)|| (continueOn==true && ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && isNonAlphaUpper==true || isNonAlphaUpper==false && !Input.GetKey (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))))
-				{
-
-					//Checks if the character pressed was the last char and spawns a projectile to kill it
-					if(checkedChar+1==val.Length)
-					{
-						//Creates a projectile object which will move towards this character
-						GameObject projectile = new GameObject ();
-
-						projectile.AddComponent<projectileScript> ();
-						//Special case for / because unity cant find the object by name ie /
-						if(val=="/")
+						else if(checkChar=="}" && Input.GetKeyDown("]") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 						{
-							gameObject.name="slash";
-							projectile.GetComponent<projectileScript> ().target="slash";
-							val="slash";
+							//Debug.Log("KEY } CHECKED");
+							continueOn=true;
 						}
+						else if(checkChar==":" && Input.GetKeyDown(";") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
+						{
+							//Debug.Log("KEY : CHECKED");
+							continueOn=true;
+						}
+						else if(checkChar=="\"" && Input.GetKeyDown("'") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
+						{
+							//Debug.Log("KEY \" CHECKED");
+							continueOn=true;
+						}
+						else if(checkChar=="<" && Input.GetKeyDown(",") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
+						{
+							//Debug.Log("KEY < CHECKED");
+							continueOn=true;
+						}
+						else if(checkChar==">" && Input.GetKeyDown(".") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
+						{
+							//Debug.Log("KEY > CHECKED");
+							continueOn=true;
+						}
+						else if(checkChar=="?" && Input.GetKeyDown("/") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
+						{
+							//Debug.Log("KEY ? CHECKED");
+							continueOn=true;
+						}
+						else if(checkChar!="{" && checkChar!="}")
+						{
+							if (Input.GetKeyDown (checkChar) &&!Input.GetKey (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
+							{
+								//Debug.Log("STANDARD NONALPHA CHECKING METHOD CHECKED");
+								continueOn=true;
+							}
+						}
+					}
+					else if(checkChar!="{" && checkChar!="}")//Needed because unity doesnt recognise "{" or "}" and throws a bitch fit
+					{
+						//Used for alpha characters. If only NonAlpha characters worked the same way
+						if(Input.GetKeyDown (checkChar.ToLower ()))
+						{
+							//Debug.Log("STANDARD LETTER CHECKING METHOD CHECKED");
+							foundLetter=true;
+						}
+					}
+					//Checks if the char is the first char of the string and that there is string currently being typed and sets the the current typed string to this objects value
+					if(checkedChar==0 && val.Length!=1 && GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1")
+						GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=val;
+
+					//Checks to make sure the case is correct and that the character pressed is correct. It double checks uppercase nonAlpha characters, probably should fix at some point but it works atm.
+					if((((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && charUpper==true && foundLetter==true )|| (charUpper==false && !Input.GetKey (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))&& isNonAlpha==false && foundLetter==true)|| (continueOn==true && ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && isNonAlphaUpper==true || isNonAlphaUpper==false && !Input.GetKey (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))))
+					{
+
+						//Checks if the character pressed was the last char and spawns a projectile to kill it
+						if(checkedChar+1==val.Length)
+						{
+							//Creates a projectile object which will move towards this character
+							GameObject projectile = new GameObject ();
+
+							projectile.AddComponent<projectileScript> ();
+							//Special case for / because unity cant find the object by name ie /
+							if(val=="/")
+							{
+								gameObject.name="slash";
+								projectile.GetComponent<projectileScript> ().target="slash";
+								val="slash";
+							}
+							else
+								projectile.GetComponent<projectileScript> ().target = val;
+							fired=true;
+							removeCharacter();
+							GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping="-1";
+						}
+						//Picks the next char and updates components to reflect that
 						else
-							projectile.GetComponent<projectileScript> ().target = val;
-						fired=true;
-						removeCharacter();
-						GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping="-1";
-					}
-					//Picks the next char and updates components to reflect that
-					else
-					{
-
-
-						//Removes current character from charList. So it is once again a non missable character
-						removeCharacter();
-						//Gets the next char in the string by passing it the index of the current char
-						NextLetter(checkedChar);
-
-						//Change character/mesh colour 
-						//apply small explosion / shake effect 
-
-						//Updates displayed text
-						text.GetComponent<Text>().text="";
-						for(int i=checkedChar;i<val.Length;i++)
 						{
-							text.GetComponent<Text>().text+=val[i];
+
+
+							//Removes current character from charList. So it is once again a non missable character
+							removeCharacter();
+							//Gets the next char in the string by passing it the index of the current char
+							NextLetter(checkedChar);
+
+							//Change character/mesh colour 
+							//apply small explosion / shake effect 
+
+							//Updates displayed text
+							text.GetComponent<Text>().text="";
+							for(int i=checkedChar;i<val.Length;i++)
+							{
+								text.GetComponent<Text>().text+=val[i];
+							}
 						}
 					}
+					else if(!Input.GetKeyDown (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
+						ResetString ();
+
 				}
-				else if(!Input.GetKeyDown (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
-					ResetString ();
 			}
 			//This checks to see if the character string should reset to its original value due to a typo
 			else if(checkedChar>0 && Input.anyKeyDown)

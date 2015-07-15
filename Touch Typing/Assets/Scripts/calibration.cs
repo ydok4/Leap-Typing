@@ -17,11 +17,14 @@ public class calibration : MonoBehaviour {
 	/*Index of Key and KeyPos*/
 	protected int index = 0;
 
+	/*distance between keys*/
+	static Vector3 KeyDist;
+
 	/**/
 	protected bool Finish = false;
 
 	/*x,y,z of each key position */
-	public List <Vector3> KeyPos =new List<Vector3>();
+	public static List <Vector3> KeyPos =new List<Vector3>();
 	
 	void Awake(){
 		//DontDestroyOnLoad (this.gameObject);
