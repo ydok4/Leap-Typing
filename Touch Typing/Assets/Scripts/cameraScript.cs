@@ -24,7 +24,7 @@ public class cameraScript : MonoBehaviour {
 		camera1 = this.GetComponent<Camera> ();
 		float height = 2f * camera1.orthographicSize;
 		float width = height * camera1.aspect;
-		Debug.Log ("Height: " + height + " Width: " + width);
+		//Debug.Log ("Height: " + height + " Width: " + width);
 		//Instantiate (Transform, camera1.transform);
 
 	}

@@ -24,7 +24,7 @@ public class calibration : MonoBehaviour {
 	protected bool Finish = false;
 
 	/*x,y,z of each key position */
-	public static List <Vector3> KeyPos =new List<Vector3>();
+	public List <Vector3> KeyPos =new List<Vector3>();
 	
 	void Awake(){
 		//DontDestroyOnLoad (this.gameObject);
@@ -41,7 +41,6 @@ public class calibration : MonoBehaviour {
 			Debug.Log("is Not connected");
 			//ConnectLeap image
 		}
-
 		if (Finish & KeyPos.Count < 5) {
 			Calibrate();
 			Application.LoadLevel("Main");

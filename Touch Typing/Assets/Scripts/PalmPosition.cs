@@ -22,7 +22,7 @@ public class PalmPosition : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!leap_controller.IsConnected) {
-			Debug.Log ("is Not connected");
+			//Debug.Log ("is Not connected");
 			//ConnectLeap image
 		} else {
 			Frame frame = leap_controller.Frame();
@@ -37,7 +37,7 @@ public class PalmPosition : MonoBehaviour {
 		}
 	}
 	void CurrentLeap(){
-		GameObject go = GameObject.Find ("Calibration");
+		GameObject go = GameObject.Find ("LeapTracker");
 		HandController speedController = go.GetComponent <HandController> ();
 		leap_controller = speedController.leap_controller_;
 	} 

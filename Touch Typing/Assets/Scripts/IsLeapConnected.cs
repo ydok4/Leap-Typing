@@ -26,7 +26,7 @@ public class IsLeapConnected : MonoBehaviour {
 
 	//Returns the leap controller from HandController 
 	void CurrentLeap(){
-		GameObject go = GameObject.Find ("Main Camera");
+		GameObject go = GameObject.Find ("LeapTracker");
 		HandController speedController = go.GetComponent <HandController> ();
 		leap_controller = speedController.leap_controller_;
 	} 
