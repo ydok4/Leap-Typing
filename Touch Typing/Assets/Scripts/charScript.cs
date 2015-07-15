@@ -167,7 +167,7 @@ public class charScript : MonoBehaviour {
 				if(foundLetter==true || continueOn==true)
 				{
 					int findFinger=0;
-					//if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true)
+					if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true)
 						findFinger=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().finger.IsPressed(val[checkedChar].ToString());
 					if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false)
 					{
