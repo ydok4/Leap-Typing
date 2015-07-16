@@ -6,8 +6,9 @@ using System.Collections.Generic;
 public class controllerScript : MonoBehaviour {
 
 	//Camera camera; 
-	//Set these two variables inside the editor
+	//Set these variables inside the editor
 	public Mesh characterMesh;
+
 	public Material characterMaterial;
 	public Material characterMaterialRed;
 	public Material characterMaterialLightRed;
@@ -20,6 +21,11 @@ public class controllerScript : MonoBehaviour {
 
 	public Mesh projectileMesh;
 	public Material projectileMaterial;
+
+	//Determines what game mode the level is in. 0 is keyboard, 1 is tap. 
+	//Default is 0
+	public static int mode;
+
 	//The potential alphabet of the lesson
 	public static string alpha;
 	
@@ -55,7 +61,7 @@ public class controllerScript : MonoBehaviour {
 		public int location;
 		public string chars;
 		
-		public characters(int l, string c, Vector3 cameraOut)
+		public characters(int l, string c, Vector3 cameraOut, int m)
 		{
 			location = l;
 			chars = c;
@@ -65,6 +71,7 @@ public class controllerScript : MonoBehaviour {
 			charObj.GetComponent<charScript> ().start=cameraOut;
 			charObj.GetComponent<charScript> ().val = chars;
 			charObj.GetComponent<charScript> ().loc=l;
+			charObj.GetComponent<charScript>().mode=m;
 		}
 	};
 
@@ -74,6 +81,9 @@ public class controllerScript : MonoBehaviour {
 		//Sets up function resevoir
 		finger=new FingerPosition();
 		con = new IsLeapConnected ();
+
+		//for testing purposes
+		mode = 1;
 
 		//Sets up alphabet
 		Camera.main.fieldOfView = 180.0f;
@@ -172,72 +182,137 @@ public class controllerScript : MonoBehaviour {
 
 				//Selects what row get and put the character on.
 				int row=Random.Range (0,3);
-				switch(row)
+
+				if(mode==0)
 				{
+					switch(row)
+					{
+						case 0:  
+								
+								for(int j=0;j<33;j++)
+								{
+									bool found=false;
+									side=Random.Range(0,alpha1.Length);
+									c = alpha1[side].ToString ();
+									for(int i=0;i<characterList.Count;i++)
+									{
+										if(characterList[i].chars==c)
+											found=true;
+									}
+									if(found!=true)
+										break;
+								}
+								side=sideLocation(c);
+								if(side<=5)
+									v3Pos=new Vector3(-6.0f,2.5f,1.5f);
+								else
+									v3Pos=new Vector3(8.0f,2.5f,1.5f);
+								break;
+						case 1: 
+								for(int j=0;j<33;j++)
+								{
+									bool found=false;
+									side=Random.Range(0,alpha2.Length);
+									c = alpha2[side].ToString ();
+									for(int i=0;i<characterList.Count;i++)
+									{
+										if(characterList[i].chars==c)
+											found=true;
+									}
+									if(found!=true)
+										break;
+								}
+								side=sideLocation(c);
+								if(side<=5)
+									v3Pos=new Vector3(-6.0f,1.0f,1.5f);
+								else
+									v3Pos=new Vector3(8.0f,1.0f,1.5f);
+									break;
+						case 2: 
+								for(int j=0;j<33;j++)
+								{
+									bool found=false;
+									side=Random.Range(0,alpha3.Length);
+									c = alpha3[side].ToString ();
+									for(int i=0;i<characterList.Count;i++)
+									{
+										if(characterList[i].chars==c)
+											found=true;
+									}
+									if(found!=true)
+										break;
+								}
+								side=sideLocation(c);
+								if(side<=5)
+									v3Pos=new Vector3(-6.0f,-0.5f,1.5f);
+								else
+									v3Pos=new Vector3(8.0f,-0.5f,1.5f);
+									break;
+							default:
+									Debug.Log("Default");
+									break;
+					}
+				}
+				else if(mode==1)
+				{
+					switch(row)
+					{
 					case 0:  
-							
-							for(int j=0;j<33;j++)
+						
+						for(int j=0;j<33;j++)
+						{
+							bool found=false;
+							side=Random.Range(0,alpha1.Length);
+							c = alpha1[side].ToString ();
+							for(int i=0;i<characterList.Count;i++)
 							{
-								bool found=false;
-								side=Random.Range(0,alpha1.Length);
-								c = alpha1[side].ToString ();
-								for(int i=0;i<characterList.Count;i++)
-								{
-									if(characterList[i].chars==c)
-										found=true;
-								}
-								if(found!=true)
-									break;
+								if(characterList[i].chars==c)
+									found=true;
 							}
-							side=sideLocation(c);
-							if(side<=5)
-								v3Pos=new Vector3(-6.0f,2.5f,1.5f);
-							else
-								v3Pos=new Vector3(8.0f,2.5f,1.5f);
-							break;
+							if(found!=true)
+								break;
+						}
+						side=sideLocation(c);
+						v3Pos=new Vector3(-5.0f+side,2.5f,25f);
+						break;
 					case 1: 
-							for(int j=0;j<33;j++)
+						for(int j=0;j<33;j++)
+						{
+							bool found=false;
+							side=Random.Range(0,alpha2.Length);
+							c = alpha2[side].ToString ();
+							for(int i=0;i<characterList.Count;i++)
 							{
-								bool found=false;
-								side=Random.Range(0,alpha2.Length);
-								c = alpha2[side].ToString ();
-								for(int i=0;i<characterList.Count;i++)
-								{
-									if(characterList[i].chars==c)
-										found=true;
-								}
-								if(found!=true)
-									break;
+								if(characterList[i].chars==c)
+									found=true;
 							}
-							side=sideLocation(c);
-							if(side<=5)
-								v3Pos=new Vector3(-6.0f,1.0f,1.5f);
-							else
-								v3Pos=new Vector3(8.0f,1.0f,1.5f);
+							if(found!=true)
 								break;
+						}
+						side=sideLocation(c);
+						v3Pos=new Vector3(-5.0f+side,1.0f,25f);
+						break;
 					case 2: 
-							for(int j=0;j<33;j++)
+						for(int j=0;j<33;j++)
+						{
+							bool found=false;
+							side=Random.Range(0,alpha3.Length);
+							c = alpha3[side].ToString ();
+							for(int i=0;i<characterList.Count;i++)
 							{
-								bool found=false;
-								side=Random.Range(0,alpha3.Length);
-								c = alpha3[side].ToString ();
-								for(int i=0;i<characterList.Count;i++)
-								{
-									if(characterList[i].chars==c)
-										found=true;
-								}
-								if(found!=true)
-									break;
+								if(characterList[i].chars==c)
+									found=true;
 							}
-							side=sideLocation(c);
-							if(side<=5)
-								v3Pos=new Vector3(-6.0f,-0.5f,1.5f);
-							else
-								v3Pos=new Vector3(8.0f,-0.5f,1.5f);
+							if(found!=true)
 								break;
-						default:
-								Debug.Log("Default");
-								break;
+						}
+						side=sideLocation(c);
+						v3Pos=new Vector3(-5.0f+side,-0.5f,25f);
+						break;
+					default:
+						Debug.Log("Default");
+						break;
+					}
 				}
 				//#############################################################Used for testing strings with multiple chars and cases.
 				//Comment out for loop if you want only 1 char
@@ -252,7 +327,7 @@ public class controllerScript : MonoBehaviour {
 				v3Pos = Camera.main.ViewportToWorldPoint(v3Pos);*/
 
 				//Spawns the new character. v3Pos is where it spawns in the world
-				characters newChar=new characters(characterList.Count, c,v3Pos);
+				characters newChar=new characters(characterList.Count, c,v3Pos,mode);
 
 				//Adds them to the list which keeps track of all active characters
 				characterList.Add(newChar);

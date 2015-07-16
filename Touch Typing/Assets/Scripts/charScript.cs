@@ -34,7 +34,8 @@ public class charScript : MonoBehaviour {
 	public bool reset;
 	
 	public float aliveTime;
-	
+
+	public int mode;
 	// Use this for initialization
 	void Start () {
 		aliveTime = 12f;
@@ -80,9 +81,12 @@ public class charScript : MonoBehaviour {
 		text.GetComponent<RectTransform> ().localRotation=Quaternion.Euler(rotate);
 		text.GetComponent<RectTransform> ().localScale=new Vector3(1,1,1);
 		text.GetComponent<RectTransform> ().sizeDelta = new Vector2 (1.0f, 1.0f);
-		
-		//Makes character look at camera
-		gameObject.transform.LookAt(Camera.main.transform.position); 
+
+		if (mode != 1)//Only for keboard mode
+			//Makes character look at camera
+			gameObject.transform.LookAt (Camera.main.transform.position);
+		else
+			gameObject.transform.rotation = Quaternion.Euler (180f, 0f, 180f);
 		fired = false;
 		//Initialises checkedChar to the first character location (of Val)
 		checkedChar = -1;
@@ -167,9 +171,11 @@ public class charScript : MonoBehaviour {
 				if(foundLetter==true || continueOn==true)
 				{
 					int findFinger=0;
-					if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true)
+					if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true && mode==0)
 						findFinger=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().finger.IsPressed(val[checkedChar].ToString());
-					if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false)
+					//else if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true && mode==1)
+						//Put gesture check here
+					if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false )//|| leap gesture checking method is correct)
 					{
 						//Checks if the char is the first char of the string and that there is string currently being typed and sets the the current typed string to this objects value
 						if(checkedChar==0 && val.Length!=1 && GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1")
@@ -234,14 +240,22 @@ public class charScript : MonoBehaviour {
 			}
 			
 			
-			
-			//Makes sure the object is looking at the camera
-			gameObject.transform.LookAt (Camera.main.transform.position); 
-			//Uses the start location to determine what direction to move
-			if (start.x < 0)
-				gameObject.transform.position += -transform.right * Time.deltaTime * 1.5f;
-			else if (start.x > 0)
-				gameObject.transform.position += transform.right * Time.deltaTime * 1.5f;
+
+			if(mode!=1)//Special condition for leap mode so asteroids will move past the camera
+				//Makes sure the object is looking at the camera
+				gameObject.transform.LookAt (Camera.main.transform.position); 
+			if(mode==0)
+			{
+				//Uses the start location to determine what direction to move for keyboard mode
+				if (start.x < 0)
+					gameObject.transform.position += -transform.right * Time.deltaTime * 1.5f;
+				else if (start.x > 0)
+					gameObject.transform.position += transform.right * Time.deltaTime * 1.5f;
+			}
+			else if (mode == 1) //Tap/leap mode
+			{
+				gameObject.transform.position += transform.forward * 0.0045f;
+			}
 			aliveTime-= Time.deltaTime;
 			
 			if (aliveTime<=0 && GetComponent<Renderer>().isVisible==false) {
