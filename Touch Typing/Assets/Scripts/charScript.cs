@@ -103,8 +103,9 @@ public class charScript : MonoBehaviour {
 		//Checks if game is paused
 		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == false ) 
 		{
+
 			//Checks if the the key pressed meets conditions to be considered for checking. Ie A button has been pressed, the word is not completed and the current typing char is empty or already set to the current char
-			if ((Input.anyKeyDown) && fired == false && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1" || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping==val))
+			if (((Input.anyKeyDown) && fired == false && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1" || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping==val)) && mode==0)
 			{
 				
 				bool foundLetter=false;
@@ -171,11 +172,9 @@ public class charScript : MonoBehaviour {
 				if(foundLetter==true || continueOn==true)
 				{
 					int findFinger=0;
-					if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true && mode==0)
+					if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true)
 						findFinger=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().finger.IsPressed(val[checkedChar].ToString());
-					//else if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true && mode==1)
-						//Put gesture check here
-					if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false )//|| leap gesture checking method is correct)
+					if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false)
 					{
 						//Checks if the char is the first char of the string and that there is string currently being typed and sets the the current typed string to this objects value
 						if(checkedChar==0 && val.Length!=1 && GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1")
@@ -229,6 +228,46 @@ public class charScript : MonoBehaviour {
 							ResetString ();
 						
 					}
+				}
+				//This checks to see if the character string should reset to its original value due to a typo
+				else if(checkedChar>0 && Input.anyKeyDown)
+				{
+					//Makes sure left shift (by itself) doesnt reset char string
+					if(!Input.GetKeyDown (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
+						ResetString ();
+				}
+			}
+			else if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true && mode==1) //If it is in tap mode
+			{
+				if(loc==0) //Checks to see if this is the first character. 
+				{
+					int gestValue;
+					//gestValue=GestureCheckFunction   (Needs to know 1 of 3 things. 1. If the correct finger is being used. 2. If the wrong finger is being used. 3. If no finger is being used. OPTIONAL: If the finger is close to the correct finger)
+					/*If(gestValue is a hit)
+					{
+
+					 //Creates a projectile object which will move towards this character
+					GameObject projectile = new GameObject ();
+
+					projectile.AddComponent<projectileScript> ();
+					//Special case for / because unity cant find the object by name ie /
+					if(val=="/")
+					{
+						gameObject.name="slash";
+						projectile.GetComponent<projectileScript> ().target="slash";
+						val="slash";
+					}
+					else
+						projectile.GetComponent<projectileScript> ().target = val;
+					fired=true;
+					removeCharacter();
+					}
+					else if(gestValue is a miss)
+					{
+						GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed++;
+
+					}
+					 */
 				}
 			}
 			//This checks to see if the character string should reset to its original value due to a typo
@@ -319,11 +358,16 @@ public class charScript : MonoBehaviour {
 	}
 	void destroyCharacterString() //Called whenever the string is destroyed. Ie hit by projectile or moves into the kill zone.
 	{
-		for(int i=0;i<GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.Count;i++)
+		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.RemoveAt (loc);
+		for(int i=loc;i<GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.Count;i++)
 		{
-			//Finds the character object in the list and removes itself from it
-			if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[i].chars==val)
-				GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.RemoveAt(i);
+			//Updates the location of each character
+			GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[i].location--;
+			GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[i].charObj.GetComponent<charScript>().loc--;
+
+			//Finds the character object in the list and removes itself from it OLD
+			//if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[i].chars==val)
+			//	GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.RemoveAt(i);
 		}
 		Destroy (this.gameObject);
 	}

@@ -33,8 +33,16 @@ public class controllerScript : MonoBehaviour {
 	public static string alpha1;
 	public static string alpha2;
 	public static string alpha3;
+
+	//Total length of level
 	public float time;
-	public float goal; 
+
+	//Time when first spawn happens
+	public static float goal;
+
+	//Float interval between next spawn
+	float spawn;
+
 	public int missed;
 	public float delay;
 	float delayGoal;
@@ -83,7 +91,7 @@ public class controllerScript : MonoBehaviour {
 		con = new IsLeapConnected ();
 
 		//for testing purposes
-		mode = 1;
+		mode = 0;
 
 		//Sets up alphabet
 		Camera.main.fieldOfView = 180.0f;
@@ -115,10 +123,18 @@ public class controllerScript : MonoBehaviour {
 		delayGoal =4;
 		//Sets the number of missed variables to zero
 		missed = 0;	
-		//Time is total time for the lesson
-		time = 60;
+
+
+		//Sets the default time if time is 0
+		if(time==0)
+			time = 60;
 		//Goal is when the next character will spawn. Need to update the decrement as well.
-		goal = 58;
+		if (mode == 0 && goal ==0)
+			goal = 58;
+		else if( goal ==0)
+			goal = 55;
+
+		spawn = time - goal;
 	}
 	void FixedUpdate()
 	{
@@ -148,28 +164,31 @@ public class controllerScript : MonoBehaviour {
 		if (time > 0 && paused==false && delay<=0) {
 			time -= Time.deltaTime;
 
-			if (Input.anyKeyDown ) {
-				bool found=false;
-				if(Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift))
-				{
-					foreach(string c in charList)
+			if(mode==0) //Miss checking is performed externally from the characters in keyboard. It is handled in charScript for tap mode
+			{
+				if (Input.anyKeyDown ) {
+					bool found=false;
+					if(Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift))
 					{
-						if(c ==(Input.inputString))
-							if(c==c.ToUpper())
+						foreach(string c in charList)
+						{
+							if(c ==(Input.inputString))
+								if(c==c.ToUpper())
+									found=true;
+						}
+					}
+					else
+					{
+						foreach(string c in charList)
+						{
+							if(c ==(Input.inputString))
 								found=true;
+						}
 					}
+					currentCharTyping="-1";
+					if(found==false && (!Input.GetKeyDown (KeyCode.LeftShift)&&!Input.GetKey (KeyCode.RightShift)))
+						missed++;
 				}
-				else
-				{
-					foreach(string c in charList)
-					{
-						if(c ==(Input.inputString))
-							found=true;
-					}
-				}
-				currentCharTyping="-1";
-				if(found==false && (!Input.GetKeyDown (KeyCode.LeftShift)&&!Input.GetKey (KeyCode.RightShift)))
-					missed++;
 			}
 
 
@@ -258,54 +277,20 @@ public class controllerScript : MonoBehaviour {
 					switch(row)
 					{
 					case 0:  
-						
-						for(int j=0;j<33;j++)
-						{
-							bool found=false;
-							side=Random.Range(0,alpha1.Length);
-							c = alpha1[side].ToString ();
-							for(int i=0;i<characterList.Count;i++)
-							{
-								if(characterList[i].chars==c)
-									found=true;
-							}
-							if(found!=true)
-								break;
-						}
+						side=Random.Range(0,alpha1.Length);
+						c = alpha1[side].ToString ();
 						side=sideLocation(c);
 						v3Pos=new Vector3(-5.0f+side,2.5f,25f);
 						break;
 					case 1: 
-						for(int j=0;j<33;j++)
-						{
-							bool found=false;
-							side=Random.Range(0,alpha2.Length);
-							c = alpha2[side].ToString ();
-							for(int i=0;i<characterList.Count;i++)
-							{
-								if(characterList[i].chars==c)
-									found=true;
-							}
-							if(found!=true)
-								break;
-						}
+						side=Random.Range(0,alpha2.Length);
+						c = alpha2[side].ToString ();
 						side=sideLocation(c);
 						v3Pos=new Vector3(-5.0f+side,1.0f,25f);
 						break;
 					case 2: 
-						for(int j=0;j<33;j++)
-						{
-							bool found=false;
-							side=Random.Range(0,alpha3.Length);
-							c = alpha3[side].ToString ();
-							for(int i=0;i<characterList.Count;i++)
-							{
-								if(characterList[i].chars==c)
-									found=true;
-							}
-							if(found!=true)
-								break;
-						}
+						side=Random.Range(0,alpha3.Length);
+						c = alpha3[side].ToString ();
 						side=sideLocation(c);
 						v3Pos=new Vector3(-5.0f+side,-0.5f,25f);
 						break;
@@ -333,7 +318,7 @@ public class controllerScript : MonoBehaviour {
 				characterList.Add(newChar);
 
 				//DECREMENT: should match the interval between the initial time and intial goal.
-				goal-=2;
+				goal-=spawn;
 			}
 		}
 	}
