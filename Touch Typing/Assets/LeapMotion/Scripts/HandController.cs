@@ -51,7 +51,7 @@ public class HandController : MonoBehaviour {
   public ToolModel toolModel;
 
   /** Set true if the Leap Motion hardware is mounted on an HMD; otherwise, leave false. */
-  public bool isHeadMounted = false;
+  public bool isHeadMounted = true;
   /** Reverses the z axis. */
   public bool mirrorZAxis = false;
 

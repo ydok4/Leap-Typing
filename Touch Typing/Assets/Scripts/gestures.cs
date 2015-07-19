@@ -11,31 +11,109 @@ public class gestures : MonoBehaviour {
 	/*Accessing the leap device*/
 	Controller leap_controller;
 	
-	void Awake(){
-		//DontDestroyOnLoad (this.gameObject);
-	}
-	
 	/*Inialises the starting condition*/
 	void Start(){
 		leap_controller = CurrentLeap();
+		leap_controller.EnableGesture(Gesture.GestureType.TYPE_KEY_TAP);
+		leap_controller.Config.SetFloat("Gesture.KeyTap.MinDownVelocity", 40.0f);
+		leap_controller.Config.SetFloat("Gesture.KeyTap.HistorySeconds", .2f);
+		leap_controller.Config.SetFloat("Gesture.KeyTap.MinDistance", 1.0f);
+		leap_controller.Config.Save();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Frame frame = leap_controller.Frame();
-		foreach (Hand hand in frame.Hands) {
-			/*if(hand.IsRight){
-				foreach (Finger finger in hand.Fingers) {
-					if(finger.Type.ToString() == "TYPE_INDEX"){
-						Debug.Log(finger.TipPosition);
-					}
-				}
-			}*/
-			//Debug.Log (hand.PalmPosition);
-		}
-
+		//KeyTap ("test");
 	}
-	
+
+	int KeyTap(string key){
+		key = key.ToLower ();
+		Frame frame = leap_controller.Frame();
+		int score = 0;
+		string direction;
+		foreach (Gesture gesture in frame.Gestures()) {
+			foreach (Hand hand in frame.Hands){
+				if(hand.IsLeft)
+					direction = "left";
+				else
+					direction = "right";
+
+				KeyTapGesture keytap = new KeyTapGesture (gesture);
+				Pointable point = keytap.Pointable;
+				Finger finger = new Finger (point);
+
+				Finger.FingerType fingerType = finger.Type;
+				
+				Debug.Log ("Finger: " + finger.Type);
+				
+				switch (fingerType) {
+				case Finger.FingerType.TYPE_INDEX:
+					Debug.Log ("Index");  
+					CheckIndex(direction, key);
+					break;
+				case Finger.FingerType.TYPE_MIDDLE:
+					Debug.Log ("Middle");  
+					CheckMiddle(direction, key);
+					break;
+				case Finger.FingerType.TYPE_RING:
+					Debug.Log ("Ring");  
+					CheckRing(direction, key);
+					break;
+				case Finger.FingerType.TYPE_PINKY:
+					Debug.Log ("Pinky");  
+					CheckPinky(direction, key);
+					break;
+					
+				}
+			}
+		}
+		return score;
+	}
+
+	int CheckIndex(string direction, string key){
+		if (direction == "left") {
+			if(key == "r" || key == "t" || key == "f" || key == "g" || key == "v" || key == "b")
+				return 2;
+		} else {
+			if(key == "y" || key == "u" || key == "h" || key == "j" || key == "n" || key == "m")
+				return 2;
+		}
+		return 1;
+	}
+
+	int CheckMiddle(string direction, string key){
+		if (direction == "left") {
+			if(key == "e" || key == "d" || key == "c")
+				return 2;
+		} else {
+			if(key == "i" || key == "k" || key == "," || key == "<")
+				return 2;
+		}
+		return 1;
+	}
+
+	int CheckRing(string direction, string key){
+		if (direction == "left") {
+			if(key == "w" || key == "s" || key == "x")
+				return 2;
+		} else {
+			if(key == "o" || key == "l" || key == "." || key == ">")
+				return 2;
+		}
+		return 1;
+	}
+
+	int CheckPinky(string direction, string key){
+		if (direction == "left") {
+			if(key == "q" || key == "a" || key == "z")
+				return 2;
+		} else {
+			if(key == "p" || key == ";" || key == ":" || key == "/" || key == "?" || key == "[" || key == "{" || key == "]" || key == "}" || key == "'" || key == "\"")
+				return 2;
+		}
+		return 1;
+	}
+
 	//Returns the leap controller from HandController 
 	Controller CurrentLeap(){
 		GameObject go = GameObject.Find ("GestureController");
