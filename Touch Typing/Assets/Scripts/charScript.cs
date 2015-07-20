@@ -35,6 +35,8 @@ public class charScript : MonoBehaviour {
 	
 	public float aliveTime;
 
+
+
 	public int mode;
 	// Use this for initialization
 	void Start () {
@@ -237,37 +239,35 @@ public class charScript : MonoBehaviour {
 						ResetString ();
 				}
 			}
-			else if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true && mode==1) //If it is in tap mode
+			else if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true && mode==1) //If it is in tap mode and leap is connected
 			{
 				if(loc==0) //Checks to see if this is the first character. 
 				{
-					int gestValue;
-					//gestValue=GestureCheckFunction   (Needs to know 1 of 3 things. 1. If the correct finger is being used. 2. If the wrong finger is being used. 3. If no finger is being used. OPTIONAL: If the finger is close to the correct finger)
-					/*If(gestValue is a hit)
+					//  (Needs to know 1 of 3 things. 1. If the correct finger is being used. 2. If the wrong finger is being used. 3. If no finger is being used. OPTIONAL: If the finger is close to the correct finger)
+					int returnVal=GameObject.Find ("GestureController").GetComponent<gestures> ().KeyTap(val);
+					if(returnVal==2)
 					{
+						 //Creates a projectile object which will move towards this character
+						GameObject projectile = new GameObject ();
 
-					 //Creates a projectile object which will move towards this character
-					GameObject projectile = new GameObject ();
-
-					projectile.AddComponent<projectileScript> ();
-					//Special case for / because unity cant find the object by name ie /
-					if(val=="/")
-					{
-						gameObject.name="slash";
-						projectile.GetComponent<projectileScript> ().target="slash";
-						val="slash";
+						projectile.AddComponent<projectileScript> ();
+						//Special case for / because unity cant find the object by name ie /
+						if(val=="/")
+						{
+							gameObject.name="slash";
+							projectile.GetComponent<projectileScript> ().target="slash";
+							val="slash";
+						}
+						else
+							projectile.GetComponent<projectileScript> ().target = val;
+						fired=true;
+						removeCharacter();
 					}
-					else
-						projectile.GetComponent<projectileScript> ().target = val;
-					fired=true;
-					removeCharacter();
-					}
-					else if(gestValue is a miss)
+					else if(returnVal==1)
 					{
 						GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed++;
 
 					}
-					 */
 				}
 			}
 			//This checks to see if the character string should reset to its original value due to a typo

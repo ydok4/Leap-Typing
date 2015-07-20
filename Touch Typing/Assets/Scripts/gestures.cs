@@ -26,7 +26,7 @@ public class gestures : MonoBehaviour {
 		//KeyTap ("test");
 	}
 
-	int KeyTap(string key){
+	public int KeyTap(string key){
 		key = key.ToLower ();
 		Frame frame = leap_controller.Frame();
 		int score = 0;

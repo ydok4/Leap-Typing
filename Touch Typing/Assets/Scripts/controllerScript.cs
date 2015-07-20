@@ -64,6 +64,9 @@ public class controllerScript : MonoBehaviour {
 	//Players score
 	public int score;
 
+	//Contains the gesture checking class functionality
+	public gestures gestureVariable;
+
 	public class characters {
 		public GameObject charObj;
 		public int location;
@@ -91,8 +94,10 @@ public class controllerScript : MonoBehaviour {
 		con = new IsLeapConnected ();
 
 		//for testing purposes
-		mode = 0;
-
+		mode = 1;
+		if (mode == 1) {
+			GameObject.Find ("SpaceShip_v003:Layer1").SetActive (false);
+		}
 		//Sets up alphabet
 		Camera.main.fieldOfView = 180.0f;
 		//UPPER and Lower Case
@@ -280,19 +285,19 @@ public class controllerScript : MonoBehaviour {
 						side=Random.Range(0,alpha1.Length);
 						c = alpha1[side].ToString ();
 						side=sideLocation(c);
-						v3Pos=new Vector3(-5.0f+side,2.5f,25f);
+						v3Pos=new Vector3(-5.0f+side,1.5f,25f);
 						break;
 					case 1: 
 						side=Random.Range(0,alpha2.Length);
 						c = alpha2[side].ToString ();
 						side=sideLocation(c);
-						v3Pos=new Vector3(-5.0f+side,1.0f,25f);
+						v3Pos=new Vector3(-5.0f+side,0.0f,25f);
 						break;
 					case 2: 
 						side=Random.Range(0,alpha3.Length);
 						c = alpha3[side].ToString ();
 						side=sideLocation(c);
-						v3Pos=new Vector3(-5.0f+side,-0.5f,25f);
+						v3Pos=new Vector3(-5.0f+side,-1.5f,25f);
 						break;
 					default:
 						Debug.Log("Default");
