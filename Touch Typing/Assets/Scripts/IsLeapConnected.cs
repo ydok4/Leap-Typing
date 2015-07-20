@@ -21,7 +21,7 @@ public class IsLeapConnected : MonoBehaviour {
 		if(!leap_controller.IsConnected){
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 	//Returns the leap controller from HandController 

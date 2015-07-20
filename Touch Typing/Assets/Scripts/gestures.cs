@@ -23,7 +23,6 @@ public class gestures : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		//KeyTap ("test");
 	}
 
 	public int KeyTap(string key){
@@ -31,6 +30,7 @@ public class gestures : MonoBehaviour {
 		Frame frame = leap_controller.Frame();
 		int score = 0;
 		string direction;
+		Debug.Log (key);
 		foreach (Gesture gesture in frame.Gestures()) {
 			foreach (Hand hand in frame.Hands){
 				if(hand.IsLeft)
@@ -49,24 +49,25 @@ public class gestures : MonoBehaviour {
 				switch (fingerType) {
 				case Finger.FingerType.TYPE_INDEX:
 					Debug.Log ("Index");  
-					CheckIndex(direction, key);
+					score = CheckIndex(direction, key);
 					break;
 				case Finger.FingerType.TYPE_MIDDLE:
 					Debug.Log ("Middle");  
-					CheckMiddle(direction, key);
+					score = CheckMiddle(direction, key);
 					break;
 				case Finger.FingerType.TYPE_RING:
 					Debug.Log ("Ring");  
-					CheckRing(direction, key);
+					score = CheckRing(direction, key);
 					break;
 				case Finger.FingerType.TYPE_PINKY:
 					Debug.Log ("Pinky");  
-					CheckPinky(direction, key);
+					score = CheckPinky(direction, key);
 					break;
 					
 				}
 			}
 		}
+		Debug.Log ("score :" + score);
 		return score;
 	}
 
