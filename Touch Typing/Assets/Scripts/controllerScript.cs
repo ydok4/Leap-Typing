@@ -67,6 +67,12 @@ public class controllerScript : MonoBehaviour {
 	//Contains the gesture checking class functionality
 	public gestures gestureVariable;
 
+	//Captial spawn chance is an int representing a percentage, ie 10 is 10%. Set to 0 if you dont want captials. It also assumes that the alphabets are in the format lowercase,lowercase,uppercase,uppercase . IE abAB
+	public static int captialChance;
+
+	//Tell the game what row to select characters from
+	public static int rowToUse;
+
 	public class characters {
 		public GameObject charObj;
 		public int location;
@@ -203,9 +209,18 @@ public class controllerScript : MonoBehaviour {
 				int side=0;
 				//Picks a random letter from the specified alphabet. Used when just using complete alphabet
 				//c = alpha[Random.Range(0,alpha.Length)].ToString ();
+				//FOR TESTING
+				rowToUse=3;
 
-				//Selects what row get and put the character on.
-				int row=Random.Range (0,3);
+				int row;
+				if(rowToUse==0)
+					row=0;
+				else if(rowToUse==1)
+					row=1;
+				else if(rowToUse==2)
+					row=2;
+				else//Selects what row get and put the character on.
+					row=Random.Range (0,3);
 
 				if(mode==0)
 				{
@@ -216,7 +231,16 @@ public class controllerScript : MonoBehaviour {
 								for(int j=0;j<33;j++)
 								{
 									bool found=false;
-									side=Random.Range(0,alpha1.Length);
+									if(captialChance==0)
+										side=Random.Range(0,alpha1.Length);
+									else
+									{
+											side=Random.Range(0,alpha1.Length/2);
+											int randNum=Random.Range(0,100);
+											if(randNum<captialChance)
+												side+=Random.Range(0,alpha1.Length/2);
+											
+									}
 									c = alpha1[side].ToString ();
 									for(int i=0;i<characterList.Count;i++)
 									{
@@ -236,7 +260,16 @@ public class controllerScript : MonoBehaviour {
 								for(int j=0;j<33;j++)
 								{
 									bool found=false;
-									side=Random.Range(0,alpha2.Length);
+									if(captialChance==0)
+										side=Random.Range(0,alpha2.Length);
+									else
+									{
+										side=Random.Range(0,alpha2.Length/2);
+										int randNum=Random.Range(0,100);
+										if(randNum<captialChance)
+											side+=Random.Range(0,alpha2.Length/2);
+										
+									}
 									c = alpha2[side].ToString ();
 									for(int i=0;i<characterList.Count;i++)
 									{
@@ -256,7 +289,16 @@ public class controllerScript : MonoBehaviour {
 								for(int j=0;j<33;j++)
 								{
 									bool found=false;
-									side=Random.Range(0,alpha3.Length);
+									if(captialChance==0)
+										side=Random.Range(0,alpha3.Length);
+									else
+									{
+										side=Random.Range(0,alpha3.Length/2);
+										int randNum=Random.Range(0,100);
+										if(randNum<captialChance)
+											side+=Random.Range(0,alpha3.Length/2);
+										
+									}
 									c = alpha3[side].ToString ();
 									for(int i=0;i<characterList.Count;i++)
 									{
