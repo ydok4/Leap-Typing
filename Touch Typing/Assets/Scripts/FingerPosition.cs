@@ -229,21 +229,21 @@ public class FingerPosition : MonoBehaviour {
 
 	//return the score depending on how close the finger is to the key
 	public static int Compare(Vector3 finger, int index){
-		int score = 2;//1 is miss, 2 is correct
-		if (calibration.KeyPos.Count == 0)
-			return score;
+		
+		//if (calibration.KeyPos.Count == 0)
+			//return 2;
 		Vector3 KeyPos = calibration.KeyPos[index];
 		Vector3 KeyDist = calibration.KeyDist;
 
-		/*flaot x = Math.Abs(finger.x - calibration.KeyPos[index].x);
-		flaot y = Math.Abs(finger.y - calibration.KeyPos[index].y);
-		flaot z = Math.Abs(finger.z - calibration.KeyPos[index].z);
+		float x = Math.Abs(finger.x - KeyPos.x);
+		float y = Math.Abs(finger.y - KeyPos.y);
+		float z = Math.Abs(finger.z - KeyPos.z);
+		Debug.Log("KeyPos " + KeyPos);
+		Debug.Log("Distance " + KeyDist);
+		if (x  < KeyDist.x && y < KeyDist.y && z < KeyDist.z)
+			return 2;
 
-		if (x < KeyDist.x)
-			score = 3;
-		if (x > KeyDist.x*/
-
-		return score;
+		return 1;
 	}
 
 	//Returns the leap controller from HandController 

@@ -133,7 +133,10 @@ public class calibration : MonoBehaviour {
 	}
 
 	Vector3 KeyDistance (){
-		Vector3 tmp = new Vector3(0,0,0);
+		float x = (KeyPos[0].x - KeyPos[1].x) * 2;
+		float y = (KeyPos[0].y - KeyPos[1].y) * 2;
+		float z = (KeyPos[0].z - KeyPos[1].z) * 2;
+		Vector3 tmp = new Vector3(x,y,z);
 		return tmp;
 	}
 }
