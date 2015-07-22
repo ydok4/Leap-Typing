@@ -23,7 +23,7 @@ public class FingerPosition : MonoBehaviour {
 
 	//Returns the score based on what finger was used to press the key
 	public int IsPressed(string key){
-		int score = 0;
+		int score = 2;
 		Vector3 location;
 		key = key.ToLower();
 		Debug.Log ("Key " + key);
@@ -229,8 +229,12 @@ public class FingerPosition : MonoBehaviour {
 
 	//return the score depending on how close the finger is to the key
 	public static int Compare(Vector3 finger, int index){
-		int score = 0;
-	
+		int score = 2;//1 is miss, 2 is correct
+		if (calibration.KeyPos.Count == 0)
+			return score;
+		Vector3 KeyPos = calibration.KeyPos[index];
+		Vector3 KeyDist = calibration.KeyDist;
+
 		/*flaot x = Math.Abs(finger.x - calibration.KeyPos[index].x);
 		flaot y = Math.Abs(finger.y - calibration.KeyPos[index].y);
 		flaot z = Math.Abs(finger.z - calibration.KeyPos[index].z);
@@ -239,9 +243,6 @@ public class FingerPosition : MonoBehaviour {
 			score = 3;
 		if (x > KeyDist.x*/
 
-		//calibration.KeyPos;
-		//calibration.KeyDist;
-	 
 		return score;
 	}
 

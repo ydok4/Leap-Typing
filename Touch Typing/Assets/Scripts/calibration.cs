@@ -18,13 +18,13 @@ public class calibration : MonoBehaviour {
 	protected int index = 0;
 
 	/*distance between keys*/
-	static Vector3 KeyDist;
+	public static Vector3 KeyDist;
 
 	/**/
 	protected bool Finish = false;
 
 	/*x,y,z of each key position */
-	public List <Vector3> KeyPos =new List<Vector3>();
+	public static List <Vector3> KeyPos =new List<Vector3>();
 	
 	void Awake(){
 		//DontDestroyOnLoad (this.gameObject);
@@ -84,6 +84,7 @@ public class calibration : MonoBehaviour {
 		CalibrateKeyboard (KeyPos[0], KeyPos[1], 11, 1);	
 		CalibrateKeyboard (KeyPos[12], KeyPos[13], 10, 13);
 		CalibrateKeyboard (KeyPos[23], KeyPos[24], 9, 24);
+		KeyDist = KeyDistance ();
 	}
 
 	//Returns a vector3 that holds the xyz of either a or '
@@ -129,6 +130,11 @@ public class calibration : MonoBehaviour {
 
 		//if (KeyPos.Count < 30)
 		//	CalibrateKeyboard (KeyPos[],KeyPos[], Row-1);//change the index of KeyPos to the correct ones
+	}
+
+	Vector3 KeyDistance (){
+		Vector3 tmp = new Vector3(0,0,0);
+		return tmp;
 	}
 }
 
