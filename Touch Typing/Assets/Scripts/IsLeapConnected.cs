@@ -18,10 +18,14 @@ public class IsLeapConnected : MonoBehaviour {
 
 	public bool LeapConnected(){
 		CurrentLeap ();
-		if(!leap_controller.IsConnected){
+		//		if(!leap_controller.IsConnected){
+		if (leap_controller == null) {
 			return false;
+		} 
+		else 
+		{
+			return true;
 		}
-		return true;
 	}
 
 	//Returns the leap controller from HandController 

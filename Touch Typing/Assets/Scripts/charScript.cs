@@ -239,7 +239,7 @@ public class charScript : MonoBehaviour {
 						ResetString ();
 				}
 			}
-			else if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true && mode==1) //If it is in tap mode and leap is connected
+			else if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true && mode==1 && fired == false) //If it is in tap mode and leap is connected
 			{
 				if(loc==0) //Checks to see if this is the first character. 
 				{

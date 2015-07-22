@@ -13,12 +13,15 @@ public class gestures : MonoBehaviour {
 	
 	/*Inialises the starting condition*/
 	void Start(){
-		leap_controller = CurrentLeap();
-		leap_controller.EnableGesture(Gesture.GestureType.TYPE_KEY_TAP);
-		leap_controller.Config.SetFloat("Gesture.KeyTap.MinDownVelocity", 40.0f);
-		leap_controller.Config.SetFloat("Gesture.KeyTap.HistorySeconds", .2f);
-		leap_controller.Config.SetFloat("Gesture.KeyTap.MinDistance", 1.0f);
-		leap_controller.Config.Save();
+		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected () == true) {
+			Debug.Log("Gestures Start");
+			leap_controller = CurrentLeap ();
+			leap_controller.EnableGesture (Gesture.GestureType.TYPE_KEY_TAP);
+			leap_controller.Config.SetFloat ("Gesture.KeyTap.MinDownVelocity", 40.0f);
+			leap_controller.Config.SetFloat ("Gesture.KeyTap.HistorySeconds", .2f);
+			leap_controller.Config.SetFloat ("Gesture.KeyTap.MinDistance", 1.0f);
+			leap_controller.Config.Save ();
+		}
 	}
 	
 	// Update is called once per frame

@@ -21,7 +21,7 @@ public class PalmPosition : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!leap_controller.IsConnected) {
+		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected () == false) {
 			//Debug.Log ("is Not connected");
 			//ConnectLeap image
 		} else {

@@ -94,7 +94,7 @@ public class controllerScript : MonoBehaviour {
 		con = new IsLeapConnected ();
 
 		//for testing purposes
-		mode = 1;
+		mode = 0;
 		if (mode == 1) {
 			GameObject.Find ("SpaceShip_v003:Layer1").SetActive (false);
 		}
