@@ -68,7 +68,7 @@ public class controllerScript : MonoBehaviour {
 	public gestures gestureVariable;
 
 	//Captial spawn chance is an int representing a percentage, ie 10 is 10%. Set to 0 if you dont want captials. It also assumes that the alphabets are in the format lowercase,lowercase,uppercase,uppercase . IE abAB
-	public static int captialChance;
+	public static int capitalChance;
 
 	//Tell the game what row to select characters from
 	public static int rowToUse;
@@ -100,7 +100,7 @@ public class controllerScript : MonoBehaviour {
 		con = new IsLeapConnected ();
 
 		//for testing purposes
-		mode = 0;
+		//mode = 0;
 		if (mode == 1) {
 			GameObject.Find ("SpaceShip_v003:Layer1").SetActive (false);
 		}
@@ -210,7 +210,7 @@ public class controllerScript : MonoBehaviour {
 				//Picks a random letter from the specified alphabet. Used when just using complete alphabet
 				//c = alpha[Random.Range(0,alpha.Length)].ToString ();
 				//FOR TESTING
-				rowToUse=3;
+				//rowToUse=3;
 
 				int row;
 				if(rowToUse==0)
@@ -231,13 +231,13 @@ public class controllerScript : MonoBehaviour {
 								for(int j=0;j<33;j++)
 								{
 									bool found=false;
-									if(captialChance==0)
+									if(capitalChance==0)
 										side=Random.Range(0,alpha1.Length);
 									else
 									{
 											side=Random.Range(0,alpha1.Length/2);
 											int randNum=Random.Range(0,100);
-											if(randNum<captialChance)
+											if(randNum<capitalChance)
 												side+=Random.Range(0,alpha1.Length/2);
 											
 									}
@@ -260,13 +260,13 @@ public class controllerScript : MonoBehaviour {
 								for(int j=0;j<33;j++)
 								{
 									bool found=false;
-									if(captialChance==0)
+									if(capitalChance==0)
 										side=Random.Range(0,alpha2.Length);
 									else
 									{
 										side=Random.Range(0,alpha2.Length/2);
 										int randNum=Random.Range(0,100);
-										if(randNum<captialChance)
+										if(randNum<capitalChance)
 											side+=Random.Range(0,alpha2.Length/2);
 										
 									}
@@ -289,13 +289,13 @@ public class controllerScript : MonoBehaviour {
 								for(int j=0;j<33;j++)
 								{
 									bool found=false;
-									if(captialChance==0)
+									if(capitalChance==0)
 										side=Random.Range(0,alpha3.Length);
 									else
 									{
 										side=Random.Range(0,alpha3.Length/2);
 										int randNum=Random.Range(0,100);
-										if(randNum<captialChance)
+										if(randNum<capitalChance)
 											side+=Random.Range(0,alpha3.Length/2);
 										
 									}

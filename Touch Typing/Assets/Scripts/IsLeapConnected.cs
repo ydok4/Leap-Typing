@@ -18,8 +18,7 @@ public class IsLeapConnected : MonoBehaviour {
 
 	public bool LeapConnected(){
 		CurrentLeap ();
-		//		if(!leap_controller.IsConnected){
-		if (leap_controller == null) {
+		if (!leap_controller.IsConnected) {
 			return false;
 		} 
 		else 
