@@ -35,7 +35,9 @@ public class charScript : MonoBehaviour {
 	
 	public float aliveTime;
 
-
+	//Loads the explosion prefab to be used during 'OnTriggerEnter'
+	//NB: It should load the prefab from the 'Resources' folder. Add file path if moving the prefab file elsewhere
+	public GameObject explosion = (GameObject)Resources.Load ("explosion_asteroid.prefab");
 
 	public int mode;
 	// Use this for initialization
@@ -353,7 +355,9 @@ public class charScript : MonoBehaviour {
 			GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score += 1;
 			destroyCharacterString();
 			removeCharacter();
-			
+
+			//Once collision between the projectile and object is met, it will instantiate the explosion prefab
+			Instantiate(explosion, transform.position, transform.rotation);
 		}
 	}
 	void destroyCharacterString() //Called whenever the string is destroyed. Ie hit by projectile or moves into the kill zone.
