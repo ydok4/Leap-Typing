@@ -5,6 +5,7 @@ public class projectileScript : MonoBehaviour {
 	public string target;
 	string spawn;
 	public Vector3 start;
+	
 	// Use this for initialization
 	void Start () {
 		//Sets target to lower case version so it comes out the right place
@@ -63,6 +64,7 @@ public class projectileScript : MonoBehaviour {
 			gameObject.transform.position=GameObject.Find ("shipGunR4").transform.position;
 		}
 		start = gameObject.transform.position;
+
 
 	}
 	

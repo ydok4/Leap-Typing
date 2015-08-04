@@ -73,6 +73,10 @@ public class controllerScript : MonoBehaviour {
 	//Tell the game what row to select characters from
 	public static int rowToUse;
 
+	//Sound stuff
+	public AudioClip miss;
+	AudioSource audio;
+
 	public class characters {
 		public GameObject charObj;
 		public int location;
@@ -126,6 +130,9 @@ public class controllerScript : MonoBehaviour {
 		Reset ();
 		//Sets the players model to where the camera is
 		GameObject.Find ("Body").GetComponent<Transform> ().position=GameObject.Find ("Main Camera").GetComponent<Camera> ().transform.position;
+
+		//Sets up audio
+		audio = GetComponent<AudioSource>();
 	}
 	void Reset()
 	{
@@ -198,7 +205,10 @@ public class controllerScript : MonoBehaviour {
 					}
 					currentCharTyping="-1";
 					if(found==false && (!Input.GetKeyDown (KeyCode.LeftShift)&&!Input.GetKey (KeyCode.RightShift)))
+					{
 						missed++;
+						audio.PlayOneShot(miss, 1F);
+					}
 				}
 			}
 

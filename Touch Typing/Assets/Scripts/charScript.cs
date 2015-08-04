@@ -40,6 +40,13 @@ public class charScript : MonoBehaviour {
 	public GameObject explosion;// = (GameObject)Resources.Load ("explosion_asteroid.prefab");
 
 	public int mode;
+
+	//Sound stuff
+	public AudioClip miss;
+	public AudioClip hit;
+	AudioSource audio;
+
+
 	// Use this for initialization
 	void Start () {
 		aliveTime = 12f;
@@ -47,6 +54,7 @@ public class charScript : MonoBehaviour {
 		gameObject.transform.parent = GameObject.Find ("Main Camera").transform;
 		gameObject.transform.localPosition = start;
 		//Adds components to character object
+		gameObject.AddComponent<AudioSource> ();
 		gameObject.AddComponent<MeshFilter> ();
 		gameObject.AddComponent<MeshRenderer> ();
 		gameObject.AddComponent<BoxCollider> ();
@@ -100,7 +108,13 @@ public class charScript : MonoBehaviour {
 		reset = false;
 		gameObject.transform.parent = null;
 
+		//Loads explosion prefab
 		explosion = (GameObject)Resources.Load ("explosion_asteroid");
+
+		//Get audio Source
+		audio = GetComponent<AudioSource>();
+		miss = Resources.Load<AudioClip> ("DryGun");
+		hit = Resources.Load<AudioClip> ("LaserHit");
 	}
 	
 	// Update is called once per frame
@@ -208,6 +222,7 @@ public class charScript : MonoBehaviour {
 								fired=true;
 								removeCharacter();
 								GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping="-1";
+								audio.PlayOneShot(hit, 1F);
 							}
 							//Picks the next char and updates components to reflect that
 							else
@@ -232,6 +247,7 @@ public class charScript : MonoBehaviour {
 						}
 						else if(!Input.GetKeyDown (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
 							ResetString ();
+
 						
 					}
 				}
@@ -243,34 +259,38 @@ public class charScript : MonoBehaviour {
 						ResetString ();
 				}
 			}
-			else if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true && mode==1 && fired == false) //If it is in tap mode and leap is connected
+			else if(mode==1 && fired == false) //If it is in tap mode and leap is connected
 			{
-				if(loc==0) //Checks to see if this is the first character. 
+				if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true)
 				{
-					//  (Needs to know 1 of 3 things. 1. If the correct finger is being used. 2. If the wrong finger is being used. 3. If no finger is being used. OPTIONAL: If the finger is close to the correct finger)
-					int returnVal=GameObject.Find ("GestureController").GetComponent<gestures> ().KeyTap(val);
-					if(returnVal==2)
+					if(loc==0) //Checks to see if this is the first character. 
 					{
-						 //Creates a projectile object which will move towards this character
-						GameObject projectile = new GameObject ();
-
-						projectile.AddComponent<projectileScript> ();
-						//Special case for / because unity cant find the object by name ie /
-						if(val=="/")
+						//  (Needs to know 1 of 3 things. 1. If the correct finger is being used. 2. If the wrong finger is being used. 3. If no finger is being used. OPTIONAL: If the finger is close to the correct finger)
+						int returnVal=GameObject.Find ("GestureController").GetComponent<gestures> ().KeyTap(val);
+						if(returnVal==2)
 						{
-							gameObject.name="slash";
-							projectile.GetComponent<projectileScript> ().target="slash";
-							val="slash";
-						}
-						else
-							projectile.GetComponent<projectileScript> ().target = val;
-						fired=true;
-						removeCharacter();
-					}
-					else if(returnVal==1)
-					{
-						GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed++;
+							 //Creates a projectile object which will move towards this character
+							GameObject projectile = new GameObject ();
 
+							projectile.AddComponent<projectileScript> ();
+							//Special case for / because unity cant find the object by name ie /
+							if(val=="/")
+							{
+								gameObject.name="slash";
+								projectile.GetComponent<projectileScript> ().target="slash";
+								val="slash";
+							}
+							else
+								projectile.GetComponent<projectileScript> ().target = val;
+							fired=true;
+							removeCharacter();
+							audio.PlayOneShot(hit, 1f);
+						}
+						else if(returnVal==1)
+						{
+							GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed++;
+							audio.PlayOneShot(miss, 1f);
+						}
 					}
 				}
 			}

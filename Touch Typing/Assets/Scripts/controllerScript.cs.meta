@@ -1,10 +1,26 @@
 fileFormatVersion: 2
 guid: 6a7a9b43799d4ec469255ae7853ca8ca
-timeCreated: 1435207306
+timeCreated: 1438670526
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - characterMesh: {instanceID: 0}
+  - characterMaterial: {instanceID: 0}
+  - characterMaterialRed: {instanceID: 0}
+  - characterMaterialLightRed: {instanceID: 0}
+  - characterMaterialYellow: {instanceID: 0}
+  - characterMaterialDarkYellow: {instanceID: 0}
+  - characterMaterialAqua: {instanceID: 0}
+  - characterMaterialSkyBlue: {instanceID: 0}
+  - characterMaterialGreen: {instanceID: 0}
+  - characterMaterialLime: {instanceID: 0}
+  - projectileMesh: {instanceID: 0}
+  - projectileMaterial: {instanceID: 0}
+  - finger: {instanceID: 0}
+  - con: {instanceID: 0}
+  - gestureVariable: {instanceID: 0}
+  - miss: {fileID: 8300000, guid: 59e06504335bf3440b8f602d92071d4c, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
