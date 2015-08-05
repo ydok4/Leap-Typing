@@ -151,6 +151,7 @@
      <Compile Include="Assets\Scripts\LoadOnClick.cs" />
      <Compile Include="Assets\Scripts\LoadSubMenu.cs" />
      <Compile Include="Assets\Scripts\PalmPosition.cs" />
+     <Compile Include="Assets\Scripts\PlayerPrefsX.cs" />
      <Compile Include="Assets\Scripts\RadialSelection.cs" />
      <Compile Include="Assets\Scripts\TextMeshSharpener.cs" />
      <Compile Include="Assets\Scripts\calibration.cs" />

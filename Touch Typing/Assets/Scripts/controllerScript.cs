@@ -133,6 +133,27 @@ public class controllerScript : MonoBehaviour {
 
 		//Sets up audio
 		audio = GetComponent<AudioSource>();
+
+
+		//PlayerPrefsX2 Documentation: http://wiki.unity3d.com/index.php/ArrayPrefs2
+		//If you try to get data from a pref that doesn't exist, it will have a size of 0
+		//Setting the data in the prefs file for the first time. This will need to be done for each array (field) you are keeping track of.
+		//At the minimum we need a user name. But we can have overall accuracy, score for each level etc.
+
+		/*
+			//Firstly declare the list
+			List <int>aList = new List<int>();
+			//Add relevant data to the list
+			for (int i = 0; i < 10; i++) 
+				aList.Add(i);
+			//Convert list back to array
+			int[] anArray = aList.ToArray();
+			//Set the data in prefs
+			PlayerPrefsX.SetIntArray ("Numbers", anArray);
+
+			//Getting the data. Will need to be done on each game load.
+			int[] anArray2 = PlayerPrefsX.GetIntArray ("Numbers");
+		*/
 	}
 	void Reset()
 	{
