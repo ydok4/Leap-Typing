@@ -7,12 +7,10 @@ public class HUDUpdater : MonoBehaviour {
 	public Text scoreText, missedText, timeText;
 	public Text rightText, leftText;
 	void Start () {
-		//GameObject.Find ("PauseMenu").GetComponent<Canvas> ().SetActive(false);
-
 		//ensure is not visible on start, press F5 to activate
 		GameObject.Find ("DebugMenu").GetComponentInChildren<Canvas>().enabled = false;
 	}
-	// Update is called once per frame
+
 	void Update () {
 		//udate HUD score, time and missed values
 		if(scoreText!=null)
@@ -29,6 +27,7 @@ public class HUDUpdater : MonoBehaviour {
 			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = true;
 		 else 
 			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = false;
+		
 		//toggle debug log
 		if (Input.GetKeyDown (KeyCode.F5)) {
 			if(GameObject.Find ("DebugMenu").GetComponentInChildren<Canvas>().enabled == true)
@@ -42,5 +41,16 @@ public class HUDUpdater : MonoBehaviour {
 			leftText.text = "Left Palm x: " + GameObject.Find ("DebugMenu").GetComponent<PalmPosition>().left.x + "\nLeft Palm y: " + GameObject.Find ("DebugMenu").GetComponent<PalmPosition>().left.y + "\nLeft Palm z: " + GameObject.Find ("DebugMenu").GetComponent<PalmPosition>().left.z;
 	}
 
+	public void PauseMenu(int button)
+	{
+		switch (button) {
+			case 0: //back to Main Menu
+				Application.LoadLevel(1);
+				break;
+			case 1: //Calibrate
+				Application.LoadLevel(0);
+				break;
+		}
+	}
 
 }
