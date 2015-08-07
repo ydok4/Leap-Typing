@@ -1,7 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PlayerPrefsX.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\FingerPosition.cs">
     <Files>
+      <File FileName="Assets\Scripts\calibration.cs" Line="151" Column="25" />
       <File FileName="Assets\Scripts\controllerScript.cs" Line="129" Column="30" />
       <File FileName="Assets\Scripts\charScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\LoadSubMenu.cs" Line="1" Column="1" />
@@ -10,6 +11,7 @@
       <File FileName="Assets\Scripts\gestures.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\IsLeapConnected.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\PlayerPrefsX.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\FingerPosition.cs" Line="236" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

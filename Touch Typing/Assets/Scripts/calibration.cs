@@ -35,21 +35,31 @@ public class calibration : MonoBehaviour {
 		CurrentLeap();
 	}
 
+	void test () { 
+		while (!Input.GetKeyDown(KeyCode.Return)){
+			
+			// do stuff
+		}
+	}
+
 	// Update is called once per frame
 	void Update () {
 		if(!leap_controller.IsConnected){
 			Debug.Log("is Not connected");
 			//ConnectLeap image
 		}
-		if (Finish & KeyPos.Count < 5) {
+		if(index == 4){
+			Debug.Log ("Calibration Done. Loading......");
 			Calibrate();
 			Application.LoadLevel("Main");
 		}else if (Input.GetKeyDown (Key [index])) {
-			RightIndexPosition ();
-			if(index == 3)
-				Finish = true;
-			else
+			Debug.Log (Key [index]);
+			Vector3 tmp = RightIndexPosition ();
+			Debug.Log (tmp);
+			if(tmp.x != 0 && tmp.y != 0 && tmp.z != 0){
+				KeyPos.Add(tmp);
 				index++;
+			}
 		}
 	}
 
@@ -61,18 +71,20 @@ public class calibration : MonoBehaviour {
 	} 
 
 	//Finds and stores the xyz of the right index finger
-	void RightIndexPosition(){
+	Vector3 RightIndexPosition(){
+		Vector3 tmp = new Vector3(0,0,0);
 		Frame frame = leap_controller.Frame();
 		foreach (Hand hand in frame.Hands) {
 			if(hand.IsRight){
 				foreach (Finger finger in hand.Fingers) {
 					if(finger.Type.ToString() == "TYPE_INDEX"){
-						Vector3 tmp = new Vector3(finger.TipPosition.x,finger.TipPosition.y,finger.TipPosition.z);
-						KeyPos.Add(tmp);
+						Vector3 tmp1 = new Vector3(finger.TipPosition.x,finger.TipPosition.y,finger.TipPosition.z);
+							return tmp1;
 					}
 				}
 			}
 		}
+		return tmp;
 	}
 
 	//Sets up everything to calibrates the keyboard into xyz
@@ -134,8 +146,14 @@ public class calibration : MonoBehaviour {
 
 	Vector3 KeyDistance (){
 		float x = (KeyPos[0].x - KeyPos[1].x) * 2;
-		float y = (KeyPos[0].y - KeyPos[1].y) * 2;
-		float z = (KeyPos[0].z - KeyPos[1].z) * 2;
+		if (x < 0)
+			x *= -1;
+		float y = KeyPos [0].y;
+		if (y < 0)
+			y *= -1;
+		float z = (KeyPos[0].z - KeyPos[12].z) * 2;
+		if (z < 0)
+			z *= -1;
 		Vector3 tmp = new Vector3(x,y,z);
 		return tmp;
 	}

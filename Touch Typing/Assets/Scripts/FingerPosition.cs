@@ -209,7 +209,6 @@ public class FingerPosition : MonoBehaviour {
 				}
 			}
 		}
-		Debug.Log ("location " + location);
 		return location;
 	}
 
@@ -229,17 +228,28 @@ public class FingerPosition : MonoBehaviour {
 
 	//return the score depending on how close the finger is to the key
 	public static int Compare(Vector3 finger, int index){
-		
-		//if (calibration.KeyPos.Count == 0)
-			//return 2;
+		if (finger.x == 0 && finger.y == 0 && finger.z == 0) {
+
+			/*if(hand out of frame)
+				return 2;
+			else 
+				retunr 1;
+			*/
+			Debug.Log ("Out of frame");
+			return 1;
+		}
 		Vector3 KeyPos = calibration.KeyPos[index];
 		Vector3 KeyDist = calibration.KeyDist;
-
 		float x = Math.Abs(finger.x - KeyPos.x);
 		float y = Math.Abs(finger.y - KeyPos.y);
 		float z = Math.Abs(finger.z - KeyPos.z);
+		//Testing****************************************
+		Vector3 ad = new Vector3 (x,y,z);
 		Debug.Log("KeyPos " + KeyPos);
-		Debug.Log("Distance " + KeyDist);
+		Debug.Log ("Finger " + finger);
+		Debug.Log("Min Distance " + KeyDist);
+		Debug.Log ("Actual Distance " + ad);
+		//Testing****************************************
 		if (x  < KeyDist.x && y < KeyDist.y && z < KeyDist.z)
 			return 2;
 
