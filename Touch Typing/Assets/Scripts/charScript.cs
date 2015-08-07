@@ -62,7 +62,36 @@ public class charScript : MonoBehaviour {
 		//Sets the object mesh and material. Both are stored as public variables in the controllerScript
 		gameObject.GetComponent<MeshFilter> ().mesh=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMesh;
 		gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterial;
-		
+
+		/* 
+		 * To determine the colour of the character within the asteroid. I guess it can also be used to change the colour of the projectile.
+		 * 
+		if (letter[0] == 'q' || letter[0] == 'a' || letter[0] == 'z') {
+			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialRed;
+		}
+		else if (letter[0] == 'w' || letter[0] == 's' || letter[0] == 'x') {
+			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialOrange;
+		}
+		else if (letter[0] == 'e' || letter[0] == 'd' || letter[0] == 'c') {
+			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialYellow;
+		}
+		else if (letter[0] == 'r' || letter[0] == 'f' || letter[0] == 'v' || letter[0] == 't' || letter[0] == 'g' || letter[0] == 'v') {
+			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialPurple;
+		}
+		else if (letter[0] == 'y' || letter[0] == 'h' || letter[0] == 'n' || letter[0] == 'u' || letter[0] == 'j' || letter[0] == 'm') {
+			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBlue;
+		}
+		else if (letter[0] == 'i' || letter[0] == 'k' || letter[0] == ',' || letter[0] == '<') {
+			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialCyan;
+		}
+		else if (letter[0] == 'o' || letter[0] == 'l' || letter[0] == '.' || letter[0] == '>') {
+			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialGreen;
+		}
+		else if (letter[0] == 'p' || letter[0] == ';' || letter[0] == '[' || letter[0] == '\'' || letter[0] == ']' || letter[0] == '{' || letter[0] == '}' || letter[0] == ':' || letter[0] == '\"' || letter[0] == '/' || letter[0] == '?') {
+			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBrown;
+		}
+		*/
+
 		//Modify Asteroid Scale
 		gameObject.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
 		text = new GameObject ();

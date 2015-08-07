@@ -12,13 +12,13 @@ public class controllerScript : MonoBehaviour {
 
 	public Material characterMaterial;
 	public Material characterMaterialRed;
-	public Material characterMaterialLightRed;
+	public Material characterMaterialOrange;
 	public Material characterMaterialYellow;
-	public Material characterMaterialDarkYellow;
-	public Material characterMaterialAqua;
-	public Material characterMaterialSkyBlue;
+	public Material characterMaterialPurple;
+	public Material characterMaterialBlue;
+	public Material characterMaterialCyan;
 	public Material characterMaterialGreen;
-	public Material characterMaterialLime;
+	public Material characterMaterialBrown;
 
 	public Mesh projectileMesh;
 	public Material projectileMaterial;
