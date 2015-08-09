@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 //This is the controller script for a timer based single character pressing typing lesson
@@ -22,9 +23,11 @@ public class controllerScript : MonoBehaviour {
 	public Mesh projectileMesh;
 	public Material projectileMaterial;
 
-	//Determines what game mode the level is in. 0 is keyboard, 1 is tap. 
+	//Determines what game mode the level is in. 0 is keyboard
 	//Default is 0
 	public static int mode;
+	//boot camp level mode
+	public static bool infinite;
 
 	//The potential alphabet of the lesson
 	public static string alpha;
@@ -98,6 +101,9 @@ public class controllerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		if(infinite == true)
+			time = 10000;
 
 		//Sets up function resevoir
 		finger=new FingerPosition();
@@ -199,10 +205,15 @@ public class controllerScript : MonoBehaviour {
 			else
 				paused = false;
 		}
+
+		//????????????
+		//if(infinite == true && time < 1 )
+			//time = 10000;
+
 		//Checks if there is any more time for the game to run or if the game is paused
 		if (time > 0 && paused==false && delay<=0) {
 			time -= Time.deltaTime;
-
+					
 			if(mode==0) //Miss checking is performed externally from the characters in keyboard. It is handled in charScript for tap mode
 			{
 				if (Input.anyKeyDown ) {
@@ -228,6 +239,8 @@ public class controllerScript : MonoBehaviour {
 					if(found==false && (!Input.GetKeyDown (KeyCode.LeftShift)&&!Input.GetKey (KeyCode.RightShift)))
 					{
 						missed++;
+						GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = true;
+						Invoke ("PopUp", 0.5f);
 						audio.PlayOneShot(miss, 1F);
 					}
 				}
@@ -399,6 +412,8 @@ public class controllerScript : MonoBehaviour {
 				goal-=spawn;
 			}
 		}
+		if (time <= 0)
+			paused = true;
 	}
 	int sideLocation(string letter)
 	{
@@ -431,5 +446,10 @@ public class controllerScript : MonoBehaviour {
 	}
 	void OnTriggerEnter(Collider other) {
 		//Debug.Log("Collision1");
+	}
+
+	public void PopUp()
+	{
+		GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = false;
 	}
 }

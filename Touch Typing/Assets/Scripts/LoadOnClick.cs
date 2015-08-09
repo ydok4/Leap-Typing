@@ -7,8 +7,10 @@ public class LoadOnClick : MonoBehaviour {
 	public int prevClick;
 
 	void Awake(){
+		//sub menu's invisible on start
 		GameObject.Find ("SubMenu").GetComponentInChildren<Canvas>().enabled = false;
 		GameObject.Find ("InputMenu").GetComponentInChildren<Canvas>().enabled = false;
+		GameObject.Find ("BootCampMenu").GetComponentInChildren<Canvas>().enabled = false;
 	}
 
 	public void MainMenu (int button)
@@ -20,11 +22,14 @@ public class LoadOnClick : MonoBehaviour {
 		case 1:	//Tap Mode
 			controllerScript.capitalChance = 15;
 			controllerScript.goal = 57;
-			controllerScript.mode = 1;
+			controllerScript.mode = 1;//tap
 			Application.LoadLevel (2);
 			break;
 		case 2://Calibrate
 			Application.LoadLevel(0);
+			break;
+		case 3://Boot Camp
+			toggleMenu ("BootCampMenu");
 			break;
 		}
 	}
@@ -71,6 +76,25 @@ public class LoadOnClick : MonoBehaviour {
 			break;
 		}
 	}
+
+	public void bootCampMenu(int button)
+	{
+		if (button == 0) {
+			//Keyboard Mode levels
+			toggleMenu ("BootCampMenu");
+		} else {
+			if(button==1)//keyboard mode
+				controllerScript.mode = 0;
+			if(button==2)//Tap mode
+				controllerScript.mode = 1;
+
+			controllerScript.capitalChance = 25;
+			controllerScript.goal = 9997;
+			controllerScript.infinite = true;
+			Application.LoadLevel (2);
+		}
+	}
+	
 	public void loadLevel(int row, int cap, int mode, int level)
 	{ Debug.Log("inLoadLevel"+GameObject.Find ("InputText").GetComponent<Text> ().text);
 		controllerScript.rowToUse = row;
@@ -80,7 +104,7 @@ public class LoadOnClick : MonoBehaviour {
 			Debug.Log("in");
 		}
 		else 
-			controllerScript.goal = 60 - int.Parse(GameObject.Find ("InputText").GetComponent<Text>().text);
+			controllerScript.goal = 60 - float.Parse(GameObject.Find ("InputText").GetComponent<Text>().text);
 		controllerScript.mode = mode;
 		Application.LoadLevel(level);
 	}
