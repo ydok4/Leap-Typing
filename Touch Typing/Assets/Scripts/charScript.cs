@@ -115,6 +115,18 @@ public class charScript : MonoBehaviour {
 		audio = GetComponent<AudioSource>();
 		miss = Resources.Load<AudioClip> ("DryGun");
 		hit = Resources.Load<AudioClip> ("LaserHit");
+
+		//Add underscore if it is an uppercase letter
+		if (val.ToUpper() == val && val!="[" && val!="]" && val!=";" && val!="'" && val!="," && val!="." && val!="/") {
+			GameObject underScore = (GameObject)	Instantiate(text, text.transform.position, text.transform.rotation);
+			underScore.GetComponent<Text>().text="_";
+			underScore.transform.parent=gameObject.transform;
+			underScore.name="underScore";
+			underScore.transform.localPosition=new Vector3(-0.05f, -0.67f, 6.66f);
+			//underScore.GetComponent<CanvasScaler> ().dynamicPixelsPerUnit = 100;
+			//underScore.GetComponent<Text> ().fontSize =1;
+			underScore.transform.localScale=new Vector3(1f,1f,1.0f);
+		}
 	}
 	
 	// Update is called once per frame
@@ -382,7 +394,7 @@ public class charScript : MonoBehaviour {
 			Object explosionObj = Instantiate(explosion, transform.position, transform.rotation);
 
 			//This destroys the created prefab after 2 seconds, freeing up resources
-			Destroy (explosionObj,1.5f);
+			Destroy (explosionObj,3.0f);
 		}
 	}
 	void destroyCharacterString() //Called whenever the string is destroyed. Ie hit by projectile or moves into the kill zone.
