@@ -31,7 +31,7 @@ public class projectileScript : MonoBehaviour {
 		objectMesh.AddComponent<MeshFilter> ();
 		objectMesh.AddComponent<MeshRenderer> ();
 		objectMesh.GetComponent<MeshFilter> ().mesh=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().projectileMesh;
-		objectMesh.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().projectileMaterial;
+		objectMesh.GetComponent<MeshRenderer> ().material = projectileMaterial (spawn);
 		objectMesh.transform.rotation = Quaternion.Euler(0, 90, 90);
 
 		//Changes the scale of the mesh it matches better
@@ -48,7 +48,7 @@ public class projectileScript : MonoBehaviour {
 		else if (spawn == "e" || spawn == "d" || spawn == "c") {
 			gameObject.transform.position=GameObject.Find ("shipGunL2").transform.position;
 		}
-		else if (spawn == "r" || spawn == "f" || spawn == "v" || spawn == "t" || spawn == "g" || spawn == "v") {
+		else if (spawn == "r" || spawn == "f" || spawn == "v" || spawn == "t" || spawn == "g" || spawn == "b") {
 			gameObject.transform.position=GameObject.Find ("shipGunL1").transform.position;
 		}
 		else if (spawn == "y" || spawn == "h" || spawn == "n" || spawn == "u" || spawn == "j" || spawn == "m") {
@@ -83,5 +83,43 @@ public class projectileScript : MonoBehaviour {
 		if (col.name == target) {
 			Destroy (gameObject);
 		}
+	}
+	Material projectileMaterial(string val)
+	{
+		val = val.ToLower ();
+		if (val == "q" || val == "a" || val == "z") {
+			//Debug.Log ("In RED");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialRed;
+		}
+		else if (val == "w" || val == "s" || val == "x") {
+			//Debug.Log ("In ORANGE");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialOrange;
+		}
+		else if (val == "e" || val == "d" || val == "c") {
+			//Debug.Log ("In YELLOW");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialYellow;
+		}
+		else if (val == "r" || val == "f" || val == "v" || val == "t" || val == "g" || val == "b") {
+			//Debug.Log ("In PURPLE");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialPurple;
+		}
+		else if (val == "y" || val == "h" || val == "n" || val == "u" || val == "j" || val == "m") {
+			//Debug.Log ("In BLUE");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBlue;
+		}
+		else if (val == "i" || val == "k" || val == "," || val == "<") {
+			//Debug.Log ("In CYAN");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialCyan;
+		}
+		else if (val == "o" || val == "l" || val == "." || val == ">") {
+			//Debug.Log ("In GREEN");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialGreen;
+		}
+		else if (val == "p" || val == ";" || val == "[" || val == "\'" || val == "]" || val == "{" || val == "}" || val == ":" || val == "\"" || val == "/" || val == "?") {
+			//Debug.Log ("In BROWN");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBrown;
+		}
+		//Debug.Log ("In DEFAULT");
+		return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterial;
 	}
 }

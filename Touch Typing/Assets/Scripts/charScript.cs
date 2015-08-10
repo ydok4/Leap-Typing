@@ -61,36 +61,11 @@ public class charScript : MonoBehaviour {
 		gameObject.GetComponent<BoxCollider> ().isTrigger=true;
 		//Sets the object mesh and material. Both are stored as public variables in the controllerScript
 		gameObject.GetComponent<MeshFilter> ().mesh=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMesh;
-		gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterial;
+		//Material changes depending on the incoming letter through a function call that returns a material value
+		gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial (val);
 
-		/* 
-		 * To determine the colour of the character within the asteroid. I guess it can also be used to change the colour of the projectile.
-		 * 
-		if (letter[0] == 'q' || letter[0] == 'a' || letter[0] == 'z') {
-			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialRed;
-		}
-		else if (letter[0] == 'w' || letter[0] == 's' || letter[0] == 'x') {
-			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialOrange;
-		}
-		else if (letter[0] == 'e' || letter[0] == 'd' || letter[0] == 'c') {
-			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialYellow;
-		}
-		else if (letter[0] == 'r' || letter[0] == 'f' || letter[0] == 'v' || letter[0] == 't' || letter[0] == 'g' || letter[0] == 'v') {
-			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialPurple;
-		}
-		else if (letter[0] == 'y' || letter[0] == 'h' || letter[0] == 'n' || letter[0] == 'u' || letter[0] == 'j' || letter[0] == 'm') {
-			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBlue;
-		}
-		else if (letter[0] == 'i' || letter[0] == 'k' || letter[0] == ',' || letter[0] == '<') {
-			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialCyan;
-		}
-		else if (letter[0] == 'o' || letter[0] == 'l' || letter[0] == '.' || letter[0] == '>') {
-			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialGreen;
-		}
-		else if (letter[0] == 'p' || letter[0] == ';' || letter[0] == '[' || letter[0] == '\'' || letter[0] == ']' || letter[0] == '{' || letter[0] == '}' || letter[0] == ':' || letter[0] == '\"' || letter[0] == '/' || letter[0] == '?') {
-			gameObject.GetComponent<MeshRenderer> ().material=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBrown;
-		}
-		*/
+		//Debug.Log ("Before material debug");
+		//Debug.Log (gameObject.GetComponent<MeshRenderer> ().material);
 
 		//Modify Asteroid Scale
 		gameObject.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
@@ -112,6 +87,7 @@ public class charScript : MonoBehaviour {
 		text.GetComponent<Text> ().horizontalOverflow = HorizontalWrapMode.Overflow;
 		text.GetComponent<Text> ().verticalOverflow = VerticalWrapMode.Overflow;
 		text.GetComponent<Text>().text=val;
+		text.GetComponent<Text> ().color = new Color (0f, 0f, 0f);
 		text.GetComponent<Text> ().fontSize = 3;
 		text.GetComponent<CanvasScaler> ().dynamicPixelsPerUnit = 80;
 		text.GetComponent<Text> ().alignment = TextAnchor.MiddleCenter;
@@ -330,6 +306,8 @@ public class charScript : MonoBehaviour {
 						else if(returnVal==1)
 						{
 							GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed++;
+							GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = true;
+							Invoke ("PopUp", 0.5f);
 							audio.PlayOneShot(miss, 1f);
 						}
 					}
@@ -368,6 +346,8 @@ public class charScript : MonoBehaviour {
 					Destroy (GameObject.Find ("Projectile :" + val));
 				}
 				GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed++;
+				GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = true;
+				Invoke ("PopUp", 0.5f);
 				destroyCharacterString ();
 				removeCharacter();
 			}	
@@ -449,5 +429,43 @@ public class charScript : MonoBehaviour {
 			if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().charList[i]==checkChar)
 				GameObject.Find ("Main Camera").GetComponent<controllerScript> ().charList.RemoveAt(i);
 		}
+	}
+	Material asteroidMaterial(string val) //make 'spawn' for projectileScript
+	{
+		val = val.ToLower ();
+		if (val == "q" || val == "a" || val == "z") {
+			//Debug.Log ("In RED");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialRed;
+		}
+		else if (val == "w" || val == "s" || val == "x") {
+			//Debug.Log ("In ORANGE");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialOrange;
+		}
+		else if (val == "e" || val == "d" || val == "c") {
+			//Debug.Log ("In YELLOW");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialYellow;
+		}
+		else if (val == "r" || val == "f" || val == "v" || val == "t" || val == "g" || val == "b") {
+			//Debug.Log ("In PURPLE");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialPurple;
+		}
+		else if (val == "y" || val == "h" || val == "n" || val == "u" || val == "j" || val == "m") {
+			//Debug.Log ("In BLUE");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBlue;
+		}
+		else if (val == "i" || val == "k" || val == "," || val == "<") {
+			//Debug.Log ("In CYAN");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialCyan;
+		}
+		else if (val == "o" || val == "l" || val == "." || val == ">") {
+			//Debug.Log ("In GREEN");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialGreen;
+		}
+		else if (val == "p" || val == ";" || val == "[" || val == "\'" || val == "]" || val == "{" || val == "}" || val == ":" || val == "\"" || val == "/" || val == "?") {
+			//Debug.Log ("In BROWN");
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBrown;
+		}
+		//Debug.Log ("In DEFAULT");
+		return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterial;
 	}
 }

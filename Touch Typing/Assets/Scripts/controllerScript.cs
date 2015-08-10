@@ -102,6 +102,16 @@ public class controllerScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		//Changing the gun material
+		GameObject.Find ("shipGunR1").GetComponentInChildren<MeshRenderer> ().material = characterMaterialRed;
+		GameObject.Find ("shipGunR2").GetComponentInChildren<MeshRenderer> ().material = characterMaterialOrange;
+		GameObject.Find ("shipGunR3").GetComponentInChildren<MeshRenderer> ().material = characterMaterialYellow;
+		GameObject.Find ("shipGunR4").GetComponentInChildren<MeshRenderer> ().material = characterMaterialPurple;
+		GameObject.Find ("shipGunL1").GetComponentInChildren<MeshRenderer> ().material = characterMaterialBlue;
+		GameObject.Find ("shipGunL2").GetComponentInChildren<MeshRenderer> ().material = characterMaterialCyan;
+		GameObject.Find ("shipGunL3").GetComponentInChildren<MeshRenderer> ().material = characterMaterialGreen;
+		GameObject.Find ("shipGunL4").GetComponentInChildren<MeshRenderer> ().material = characterMaterialBrown;
+
 		if(infinite == true)
 			time = 10000;
 
@@ -427,7 +437,7 @@ public class controllerScript : MonoBehaviour {
 		else if (letter[0] == 'e' || letter[0] == 'd' || letter[0] == 'c') {
 			return 3;
 		}
-		else if (letter[0] == 'r' || letter[0] == 'f' || letter[0] == 'v' || letter[0] == 't' || letter[0] == 'g' || letter[0] == 'v') {
+		else if (letter[0] == 'r' || letter[0] == 'f' || letter[0] == 'v' || letter[0] == 't' || letter[0] == 'g' || letter[0] == 'b') {
 			return 4;
 		}
 		else if (letter[0] == 'y' || letter[0] == 'h' || letter[0] == 'n' || letter[0] == 'u' || letter[0] == 'j' || letter[0] == 'm') {

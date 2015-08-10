@@ -91,6 +91,7 @@ public class LoadOnClick : MonoBehaviour {
 			controllerScript.capitalChance = 25;
 			controllerScript.goal = 9997;
 			controllerScript.infinite = true;
+			controllerScript.rowToUse = 3;
 			Application.LoadLevel (2);
 		}
 	}
