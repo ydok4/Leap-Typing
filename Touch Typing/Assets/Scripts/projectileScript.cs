@@ -39,29 +39,24 @@ public class projectileScript : MonoBehaviour {
 		objectMesh.transform.position = gameObject.transform.position;
 
 		//Changes X spawn point depending on what the target is. This is also where you would change the colour of the materials
-		if (spawn == "q" || spawn == "a" || spawn == "z") {
-			gameObject.transform.position=GameObject.Find ("shipGunL4").transform.position;
-		}
-		else if (spawn == "w" || spawn == "s" || spawn == "x") {
-			gameObject.transform.position=GameObject.Find ("shipGunL3").transform.position;
-		}
-		else if (spawn == "e" || spawn == "d" || spawn == "c") {
-			gameObject.transform.position=GameObject.Find ("shipGunL2").transform.position;
-		}
-		else if (spawn == "r" || spawn == "f" || spawn == "v" || spawn == "t" || spawn == "g" || spawn == "b") {
-			gameObject.transform.position=GameObject.Find ("shipGunL1").transform.position;
-		}
-		else if (spawn == "y" || spawn == "h" || spawn == "n" || spawn == "u" || spawn == "j" || spawn == "m") {
-			gameObject.transform.position=GameObject.Find ("shipGunR1").transform.position;
-		}
-		else if (spawn == "i" || spawn == "k" || spawn == "," || spawn == "<") {
-			gameObject.transform.position=GameObject.Find ("shipGunR2").transform.position;
-		}
-		else if (spawn == "o" || spawn == "l" || spawn == "." || spawn == ">") {
-			gameObject.transform.position=GameObject.Find ("shipGunR3").transform.position;
-		}
-		else if (spawn == "p" || spawn == ";" || spawn == "slash" || spawn == "[" || spawn == "'" || spawn == "]" || spawn == "{" || spawn == "}" || spawn == ":" || spawn == "\"" || spawn == "/" || spawn == "?") {
-			gameObject.transform.position=GameObject.Find ("shipGunR4").transform.position;
+		if (controllerScript.mode == 0) {
+			if (spawn == "q" || spawn == "a" || spawn == "z") {
+				gameObject.transform.position = GameObject.Find ("shipGunL4").transform.position;
+			} else if (spawn == "w" || spawn == "s" || spawn == "x") {
+				gameObject.transform.position = GameObject.Find ("shipGunL3").transform.position;
+			} else if (spawn == "e" || spawn == "d" || spawn == "c") {
+				gameObject.transform.position = GameObject.Find ("shipGunL2").transform.position;
+			} else if (spawn == "r" || spawn == "f" || spawn == "v" || spawn == "t" || spawn == "g" || spawn == "b") {
+				gameObject.transform.position = GameObject.Find ("shipGunL1").transform.position;
+			} else if (spawn == "y" || spawn == "h" || spawn == "n" || spawn == "u" || spawn == "j" || spawn == "m") {
+				gameObject.transform.position = GameObject.Find ("shipGunR1").transform.position;
+			} else if (spawn == "i" || spawn == "k" || spawn == "," || spawn == "<") {
+				gameObject.transform.position = GameObject.Find ("shipGunR2").transform.position;
+			} else if (spawn == "o" || spawn == "l" || spawn == "." || spawn == ">") {
+				gameObject.transform.position = GameObject.Find ("shipGunR3").transform.position;
+			} else if (spawn == "p" || spawn == ";" || spawn == "slash" || spawn == "[" || spawn == "'" || spawn == "]" || spawn == "{" || spawn == "}" || spawn == ":" || spawn == "\"" || spawn == "/" || spawn == "?") {
+				gameObject.transform.position = GameObject.Find ("shipGunR4").transform.position;
+			}
 		}
 		start = gameObject.transform.position;
 

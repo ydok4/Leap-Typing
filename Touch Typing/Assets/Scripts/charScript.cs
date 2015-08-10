@@ -12,7 +12,10 @@ public class charScript : MonoBehaviour {
 	
 	//Set in controller script this determines where the object starts
 	public Vector3 start;
-	
+
+	//Checks if the material has been changed for tap mode
+	bool doOnceMaterial;
+
 	//checks whether there is already a projectile heading for that character
 	public bool fired;
 	
@@ -62,7 +65,11 @@ public class charScript : MonoBehaviour {
 		//Sets the object mesh and material. Both are stored as public variables in the controllerScript
 		gameObject.GetComponent<MeshFilter> ().mesh=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMesh;
 		//Material changes depending on the incoming letter through a function call that returns a material value
-		gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial (val);
+		if (mode == 1)
+			gameObject.GetComponent<MeshRenderer> ().material = GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterial;
+		else if (mode == 0)
+			gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial (val);
+
 
 		//Debug.Log ("Before material debug");
 		//Debug.Log (gameObject.GetComponent<MeshRenderer> ().material);
@@ -282,6 +289,8 @@ public class charScript : MonoBehaviour {
 				{
 					if(loc==0) //Checks to see if this is the first character. 
 					{
+						if(doOnceMaterial==false)
+							gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial (val);
 						//  (Needs to know 1 of 3 things. 1. If the correct finger is being used. 2. If the wrong finger is being used. 3. If no finger is being used. OPTIONAL: If the finger is close to the correct finger)
 						int returnVal=GameObject.Find ("GestureController").GetComponent<gestures> ().KeyTap(val);
 						if(returnVal==2)
@@ -336,11 +345,11 @@ public class charScript : MonoBehaviour {
 			}
 			else if (mode == 1) //Tap/leap mode
 			{
-				gameObject.transform.position += transform.forward * 0.0045f;
+				gameObject.transform.position += transform.forward * 0.0027f; //0.0045
 			}
 			aliveTime-= Time.deltaTime;
 			
-			if (aliveTime<=0 && GetComponent<Renderer>().isVisible==false) {
+			if (aliveTime<=0 && GetComponent<Renderer>().isVisible==false || (mode == 1 && gameObject.transform.position.z < 0)) {
 				
 				if (GameObject.Find ("Projectile :" + val) != null) {
 					Destroy (GameObject.Find ("Projectile :" + val));

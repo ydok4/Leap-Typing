@@ -13,7 +13,7 @@ public class gestures : MonoBehaviour {
 	
 	/*Inialises the starting condition*/
 	void Start(){
-		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected () == true) {
+		//if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected () == true) {
 			Debug.Log("Gestures Start");
 			leap_controller = CurrentLeap ();
 			leap_controller.EnableGesture (Gesture.GestureType.TYPE_KEY_TAP);
@@ -21,11 +21,13 @@ public class gestures : MonoBehaviour {
 			leap_controller.Config.SetFloat ("Gesture.KeyTap.HistorySeconds", .2f);
 			leap_controller.Config.SetFloat ("Gesture.KeyTap.MinDistance", 1.0f);
 			leap_controller.Config.Save ();
-		}
+		//}
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		leap_controller = CurrentLeap ();
+		//KeyTap ("q");
 	}
 
 	public int KeyTap(string key){
@@ -33,9 +35,10 @@ public class gestures : MonoBehaviour {
 		Frame frame = leap_controller.Frame();
 		int score = 0;
 		string direction;
-		Debug.Log (key);
+		//Debug.Log (key);
 		foreach (Gesture gesture in frame.Gestures()) {
 			foreach (Hand hand in frame.Hands){
+				leap_controller = CurrentLeap();
 				if(hand.IsLeft)
 					direction = "left";
 				else
@@ -47,7 +50,7 @@ public class gestures : MonoBehaviour {
 
 				Finger.FingerType fingerType = finger.Type;
 				
-				Debug.Log ("Finger: " + finger.Type);
+				//Debug.Log ("Finger: " + finger.Type);
 				
 				switch (fingerType) {
 				case Finger.FingerType.TYPE_INDEX:
@@ -70,7 +73,8 @@ public class gestures : MonoBehaviour {
 				}
 			}
 		}
-		Debug.Log ("score :" + score);
+		leap_controller = CurrentLeap();
+		//Debug.Log ("score :" + score);
 		return score;
 	}
 
@@ -82,7 +86,7 @@ public class gestures : MonoBehaviour {
 			if(key == "y" || key == "u" || key == "h" || key == "j" || key == "n" || key == "m")
 				return 2;
 		}
-		return 1;
+		return 0;
 	}
 
 	int CheckMiddle(string direction, string key){
@@ -93,7 +97,7 @@ public class gestures : MonoBehaviour {
 			if(key == "i" || key == "k" || key == "," || key == "<")
 				return 2;
 		}
-		return 1;
+		return 0;
 	}
 
 	int CheckRing(string direction, string key){
@@ -104,7 +108,7 @@ public class gestures : MonoBehaviour {
 			if(key == "o" || key == "l" || key == "." || key == ">")
 				return 2;
 		}
-		return 1;
+		return 0;
 	}
 
 	int CheckPinky(string direction, string key){
@@ -115,7 +119,7 @@ public class gestures : MonoBehaviour {
 			if(key == "p" || key == ";" || key == ":" || key == "/" || key == "?" || key == "[" || key == "{" || key == "]" || key == "}" || key == "'" || key == "\"")
 				return 2;
 		}
-		return 1;
+		return 0;
 	}
 
 	//Returns the leap controller from HandController 

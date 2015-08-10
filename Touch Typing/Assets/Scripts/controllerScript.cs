@@ -111,7 +111,14 @@ public class controllerScript : MonoBehaviour {
 		GameObject.Find ("shipGunL2").GetComponentInChildren<MeshRenderer> ().material = characterMaterialCyan;
 		GameObject.Find ("shipGunL3").GetComponentInChildren<MeshRenderer> ().material = characterMaterialGreen;
 		GameObject.Find ("shipGunL4").GetComponentInChildren<MeshRenderer> ().material = characterMaterialBrown;
-
+		if (mode == 0) 
+		{
+			GameObject.Find ("GestureController").transform.localRotation = Quaternion.Euler (270f,180f,0f);
+		}
+		else if(mode == 1)
+		{
+			GameObject.Find ("GestureController").transform.localRotation = Quaternion.Euler (0f,0f,0f);
+		}
 		if(infinite == true)
 			time = 10000;
 
@@ -381,19 +388,19 @@ public class controllerScript : MonoBehaviour {
 						side=Random.Range(0,alpha1.Length);
 						c = alpha1[side].ToString ();
 						side=sideLocation(c);
-						v3Pos=new Vector3(-5.0f+side,1.5f,25f);
+						v3Pos=new Vector3(-5.0f+side,1.5f,15f);
 						break;
 					case 1: 
 						side=Random.Range(0,alpha2.Length);
 						c = alpha2[side].ToString ();
 						side=sideLocation(c);
-						v3Pos=new Vector3(-5.0f+side,0.0f,25f);
+						v3Pos=new Vector3(-5.0f+side,0.0f,15f);
 						break;
 					case 2: 
 						side=Random.Range(0,alpha3.Length);
 						c = alpha3[side].ToString ();
 						side=sideLocation(c);
-						v3Pos=new Vector3(-5.0f+side,-1.5f,25f);
+						v3Pos=new Vector3(-5.0f+side,-1.5f,15f);
 						break;
 					default:
 						Debug.Log("Default");
