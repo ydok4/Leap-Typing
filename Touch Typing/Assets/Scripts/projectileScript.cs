@@ -110,7 +110,7 @@ public class projectileScript : MonoBehaviour {
 			//Debug.Log ("In GREEN");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialGreen;
 		}
-		else if (val == "p" || val == ";" || val == "[" || val == "\'" || val == "]" || val == "{" || val == "}" || val == ":" || val == "\"" || val == "/" || val == "?") {
+		else if (val == "p" || val == ";" || val == "[" || val == "\'" || val == "]" || val == "{" || val == "}" || val == ":" || val == "\"" || val == "/" || val == "?" || spawn=="slash") {
 			//Debug.Log ("In BROWN");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBrown;
 		}
