@@ -103,14 +103,14 @@ public class controllerScript : MonoBehaviour {
 	void Start () {
 
 		//Changing the gun material
-		GameObject.Find ("shipGunR1").GetComponentInChildren<MeshRenderer> ().material = characterMaterialRed;
-		GameObject.Find ("shipGunR2").GetComponentInChildren<MeshRenderer> ().material = characterMaterialOrange;
-		GameObject.Find ("shipGunR3").GetComponentInChildren<MeshRenderer> ().material = characterMaterialYellow;
-		GameObject.Find ("shipGunR4").GetComponentInChildren<MeshRenderer> ().material = characterMaterialPurple;
-		GameObject.Find ("shipGunL1").GetComponentInChildren<MeshRenderer> ().material = characterMaterialBlue;
-		GameObject.Find ("shipGunL2").GetComponentInChildren<MeshRenderer> ().material = characterMaterialCyan;
-		GameObject.Find ("shipGunL3").GetComponentInChildren<MeshRenderer> ().material = characterMaterialGreen;
-		GameObject.Find ("shipGunL4").GetComponentInChildren<MeshRenderer> ().material = characterMaterialBrown;
+		GameObject.Find ("shipGunR1").GetComponentInChildren<MeshRenderer> ().material = characterMaterialBlue;
+		GameObject.Find ("shipGunR2").GetComponentInChildren<MeshRenderer> ().material = characterMaterialCyan;
+		GameObject.Find ("shipGunR3").GetComponentInChildren<MeshRenderer> ().material = characterMaterialGreen;
+		GameObject.Find ("shipGunR4").GetComponentInChildren<MeshRenderer> ().material = characterMaterialBrown;
+		GameObject.Find ("shipGunL1").GetComponentInChildren<MeshRenderer> ().material = characterMaterialPurple;
+		GameObject.Find ("shipGunL2").GetComponentInChildren<MeshRenderer> ().material = characterMaterialYellow;
+		GameObject.Find ("shipGunL3").GetComponentInChildren<MeshRenderer> ().material = characterMaterialOrange;
+		GameObject.Find ("shipGunL4").GetComponentInChildren<MeshRenderer> ().material = characterMaterialRed;
 		if (mode == 0) 
 		{
 			GameObject.Find ("GestureController").transform.localRotation = Quaternion.Euler (270f,180f,0f);
@@ -253,7 +253,7 @@ public class controllerScript : MonoBehaviour {
 						}
 					}
 					currentCharTyping="-1";
-					if(found==false && (!Input.GetKeyDown (KeyCode.LeftShift)&&!Input.GetKey (KeyCode.RightShift)))
+					if(found==false && (!Input.GetKeyDown (KeyCode.LeftShift)&&!Input.GetKey (KeyCode.RightShift) && !Input.GetKey (KeyCode.Escape)))
 					{
 						missed++;
 						GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = true;
