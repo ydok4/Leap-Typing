@@ -38,7 +38,7 @@ public class controllerScript : MonoBehaviour {
 	public static string alpha3;
 
 	//Total length of level
-	public float time;
+	public float time; //change to int??
 
 	//Time when first spawn happens
 	public static float goal;
@@ -119,8 +119,12 @@ public class controllerScript : MonoBehaviour {
 		{
 			GameObject.Find ("GestureController").transform.localRotation = Quaternion.Euler (0f,0f,0f);
 		}
-		if(infinite == true)
+
+		//Set time depending on mode or user input from main menu
+		if (infinite == true)
 			time = 10000;
+		else
+			time = LoadOnClick.inputtedTime;
 
 		//Sets up function resevoir
 		finger=new FingerPosition();

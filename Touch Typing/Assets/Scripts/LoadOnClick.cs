@@ -4,26 +4,39 @@ using System.Collections;
 
 public class LoadOnClick : MonoBehaviour {
 
-	public int prevClick;
+	private int prevClick, keybOrTap;
+	public Text gameTimeText, spawnRateText, BCSpawnRateText;
+	public static float inputtedTime;
 
 	void Awake(){
 		//sub menu's invisible on start
 		GameObject.Find ("SubMenu").GetComponentInChildren<Canvas>().enabled = false;
 		GameObject.Find ("InputMenu").GetComponentInChildren<Canvas>().enabled = false;
 		GameObject.Find ("BootCampMenu").GetComponentInChildren<Canvas>().enabled = false;
+		GameObject.Find ("BCInputMenu").GetComponentInChildren<Canvas>().enabled = false;
+	}
+
+	void Update()
+	{
+		if(gameTimeText!=null)
+			gameTimeText.text = GameObject.Find ("TimeSlider").GetComponent<Slider> ().value + " min(s)";
+		if(spawnRateText!=null)
+			spawnRateText.text = "A letter every " + GameObject.Find ("SpawnRateSlider").GetComponent<Slider> ().value + " second(s)";
+		if(BCSpawnRateText!=null)
+			BCSpawnRateText.text = "A letter every " + GameObject.Find ("BCSpawnRateSlider").GetComponent<Slider> ().value + " second(s)";
+
 	}
 
 	public void MainMenu (int button)
 	{
 		switch (button) {
 		case 0:	//Keyboard Mode levels
+			keybOrTap = button;
 			toggleMenu ("SubMenu");
 			break;
 		case 1:	//Tap Mode
-			controllerScript.capitalChance = 15;
-			controllerScript.goal = 57;
-			controllerScript.mode = 1;//tap
-			Application.LoadLevel (2);
+			keybOrTap = button;
+			toggleMenu ("InputMenu");
 			break;
 		case 2://Calibrate
 			Application.LoadLevel(0);
@@ -46,35 +59,39 @@ public class LoadOnClick : MonoBehaviour {
 
 	public void InputMenu()
 	{
-		switch(prevClick)
-		{
-		case 0:	
-		case 1:	//All rows
-			/*controllerScript.rowToUse = 3;
-			controllerScript.capitalChance = 15;
-			if(GameObject.Find ("InputText").GetComponent<Text>().text == "")
-				controllerScript.goal = 57;
-			else 
-				controllerScript.goal = 60 - int.Parse(GameObject.Find ("InputText").GetComponent<Text>().text);
-			controllerScript.mode = 0;
-			Application.LoadLevel(2);*/
-			loadLevel(3, 15, 0, 2);
-			break;
-		case 2: //Top Row
-			loadLevel(0, 15, 0, 2);
-			break;
-		case 3:	//Middle Row
-			loadLevel(1, 15, 0, 2);
-			break;
-		case 4:	//Bottom Row
-			/*controllerScript.rowToUse = 2;
-			controllerScript.capitalChance = 15;
-			controllerScript.goal = 57;
-			controllerScript.mode = 0;
-			Application.LoadLevel(2);*/
-			loadLevel(2, 15, 0, 2);
-			break;
-		}
+		if (keybOrTap == 0) //keyboard mode
+		{ 
+			switch (prevClick) 
+			{
+				case 0:	
+				case 1:	//All rows
+					/*controllerScript.rowToUse = 3;
+					controllerScript.capitalChance = 15;
+					if(GameObject.Find ("InputText").GetComponent<Text>().text == "")
+						controllerScript.goal = 57;
+					else 
+						controllerScript.goal = 60 - int.Parse(GameObject.Find ("InputText").GetComponent<Text>().text);
+					controllerScript.mode = 0;
+					Application.LoadLevel(2);*/
+					loadLevel (3, 15, 0, 2);
+					break;
+				case 2: //Top Row
+					loadLevel (0, 15, 0, 2);
+					break;
+				case 3:	//Middle Row
+					loadLevel (1, 15, 0, 2);
+					break;
+				case 4:	//Bottom Row
+					/*controllerScript.rowToUse = 2;
+					controllerScript.capitalChance = 15;
+					controllerScript.goal = 57;
+					controllerScript.mode = 0;
+					Application.LoadLevel(2);*/
+					loadLevel (2, 15, 0, 2);
+					break;
+			}
+		} else if (keybOrTap == 1)//tap mode
+			loadLevel(3, 25, 1, 2);
 	}
 
 	public void bootCampMenu(int button)
@@ -84,29 +101,42 @@ public class LoadOnClick : MonoBehaviour {
 			toggleMenu ("BootCampMenu");
 		} else {
 			if(button==1)//keyboard mode
-				controllerScript.mode = 0;
+				prevClick = 0;
 			if(button==2)//Tap mode
+				prevClick = 1;
+			toggleMenu ("BCInputMenu");
+		}
+	}
+	public void bootCamptInputMenu(int button)
+	{
+		if (button == 0)//clicked back button
+			toggleMenu ("BCInputMenu");
+		else if (button == 1) {//clicked start button
+			if (prevClick == 1)//keyboard mode
+				controllerScript.mode = 0;
+			if (prevClick == 2)//Tap mode
 				controllerScript.mode = 1;
 
 			controllerScript.capitalChance = 25;
-			controllerScript.goal = 9997;
+			controllerScript.goal = 10000 - GameObject.Find ("BCSpawnRateSlider").GetComponent<Slider> ().value;
 			controllerScript.infinite = true;
 			controllerScript.rowToUse = 3;
+			inputtedTime = 60 * GameObject.Find ("TimeSlider").GetComponent<Slider> ().value;
 			Application.LoadLevel (2);
 		}
 	}
-	
 	public void loadLevel(int row, int cap, int mode, int level)
-	{ Debug.Log("inLoadLevel"+GameObject.Find ("InputText").GetComponent<Text> ().text);
+	{ 
 		controllerScript.rowToUse = row;
 		controllerScript.capitalChance = cap;
-		if (GameObject.Find ("InputText").GetComponent<Text> ().text == "") {
-			controllerScript.goal = 57;
-			Debug.Log("in");
+		/*if (GameObject.Find ("InputText").GetComponent<Text> ().text == "") {
+			controllerScript.goal = (GameObject.Find ("TimeSlider").GetComponent<Slider> ().value * 60) - 3;
 		}
 		else 
-			controllerScript.goal = 60 - float.Parse(GameObject.Find ("InputText").GetComponent<Text>().text);
+			controllerScript.goal = 60 - float.Parse(GameObject.Find ("InputText").GetComponent<Text>().text);*/
+		controllerScript.goal = (GameObject.Find ("TimeSlider").GetComponent<Slider> ().value * 60) - GameObject.Find ("SpawnRateSlider").GetComponent<Slider> ().value;
 		controllerScript.mode = mode;
+		inputtedTime = 60 * GameObject.Find ("TimeSlider").GetComponent<Slider> ().value;
 		Application.LoadLevel(level);
 	}
 
