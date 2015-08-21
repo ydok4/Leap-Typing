@@ -303,7 +303,7 @@ public class controllerScript : MonoBehaviour {
 											side=Random.Range(0,alpha1.Length/2);
 											int randNum=Random.Range(0,100);
 											if(randNum<capitalChance)
-												side+=Random.Range(0,alpha1.Length/2);
+												side=alpha1.Length/2+Random.Range(0,alpha1.Length/2);
 											
 									}
 									c = alpha1[side].ToString ();
@@ -332,7 +332,7 @@ public class controllerScript : MonoBehaviour {
 										side=Random.Range(0,alpha2.Length/2);
 										int randNum=Random.Range(0,100);
 										if(randNum<capitalChance)
-											side+=Random.Range(0,alpha2.Length/2);
+											side=alpha2.Length/2+Random.Range(0,alpha2.Length/2);
 										
 									}
 									c = alpha2[side].ToString ();
@@ -361,7 +361,7 @@ public class controllerScript : MonoBehaviour {
 										side=Random.Range(0,alpha3.Length/2);
 										int randNum=Random.Range(0,100);
 										if(randNum<capitalChance)
-											side+=Random.Range(0,alpha3.Length/2);
+											side=alpha3.Length/2+Random.Range(0,alpha3.Length/2);
 										
 									}
 									c = alpha3[side].ToString ();
