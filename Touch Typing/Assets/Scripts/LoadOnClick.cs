@@ -5,7 +5,8 @@ using System.Collections;
 public class LoadOnClick : MonoBehaviour {
 
 	private int prevClick, keybOrTap;
-	public Text gameTimeText, spawnRateText, BCSpawnRateText;
+	public Text gameTimeText, spawnRateText, capitalChanceText;
+	public Text BCSpawnRateText, BCCapitalChanceText;
 	public static float inputtedTime;
 
 	void Awake(){
@@ -24,7 +25,10 @@ public class LoadOnClick : MonoBehaviour {
 			spawnRateText.text = "A letter every " + GameObject.Find ("SpawnRateSlider").GetComponent<Slider> ().value + " second(s)";
 		if(BCSpawnRateText!=null)
 			BCSpawnRateText.text = "A letter every " + GameObject.Find ("BCSpawnRateSlider").GetComponent<Slider> ().value + " second(s)";
-
+		if(BCCapitalChanceText!=null)
+			BCCapitalChanceText.text = (5 * (int)GameObject.Find ("BCCapitalChanceSlider").GetComponent<Slider> ().value) + "%";
+		if(capitalChanceText!=null)
+			capitalChanceText.text = (5 * (int)GameObject.Find ("CapitalChanceSlider").GetComponent<Slider> ().value) + "%";
 	}
 
 	public void MainMenu (int button)
@@ -73,13 +77,13 @@ public class LoadOnClick : MonoBehaviour {
 						controllerScript.goal = 60 - int.Parse(GameObject.Find ("InputText").GetComponent<Text>().text);
 					controllerScript.mode = 0;
 					Application.LoadLevel(2);*/
-					loadLevel (3, 15, 0, 2);
+					loadLevel (3, 0, 2);
 					break;
 				case 2: //Top Row
-					loadLevel (0, 15, 0, 2);
+					loadLevel (0, 0, 2);
 					break;
 				case 3:	//Middle Row
-					loadLevel (1, 15, 0, 2);
+					loadLevel (1, 0, 2);
 					break;
 				case 4:	//Bottom Row
 					/*controllerScript.rowToUse = 2;
@@ -87,11 +91,11 @@ public class LoadOnClick : MonoBehaviour {
 					controllerScript.goal = 57;
 					controllerScript.mode = 0;
 					Application.LoadLevel(2);*/
-					loadLevel (2, 15, 0, 2);
+					loadLevel (2, 0, 2);
 					break;
 			}
 		} else if (keybOrTap == 1)//tap mode
-			loadLevel(3, 25, 1, 2);
+			loadLevel(3, 1, 2);
 	}
 
 	public void bootCampMenu(int button)
@@ -117,7 +121,7 @@ public class LoadOnClick : MonoBehaviour {
 			if (prevClick == 2)//Tap mode
 				controllerScript.mode = 1;
 
-			controllerScript.capitalChance = 25;
+			controllerScript.capitalChance = 5 * (int)GameObject.Find ("BCCapitalChanceSlider").GetComponent<Slider> ().value;
 			controllerScript.goal = 10000 - GameObject.Find ("BCSpawnRateSlider").GetComponent<Slider> ().value;
 			controllerScript.infinite = true;
 			controllerScript.rowToUse = 3;
@@ -125,10 +129,10 @@ public class LoadOnClick : MonoBehaviour {
 			Application.LoadLevel (2);
 		}
 	}
-	public void loadLevel(int row, int cap, int mode, int level)
+	public void loadLevel(int row, int mode, int level)
 	{ 
 		controllerScript.rowToUse = row;
-		controllerScript.capitalChance = cap;
+		controllerScript.capitalChance = 5 * (int)GameObject.Find ("CapitalChanceSlider").GetComponent<Slider> ().value;
 		/*if (GameObject.Find ("InputText").GetComponent<Text> ().text == "") {
 			controllerScript.goal = (GameObject.Find ("TimeSlider").GetComponent<Slider> ().value * 60) - 3;
 		}
