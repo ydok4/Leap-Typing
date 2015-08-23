@@ -64,6 +64,9 @@ public class controllerScript : MonoBehaviour {
 
 	//The current Character string that a player is typing. Used for detecting misses and resetting progress
 	public string currentCharTyping;
+
+	//Checks what word is currently being typed. Used in mode 2 (keyboard string typing mode);
+	public int wordTyping;
 	//Players score
 	public int score;
 
@@ -79,6 +82,12 @@ public class controllerScript : MonoBehaviour {
 	//Sound stuff
 	public AudioClip miss;
 	AudioSource audio;
+
+	//Contains dictionary list of words
+	public static List<string> wordBank=new List<string>();
+
+	//Keeps track of how many asteroids the player has shot in keyboard mod
+	public int rowCount;
 
 	public class characters {
 		public GameObject charObj;
@@ -101,7 +110,7 @@ public class controllerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		mode = 2;
 		//Changing the gun material
 		GameObject.Find ("shipGunR1").GetComponentInChildren<MeshRenderer> ().material = characterMaterialBlue;
 		GameObject.Find ("shipGunR2").GetComponentInChildren<MeshRenderer> ().material = characterMaterialCyan;
@@ -111,7 +120,7 @@ public class controllerScript : MonoBehaviour {
 		GameObject.Find ("shipGunL2").GetComponentInChildren<MeshRenderer> ().material = characterMaterialYellow;
 		GameObject.Find ("shipGunL3").GetComponentInChildren<MeshRenderer> ().material = characterMaterialOrange;
 		GameObject.Find ("shipGunL4").GetComponentInChildren<MeshRenderer> ().material = characterMaterialRed;
-		if (mode == 0) 
+		if (mode == 0 || mode == 2) 
 		{
 			GameObject.Find ("GestureController").transform.localRotation = Quaternion.Euler (270f,180f,0f);
 		}
@@ -132,8 +141,15 @@ public class controllerScript : MonoBehaviour {
 
 		//for testing purposes
 		//mode = 0;
-		if (mode == 1) {
+		if (mode == 1) 
+		{
 			GameObject.Find ("SpaceShip_v003:Layer1").SetActive (false);
+		} 
+		else if (mode == 2)
+		{
+			setUpWordBank ();
+			wordTyping=-1;
+			rowCount = 0;
 		}
 		//Sets up alphabet
 		Camera.main.fieldOfView = 180.0f;
@@ -152,7 +168,6 @@ public class controllerScript : MonoBehaviour {
 		//alpha2="asdfghjkl;'";
 		//alpha3="zxcvbnm,./";
 		currentCharTyping = "-1";
-
 		//Sets variables to default
 		Reset ();
 		//Sets the players model to where the camera is
@@ -181,6 +196,7 @@ public class controllerScript : MonoBehaviour {
 			//Getting the data. Will need to be done on each game load.
 			int[] anArray2 = PlayerPrefsX.GetIntArray ("Numbers");
 		*/
+
 	}
 	void Reset()
 	{
@@ -235,40 +251,67 @@ public class controllerScript : MonoBehaviour {
 		if (time > 0 && paused==false && delay<=0) {
 			time -= Time.deltaTime;
 					
-			if(mode==0) //Miss checking is performed externally from the characters in keyboard. It is handled in charScript for tap mode
+			if(mode==0 || mode == 2) //Miss checking is performed externally from the characters in keyboard. It is handled in charScript for tap mode and it is handled here for single char and string mode
 			{
-				if (Input.anyKeyDown ) {
+				string debug="";
+				if (Input.anyKeyDown )
+				{
 					bool found=false;
-					if(Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift))
+					if(mode==0 || wordTyping==-1)
 					{
-						foreach(string c in charList)
+						if(Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift))
 						{
-							if(c ==(Input.inputString))
-								if(c==c.ToUpper())
+							foreach(string c in charList)
+							{
+								if(c ==(Input.inputString))
+									if(c==c.ToUpper())
+										found=true;
+							}
+						}
+						else
+						{
+							foreach(string c in charList)
+							{
+								//debug+="c: "+c+" Input.inputString: "+Input.inputString+" | ";
+								if(c ==(Input.inputString))
 									found=true;
+							}
 						}
+						//if(found==false)
+							//Debug.Log("SIZE: "+charList.Count+"-MODE0:\n "+debug);
+						currentCharTyping="-1";
 					}
-					else
+					else if(mode==2)
 					{
-						foreach(string c in charList)
-						{
-							if(c ==(Input.inputString))
+						for(int i=0;i<characterList[wordTyping].chars.Length;i++)
+						{//
+							debug+="characterListChar: "+characterList[wordTyping].chars[i].ToString()+" currentCharTyping: "+currentCharTyping+" Input.inputString: "+Input.inputString+" | ";
+							if(characterList[wordTyping].chars[i].ToString()==currentCharTyping && currentCharTyping==Input.inputString)
+							{
 								found=true;
+								break;
+							}
 						}
+						//if(found==false)
+						//	Debug.Log("MISSED-MODE2:\n "+debug);
 					}
-					currentCharTyping="-1";
 					if(found==false && (!Input.GetKeyDown (KeyCode.LeftShift)&&!Input.GetKey (KeyCode.RightShift) && !Input.GetKey (KeyCode.Escape)))
 					{
+						//Debug.Log("MISSED");
 						missed++;
 						GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = true;
 						Invoke ("PopUp", 0.5f);
 						audio.PlayOneShot(miss, 1F);
+						if(mode==2)
+							wordTyping=-1;
+						currentCharTyping="-1";
 					}
 				}
 			}
 
 
-			if ((int)time < goal && characterList.Count!=26) {
+			if ((int)time < goal && characterList.Count!=26) 
+			{
 				Vector3 v3Pos=new Vector3(0,0,0);
 				string c="a";
 				int side=0;
@@ -286,21 +329,23 @@ public class controllerScript : MonoBehaviour {
 					row=2;
 				else//Selects what row get and put the character on.
 					row=Random.Range (0,3);
-
+				//Keyboard mode single char
 				if(mode==0)
 				{
 					switch(row)
 					{
 						case 0:  
-								
+								//Will iterate through a maximum of 33 times to find out if the letter selected already exists
 								for(int j=0;j<33;j++)
 								{
 									bool found=false;
+									//Checks if there is a chance for a capital letter to spawn
 									if(capitalChance==0)
 										side=Random.Range(0,alpha1.Length);
 									else
 									{
 											side=Random.Range(0,alpha1.Length/2);
+											//Generate a random int and if it is below the capital chance spawn a random capital letter
 											int randNum=Random.Range(0,100);
 											if(randNum<capitalChance)
 												side=alpha1.Length/2+Random.Range(0,alpha1.Length/2);
@@ -384,6 +429,7 @@ public class controllerScript : MonoBehaviour {
 									break;
 					}
 				}
+				//Tap mode
 				else if(mode==1)
 				{
 					switch(row)
@@ -411,11 +457,61 @@ public class controllerScript : MonoBehaviour {
 						break;
 					}
 				}
-				//#############################################################Used for testing strings with multiple chars and cases.
-				//Comment out for loop if you want only 1 char
-				/*for(int i=0;i<2;i++)
+				//keyboard mode string
+				else if(mode == 2)
 				{
-					c+=alpha[Random.Range(0,alpha.Length)].ToString ();
+					//Spawn positions of each string
+					Vector3 v3Pos1= new Vector3(-4.0f,0.0f,15f);
+					Vector3 v3Pos2= new Vector3(-1.0f,0.0f,15f);
+					Vector3 v3Pos3= new Vector3(2.0f,0.0f,15f);
+
+					//String value of each string
+					string c1="";
+					string c2="";
+					string c3="";//(po)
+
+					//Build each string
+					/*for(int i=0;i<3;i++)
+					{
+						c1=alpha[Random.Range(0,alpha.Length)].ToString ();
+					}
+					for(int i=0;i<3;i++)
+					{
+						c2=alpha[Random.Range(0,alpha.Length)].ToString ();
+					}
+					for(int i=0;i<3;i++)
+					{
+						c3=alpha[Random.Range(0,alpha.Length)].ToString ();
+					}*/
+					c1=wordBank[Random.Range(0,wordBank.Count)];//Random.Range(0,wordBank.Count)
+					do 
+					{
+						c2=wordBank[Random.Range(0,wordBank.Count)];
+					}while(c2==c1 || c2[0]==c1[0]);
+					do 
+					{
+						c3=wordBank[Random.Range(0,wordBank.Count)];
+					}while(c3==c1 || c3==c2 || c3[0]==c1[0] || c3[0]==c2[0]);
+					
+
+
+					//Spawn each string and Adds them to the list which keeps track of all active characters
+					characters newChar1=new characters(characterList.Count, c1,v3Pos1,mode);
+					characterList.Add(newChar1);
+					characters newChar2=new characters(characterList.Count, c2,v3Pos2,mode);
+					characterList.Add(newChar2);
+					characters newChar3=new characters(characterList.Count, c3,v3Pos3,mode);
+					characterList.Add(newChar3);
+				}
+
+				/*if(mode == 2)
+				{
+					//#############################################################Used for testing strings with multiple chars and cases.
+					//Comment out for loop if you want only 1 char
+					for(int i=0;i<2;i++)
+					{
+						c+=alpha[Random.Range(0,alpha.Length)].ToString ();
+					}
 				}*/
 				//Spawns characters outside the camera range. Comment out if not desired behaviour
 				/*v3Pos = new Vector3(0.857f, 0.857f, 0.0f);
@@ -423,12 +519,14 @@ public class controllerScript : MonoBehaviour {
 				v3Pos += new Vector3(0.5f, 0.5f, 6.0f);
 				v3Pos = Camera.main.ViewportToWorldPoint(v3Pos);*/
 
-				//Spawns the new character. v3Pos is where it spawns in the world
-				characters newChar=new characters(characterList.Count, c,v3Pos,mode);
+				if(mode==0 || mode==1)
+				{
+					//Spawns the new character. v3Pos is where it spawns in the world
+					characters newChar=new characters(characterList.Count, c,v3Pos,mode);
 
-				//Adds them to the list which keeps track of all active characters
-				characterList.Add(newChar);
-
+					//Adds them to the list which keeps track of all active characters
+					characterList.Add(newChar);
+				}
 				//DECREMENT: should match the interval between the initial time and intial goal.
 				goal-=spawn;
 			}
@@ -465,10 +563,77 @@ public class controllerScript : MonoBehaviour {
 		}
 		return 0;
 	}
-	void OnTriggerEnter(Collider other) {
-		//Debug.Log("Collision1");
+	void setUpWordBank()
+	{
+		//nouns
+		wordBank.Add ("time");
+		wordBank.Add ("person");
+		wordBank.Add ("year");
+		wordBank.Add ("way");
+		wordBank.Add ("day");
+		wordBank.Add ("man");
+		wordBank.Add ("world");
+		wordBank.Add ("life");
+		wordBank.Add ("hand");
+		wordBank.Add ("part");
+		wordBank.Add ("child");
+		wordBank.Add ("eye");
+		wordBank.Add ("woman");
+		wordBank.Add ("place");
+		wordBank.Add ("work");
+		wordBank.Add ("week");
+		wordBank.Add ("point");
+		wordBank.Add ("government");
+		wordBank.Add ("company");
+		wordBank.Add ("number");
+		wordBank.Add ("group");
+		wordBank.Add ("problem");
+		wordBank.Add ("fact");
+		wordBank.Add ("apple");
+		wordBank.Add ("igloo");
+		wordBank.Add ("jump");
+		wordBank.Add ("king");
+		wordBank.Add ("queen");
+		wordBank.Add ("rain");
+		wordBank.Add ("safe");
+		wordBank.Add ("usual");
+		wordBank.Add ("valley");
+		wordBank.Add ("zebra");
+		//verbs
+		wordBank.Add ("good");
+		wordBank.Add ("new");
+		wordBank.Add ("first");
+		wordBank.Add ("last");
+		wordBank.Add ("long");
+		wordBank.Add ("great");
+		wordBank.Add ("little");
+		wordBank.Add ("able");
+		wordBank.Add ("other");
+		wordBank.Add ("old");
+		wordBank.Add ("right");
+		wordBank.Add ("big");
+		wordBank.Add ("high");
+		wordBank.Add ("different");
+		wordBank.Add ("small");
+		wordBank.Add ("large");
+		wordBank.Add ("next");
+		wordBank.Add ("early");
+		wordBank.Add ("young");
+		wordBank.Add ("important");
+		wordBank.Add ("same");
+		wordBank.Add ("public");
+		wordBank.Add ("bad");
+		wordBank.Add ("cross");
+		wordBank.Add ("invent");
+		wordBank.Add ("jab");
+		wordBank.Add ("kick");
+		wordBank.Add ("meet");
+		wordBank.Add ("question");
+		wordBank.Add ("thousand");
+		wordBank.Add ("under");
+		wordBank.Add ("value");
+			
 	}
-
 	public void PopUp()
 	{
 		GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = false;

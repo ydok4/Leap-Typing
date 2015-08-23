@@ -69,10 +69,10 @@ public class charScript : MonoBehaviour {
 			gameObject.GetComponent<MeshRenderer> ().material = GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterial;
 		else if (mode == 0)
 			gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial (val);
-
-
-		//Debug.Log ("Before material debug");
-		//Debug.Log (gameObject.GetComponent<MeshRenderer> ().material);
+		else if(mode==2 && loc>2)
+			gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial ("-1");
+		else if(mode==2)
+			gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial (val[0].ToString());
 
 		//Modify Asteroid Scale
 		gameObject.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
@@ -106,7 +106,7 @@ public class charScript : MonoBehaviour {
 		text.GetComponent<RectTransform> ().localScale=new Vector3(1,1,1);
 		text.GetComponent<RectTransform> ().sizeDelta = new Vector2 (1.0f, 1.0f);
 
-		if (mode != 1)//Only for keboard mode
+		if (mode == 0)//Only for keboard mode
 			//Makes character look at camera
 			gameObject.transform.LookAt (Camera.main.transform.position);
 		else
@@ -115,7 +115,7 @@ public class charScript : MonoBehaviour {
 		//Initialises checkedChar to the first character location (of Val)
 		checkedChar = -1;
 		
-		NextLetter(checkedChar);
+		NextLetter(checkedChar,true);
 		
 		reset = false;
 		gameObject.transform.parent = null;
@@ -147,9 +147,9 @@ public class charScript : MonoBehaviour {
 		//Checks if game is paused
 		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == false ) 
 		{
-
+			
 			//Checks if the the key pressed meets conditions to be considered for checking. Ie A button has been pressed, the word is not completed and the current typing char is empty or already set to the current char
-			if (((Input.anyKeyDown) && fired == false && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1" || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping==val)) && mode==0)
+			if (((Input.anyKeyDown) && fired == false && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1" || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping==val[checkedChar].ToString())) && (mode==0 || mode==2) && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping==loc || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping==-1))
 			{
 				
 				bool foundLetter=false;
@@ -206,7 +206,6 @@ public class charScript : MonoBehaviour {
 					//Used for alpha characters. If only NonAlpha characters worked the same way
 					if(Input.GetKeyDown (checkChar.ToLower ()))
 					{
-						//Debug.Log("STANDARD LETTER CHECKING METHOD CHECKED");
 						foundLetter=true;
 					}
 				}
@@ -221,15 +220,19 @@ public class charScript : MonoBehaviour {
 					if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false)
 					{
 						//Checks if the char is the first char of the string and that there is string currently being typed and sets the the current typed string to this objects value
-						if(checkedChar==0 && val.Length!=1 && GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1")
-							GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=val;
+
+						if(checkedChar==0 && val.Length!=1 && GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1" && mode==0)
+							GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=val[0].ToString();
+
 						//Checks to make sure the case is correct and that the character pressed is correct. It double checks uppercase nonAlpha characters, probably should fix at some point but it works atm.
 						if((((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && charUpper==true && foundLetter==true )|| (charUpper==false && !Input.GetKey (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))&& isNonAlpha==false && foundLetter==true)|| (continueOn==true && ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && isNonAlphaUpper==true || isNonAlphaUpper==false && !Input.GetKey (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))))
 						{
 							
-							//Checks if the character pressed was the last char and spawns a projectile to kill it
-							if(checkedChar+1==val.Length)
+							//Checks if the character pressed was the last char and spawns a projectile to kill it. Also checks if it is in the front row if it is in string keyboard mode
+							if(checkedChar+1==val.Length || (mode==2 && loc<3 && checkedChar+1==val.Length) || mode==0)
 							{
+
+
 								//Creates a projectile object which will move towards this character
 								GameObject projectile = new GameObject ();
 								
@@ -244,33 +247,48 @@ public class charScript : MonoBehaviour {
 								else
 									projectile.GetComponent<projectileScript> ().target = val;
 								fired=true;
+								//If the game is in single char keyboard mode remove the char, if it is in string mode remove 3 chars
+								//if(mode==0)
 								removeCharacter();
+								//else if(mode==2)
+								//	remove3Character();
 								GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping="-1";
 								audio.PlayOneShot(hit, 1F);
+								if(mode==2)
+									GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping=-1;
 							}
 							//Picks the next char and updates components to reflect that
 							else
 							{
-								
-								
-								//Removes current character from charList. So it is once again a non missable character
-								removeCharacter();
-								//Gets the next char in the string by passing it the index of the current char
-								NextLetter(checkedChar);
-								
-								//Change character/mesh colour 
-								//apply small explosion / shake effect 
-								
-								//Updates displayed text
-								text.GetComponent<Text>().text="";
-								for(int i=checkedChar;i<val.Length;i++)
+								//Should only move to the next char if the correct button was pressed and it is single char keyboard mode or it is multi char keyboard, the correct button was pressed and it was correct for only any asteroid in the first row
+								if(mode==0 || (mode==2 && loc<3))
 								{
-									text.GetComponent<Text>().text+=val[i];
+									//Removes current character from charList. So it is once again a non missable character
+									removeCharacter();
+									//Gets the next char in the string by passing it the index of the current char
+									NextLetter(checkedChar,true);
+									//Debug.Log ("Checkchar: " + checkChar);
+									GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=checkChar;
+									//Change character/mesh colour 
+									//apply small explosion / shake effect 
+									gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial (val[checkedChar].ToString());
+									//Updates displayed text
+									text.GetComponent<Text>().text="";
+
+									for(int i=checkedChar;i<val.Length;i++)
+									{
+										text.GetComponent<Text>().text+=val[i];
+									}
+									if(mode==2)
+										GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping=loc;
 								}
 							}
 						}
 						else if(!Input.GetKeyDown (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
-							ResetString ();
+						{
+							//Debug.Log("RESET STRING 1");
+							ResetString (false);
+						}
 
 						
 					}
@@ -280,7 +298,10 @@ public class charScript : MonoBehaviour {
 				{
 					//Makes sure left shift (by itself) doesnt reset char string
 					if(!Input.GetKeyDown (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
-						ResetString ();
+					{
+						//Debug.Log("RESET STRING 2");
+						ResetString (true);
+					}
 				}
 			}
 			else if(mode==1 && fired == false) //If it is in tap mode and leap is connected
@@ -327,12 +348,15 @@ public class charScript : MonoBehaviour {
 			{
 				//Makes sure left shift (by itself) doesnt reset char string
 				if(!Input.GetKeyDown (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
-					ResetString ();
+				{
+					//Debug.Log("RESET STRING 3");
+					ResetString (false);
+				}
 			}
 			
 			
 
-			if(mode!=1)//Special condition for leap mode so asteroids will move past the camera
+			if(mode==0)//Special condition for leap mode so asteroids will move past the camera
 				//Makes sure the object is looking at the camera
 				gameObject.transform.LookAt (Camera.main.transform.position); 
 			if(mode==0)
@@ -343,13 +367,14 @@ public class charScript : MonoBehaviour {
 				else if (start.x > 0)
 					gameObject.transform.position += transform.right * Time.deltaTime * 1.5f;
 			}
-			else if (mode == 1) //Tap/leap mode
+			else if (mode == 1 || mode==2) //Tap/leap mode
 			{
 				gameObject.transform.position += transform.forward * 0.0027f; //0.0045
 			}
 			aliveTime-= Time.deltaTime;
-			
-			if (aliveTime<=0 && GetComponent<Renderer>().isVisible==false || (mode == 1 && gameObject.transform.position.z < 0)) {
+			//Despawn if criteria has been met
+			if (aliveTime<=0 && GetComponent<Renderer>().isVisible==false || (mode != 0 && gameObject.transform.position.z < 0.5)) 
+			{
 				
 				if (GameObject.Find ("Projectile :" + val) != null) {
 					Destroy (GameObject.Find ("Projectile :" + val));
@@ -357,34 +382,46 @@ public class charScript : MonoBehaviour {
 				GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed++;
 				GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = true;
 				Invoke ("PopUp", 0.5f);
-				destroyCharacterString ();
-				removeCharacter();
+				if(mode==1)
+				{
+					destroyCharacterString ();
+					removeCharacter();
+				}
+				if(mode==2)
+				{
+					destroy3CharacterString ();
+					if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount == 3)
+						remove3Character();
+				}
 			}	
 		}
 	}
 	//Makes string go back to default value if typo is detected. Also resets the currentCharTyping string
-	void ResetString()
+	void ResetString(bool addNewChar)
 	{
 		removeCharacter();
 		checkedChar=-1;
-		NextLetter(checkedChar);
+		NextLetter(checkedChar,addNewChar);
+		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping = "-1";
 		text.GetComponent<Text>().text=val;
-		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping="-1";	
+		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping=-1;
+		gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial (val[checkedChar].ToString());
 	}
-	void NextLetter(int currLetter)
+	void NextLetter(int currLetter, bool addNewChar)
 	{
 		//Change to the next char and check case
 		checkedChar++;
 		//Work around for Input.GetKeyDown not working with chars and ToString wouldnt work
 		checkChar = "";
 		checkChar+=val[checkedChar];
-		
-		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().charList.Add(checkChar);
+		if(addNewChar==true)
+			GameObject.Find ("Main Camera").GetComponent<controllerScript> ().charList.Add(checkChar);
 		//used to check if current char is upper or lowercase
 		charUpper=false;
 		isNonAlpha=false;
 		string testChar="{";
-		if (checkChar == checkChar.ToUpper()) {
+		if (checkChar == checkChar.ToUpper()) 
+		{
 			charUpper=true;
 			//Sets the correct charUpper for non alphanumeric characters and checks if the nonAlpha is uppercase. Ie {}:"<>?
 			if(checkChar == "[" || checkChar == "]" || checkChar == ";" || checkChar == "'" || checkChar == "," || checkChar == "." || checkChar == "/")
@@ -400,19 +437,34 @@ public class charScript : MonoBehaviour {
 				isNonAlphaUpper=true;
 			}
 		}
+
+
 	}
 	void OnTriggerEnter(Collider other) {
 		//If the object is hit by the projectile it will update the score and destroy itself.
 		if (other.name == "Projectile :"+val) {
 			GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score += 1;
-			destroyCharacterString();
-			removeCharacter();
+			if(mode==0  )
+			{
+				destroyCharacterString();
+				removeCharacter();
+				GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount++;
+			}
+			else if(mode==2 && GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount<=3)
+			{
+				destroy3CharacterString();
 
-			//Once collision between the projectile and object is met, it will instantiate the explosion prefab.
-			Object explosionObj = Instantiate(explosion, transform.position, transform.rotation);
+				if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount == 3)
+					remove3Character();
+			}
+			if(mode==0 || mode==2)
+			{
+				//Once collision between the projectile and object is met, it will instantiate the explosion prefab.
+				Object explosionObj = Instantiate(explosion, transform.position, transform.rotation);
 
-			//This destroys the created prefab after 2 seconds, freeing up resources
-			Destroy (explosionObj,3.0f);
+				//This destroys the created prefab after 2 seconds, freeing up resources
+				Destroy (explosionObj,3.0f);
+			}
 		}
 	}
 	void destroyCharacterString() //Called whenever the string is destroyed. Ie hit by projectile or moves into the kill zone.
@@ -436,8 +488,42 @@ public class charScript : MonoBehaviour {
 		{
 			//Finds the character object in the list and removes itself from it
 			if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().charList[i]==checkChar)
+			{
 				GameObject.Find ("Main Camera").GetComponent<controllerScript> ().charList.RemoveAt(i);
+				break;
+			}
 		}
+	}
+	void remove3Character() //Removes the asteroids in the same row when they have all been destroyed
+	{
+		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.RemoveAt(2);
+		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.RemoveAt(1);
+		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.RemoveAt(0);
+		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount = 0;
+
+		//Change material to the correct colour
+		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[0].charObj.GetComponent<MeshRenderer> ().material = asteroidMaterial (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[0].charObj.GetComponent<charScript> ().val[0].ToString());
+		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[1].charObj.GetComponent<MeshRenderer> ().material = asteroidMaterial (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[1].charObj.GetComponent<charScript> ().val[0].ToString());
+		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[2].charObj.GetComponent<MeshRenderer> ().material = asteroidMaterial (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[2].charObj.GetComponent<charScript> ().val[0].ToString());
+	}
+	void destroy3CharacterString() //Called whenever the string is destroyed. Ie hit by projectile or moves into the kill zone.
+	{
+		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount == 2) 
+		{
+
+			for (int i=3; i<GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.Count; i++)
+			{
+				//Updates the location of each character
+				GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList [i].location -= 3;
+				GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList [i].charObj.GetComponent<charScript> ().loc -= 3;
+			}
+		} 
+		//else
+		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount++;
+		Destroy (this.gameObject);
+		//Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[0].charObj);
+		//Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[1].charObj);
+		//Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[2].charObj);
 	}
 	Material asteroidMaterial(string val) //make 'spawn' for projectileScript
 	{

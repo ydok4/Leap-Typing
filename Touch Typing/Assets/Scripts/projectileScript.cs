@@ -5,7 +5,6 @@ public class projectileScript : MonoBehaviour {
 	public string target;
 	string spawn;
 	public Vector3 start;
-	
 	// Use this for initialization
 	void Start () {
 		//Sets target to lower case version so it comes out the right place
@@ -66,11 +65,14 @@ public class projectileScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//Checks if game is paused
-		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == false) {
+		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == false && GameObject.Find (target)!=null) 
+		{
 			//Makes sure the object is always looking at the target char and moves towards it
 			gameObject.transform.LookAt (GameObject.Find (target).transform.position); 
 			gameObject.transform.position += transform.forward * Time.deltaTime * 6;
 		}
+		if(GameObject.Find (target)==null)
+			Destroy(gameObject);
 	}
 	void OnTriggerEnter(Collider col)
 	{
@@ -115,6 +117,6 @@ public class projectileScript : MonoBehaviour {
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBrown;
 		}
 		//Debug.Log ("In DEFAULT");
-		return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterial;
+		return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialRed;
 	}
 }
