@@ -141,15 +141,15 @@ public class charScript : MonoBehaviour {
 		}
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	// LateUpdate is called once per frame after all other update functions have been completed
+	void LateUpdate () {
 		
 		//Checks if game is paused
 		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == false ) 
 		{
 			
 			//Checks if the the key pressed meets conditions to be considered for checking. Ie A button has been pressed, the word is not completed and the current typing char is empty or already set to the current char
-			if (((Input.anyKeyDown) && fired == false && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1" || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping==val[checkedChar].ToString())) && (mode==0 || mode==2) && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping==loc || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping==-1))
+			if (((Input.anyKeyDown) && fired == false && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1" || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping==val[checkedChar].ToString())) && (mode==0 || mode==2))
 			{
 				
 				bool foundLetter=false;
@@ -255,12 +255,15 @@ public class charScript : MonoBehaviour {
 								GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping="-1";
 								audio.PlayOneShot(hit, 1F);
 								if(mode==2)
+								{
 									GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping=-1;
+									//GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wait=0.01f;
+								}
 							}
 							//Picks the next char and updates components to reflect that
 							else
 							{
-								//Should only move to the next char if the correct button was pressed and it is single char keyboard mode or it is multi char keyboard, the correct button was pressed and it was correct for only any asteroid in the first row
+								//Should only move to the next char if the correct button was pressed and it is single char keyboard mode or if it is multi char keyboard, the correct button was pressed and it was correct for only any asteroid in the first row
 								if(mode==0 || (mode==2 && loc<3))
 								{
 									//Removes current character from charList. So it is once again a non missable character
@@ -280,7 +283,9 @@ public class charScript : MonoBehaviour {
 										text.GetComponent<Text>().text+=val[i];
 									}
 									if(mode==2)
+									{
 										GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping=loc;
+									}
 								}
 							}
 						}
@@ -402,9 +407,9 @@ public class charScript : MonoBehaviour {
 		removeCharacter();
 		checkedChar=-1;
 		NextLetter(checkedChar,addNewChar);
-		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping = "-1";
+		//GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping = "-1";
 		text.GetComponent<Text>().text=val;
-		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping=-1;
+		//GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping=-1;
 		gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial (val[checkedChar].ToString());
 	}
 	void NextLetter(int currLetter, bool addNewChar)

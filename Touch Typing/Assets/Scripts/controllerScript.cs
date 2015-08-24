@@ -43,6 +43,8 @@ public class controllerScript : MonoBehaviour {
 	//Time when first spawn happens
 	public static float goal;
 
+	public float wait;
+
 	//Float interval between next spawn
 	float spawn;
 
@@ -89,6 +91,10 @@ public class controllerScript : MonoBehaviour {
 	//Keeps track of how many asteroids the player has shot in keyboard mod
 	public int rowCount;
 
+	//External way to invoke the miss method
+	public bool playMissSound;
+
+
 	public class characters {
 		public GameObject charObj;
 		public int location;
@@ -109,8 +115,9 @@ public class controllerScript : MonoBehaviour {
 	};
 
 	// Use this for initialization
-	void Start () {
-		mode = 2;
+	void Start () 
+	{
+
 		//Changing the gun material
 		GameObject.Find ("shipGunR1").GetComponentInChildren<MeshRenderer> ().material = characterMaterialBlue;
 		GameObject.Find ("shipGunR2").GetComponentInChildren<MeshRenderer> ().material = characterMaterialCyan;
@@ -197,6 +204,8 @@ public class controllerScript : MonoBehaviour {
 			int[] anArray2 = PlayerPrefsX.GetIntArray ("Numbers");
 		*/
 
+		wait = -1;
+
 	}
 	void Reset()
 	{
@@ -232,7 +241,7 @@ public class controllerScript : MonoBehaviour {
 			}
 		}
 	}
-	// Update is called once per frame
+	// Update is called once per frame before LateUpdate is called
 	void Update () {
 		//Pauses or unpauses the game if escape is pressed
 
@@ -250,14 +259,34 @@ public class controllerScript : MonoBehaviour {
 		//Checks if there is any more time for the game to run or if the game is paused
 		if (time > 0 && paused==false && delay<=0) {
 			time -= Time.deltaTime;
-					
+
+			/*if(wait>0)
+				wait-=Time.deltaTime;
+			if(wait<0)
+				wait=-1;*/
 			if(mode==0 || mode == 2) //Miss checking is performed externally from the characters in keyboard. It is handled in charScript for tap mode and it is handled here for single char and string mode
 			{
 				string debug="";
+
 				if (Input.anyKeyDown )
 				{
+					//Debug.Log("currentCharTyping: "+currentCharTyping);
 					bool found=false;
-					if(mode==0 || wordTyping==-1)
+					if(mode==2 && wordTyping==-1)
+					{
+						for(int i=0;i<characterList.Count;i++)
+						{
+							//debug+="CHARLIST STRING: "+characterList[i].chars[0].ToString()+" Input.inputString: "+Input.inputString+" | ";
+							if(characterList[i].chars[0].ToString()==Input.inputString)
+							{
+								found=true;
+								break;
+							}
+						}		
+						//if(found==false)
+						//	Debug.Log(debug);
+					}
+					else if(mode==0 )
 					{
 						if(Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift))
 						{
@@ -278,14 +307,14 @@ public class controllerScript : MonoBehaviour {
 							}
 						}
 						//if(found==false)
-							//Debug.Log("SIZE: "+charList.Count+"-MODE0:\n "+debug);
+						//	Debug.Log("SIZE: "+charList.Count+"-MODE0:\n "+debug);
 						currentCharTyping="-1";
 					}
-					else if(mode==2)
+					else if(mode==2 && wordTyping!=-1)
 					{
 						for(int i=0;i<characterList[wordTyping].chars.Length;i++)
-						{//
-							debug+="characterListChar: "+characterList[wordTyping].chars[i].ToString()+" currentCharTyping: "+currentCharTyping+" Input.inputString: "+Input.inputString+" | ";
+						{
+							//debug+="wordTyping: "+wordTyping+" characterListChar: "+characterList[wordTyping].chars[i].ToString()+" currentCharTyping: "+currentCharTyping+" Input.inputString: "+Input.inputString+" | ";
 							if(characterList[wordTyping].chars[i].ToString()==currentCharTyping && currentCharTyping==Input.inputString)
 							{
 								found=true;
@@ -294,6 +323,11 @@ public class controllerScript : MonoBehaviour {
 						}
 						//if(found==false)
 						//	Debug.Log("MISSED-MODE2:\n "+debug);
+					}
+					else
+					{
+						//Debug.Log("DEFAULT CONDITION");
+						found=true;
 					}
 					if(found==false && (!Input.GetKeyDown (KeyCode.LeftShift)&&!Input.GetKey (KeyCode.RightShift) && !Input.GetKey (KeyCode.Escape)))
 					{
