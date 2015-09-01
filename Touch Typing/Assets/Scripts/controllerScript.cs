@@ -117,7 +117,6 @@ public class controllerScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-
 		//Changing the gun material
 		GameObject.Find ("shipGunR1").GetComponentInChildren<MeshRenderer> ().material = characterMaterialBlue;
 		GameObject.Find ("shipGunR2").GetComponentInChildren<MeshRenderer> ().material = characterMaterialCyan;
@@ -139,12 +138,15 @@ public class controllerScript : MonoBehaviour {
 		//Set time depending on mode or user input from main menu
 		if (infinite == true)
 			time = 10000;
-		else
-			time = LoadOnClick.inputtedTime;
-
+		else 
+			time = ReservoirScript.inputtedTime;
+		
 		//Sets up function resevoir
-		finger=new FingerPosition();
+		finger = new FingerPosition(); 
 		con = new IsLeapConnected ();
+		//^^^These 2 lines give an error, not sure if thats ok or not (*note by kane), error below
+		//You are trying to create a MonoBehaviour using the 'new' keyword.  This is not allowed.  MonoBehaviours can only be added using AddComponent().  Alternatively, your script can inherit from ScriptableObject or no base class at all
+
 
 		//for testing purposes
 		//mode = 0;
@@ -252,10 +254,6 @@ public class controllerScript : MonoBehaviour {
 				paused = false;
 		}
 
-		//????????????
-		//if(infinite == true && time < 1 )
-			//time = 10000;
-
 		//Checks if there is any more time for the game to run or if the game is paused
 		if (time > 0 && paused==false && delay<=0) {
 			time -= Time.deltaTime;
@@ -266,7 +264,7 @@ public class controllerScript : MonoBehaviour {
 				wait=-1;*/
 			if(mode==0 || mode == 2) //Miss checking is performed externally from the characters in keyboard. It is handled in charScript for tap mode and it is handled here for single char and string mode
 			{
-				string debug="";
+				//string debug="";
 
 				if (Input.anyKeyDown )
 				{
@@ -346,6 +344,7 @@ public class controllerScript : MonoBehaviour {
 
 			if ((int)time < goal && characterList.Count!=26) 
 			{
+				Debug.Log("controllerscript mode=" + mode);
 				Vector3 v3Pos=new Vector3(0,0,0);
 				string c="a";
 				int side=0;
@@ -354,12 +353,14 @@ public class controllerScript : MonoBehaviour {
 				//FOR TESTING
 				//rowToUse=3;
 
+				Debug.Log ("contr.rowtouse = " + rowToUse);
+
 				int row;
-				if(rowToUse==0)
+				if(rowToUse==0)//(rush) top 
 					row=0;
-				else if(rowToUse==1)
+				else if(rowToUse==1)//(solo) mid 
 					row=1;
-				else if(rowToUse==2)
+				else if(rowToUse==2)//bottom
 					row=2;
 				else//Selects what row get and put the character on.
 					row=Random.Range (0,3);

@@ -4,10 +4,10 @@ using System.Collections;
 public class customCursor : MonoBehaviour 
 {
 	public float speed = 3.0f;
-	private Vector3 targetPos;
+	//private Vector3 targetPos;
 	
 	void Start() {
-		targetPos = transform.position;    
+		//targetPos = transform.position;    
 	}
 	
 	void Update () {

@@ -15,6 +15,8 @@ public class LoadOnClick : MonoBehaviour {
 		GameObject.Find ("InputMenu").GetComponentInChildren<Canvas>().enabled = false;
 		GameObject.Find ("BootCampMenu").GetComponentInChildren<Canvas>().enabled = false;
 		GameObject.Find ("BCInputMenu").GetComponentInChildren<Canvas>().enabled = false;
+		//GameObject.Find ("ModeMenu").GetComponentInChildren<Canvas>().enabled = false;
+		//GameObject.Find ("ModeInputMenu").GetComponentInChildren<Canvas>().enabled = false;
 	}
 
 	void Update()
@@ -34,20 +36,20 @@ public class LoadOnClick : MonoBehaviour {
 	public void MainMenu (int button)
 	{
 		switch (button) {
-		case 0:	//Keyboard Mode levels
-			keybOrTap = button;
-			toggleMenu ("SubMenu");
-			break;
-		case 1:	//Tap Mode
-			keybOrTap = button;
-			toggleMenu ("InputMenu");
-			break;
-		case 2://Calibrate
-			Application.LoadLevel(0);
-			break;
-		case 3://Boot Camp
-			toggleMenu ("BootCampMenu");
-			break;
+			case 0:	//Keyboard Mode levels
+				//keybOrTap = button;
+				toggleMenu ("ModeMenu");
+				break;
+			case 1:	//Tap Mode
+				keybOrTap = button;
+				toggleMenu ("InputMenu");
+				break;
+			case 2://Calibrate
+				Application.LoadLevel(0);
+				break;
+			case 3://Boot Camp
+				toggleMenu ("BootCampMenu");
+				break;
 		}
 	}
 	public void SubMenu(int button)
@@ -55,9 +57,9 @@ public class LoadOnClick : MonoBehaviour {
 		if (button == 0) {	//Back to Main Menu
 			toggleMenu ("SubMenu");
 		}else {
-			toggleMenu ("InputMenu");
 			if(button!=1)
 				prevClick = button;
+			toggleMenu ("InputMenu");
 		}
 	}
 
@@ -96,6 +98,38 @@ public class LoadOnClick : MonoBehaviour {
 			}
 		} else if (keybOrTap == 1)//tap mode
 			loadLevel(3, 1, 2);
+	}
+
+	public void modeMenu(int button)
+	{
+		switch (button) {
+			case 0:	//Letters
+				keybOrTap = button;
+				toggleMenu ("SubMenu");
+				break;
+			case 1:	//Words
+				toggleMenu ("ModeInputMenu");
+				break;
+			case 2: //back
+					toggleMenu ("ModeMenu");
+			break;
+		}
+	}
+
+	public void modeInputMenu(int button)
+	{
+		switch (button) {
+			case 0:	//start
+				controllerScript.goal = 10000 - GameObject.Find ("ModeSpawnRateSlider").GetComponent<Slider> ().value;
+				controllerScript.rowToUse = 3;
+				inputtedTime = 60 * GameObject.Find ("ModeGameTimeSlider").GetComponent<Slider> ().value;
+				controllerScript.mode = 2;
+				Application.LoadLevel (2);
+				break;
+			case 1:	//Back
+					toggleMenu ("ModeInputMenu");
+				break;
+		}
 	}
 
 	public void bootCampMenu(int button)
@@ -150,5 +184,6 @@ public class LoadOnClick : MonoBehaviour {
 			GameObject.Find (menu).GetComponentInChildren<Canvas>().enabled = true;
 		else 
 			GameObject.Find (menu).GetComponentInChildren<Canvas>().enabled = false;
+		GameObject.Find ("TimeSlider").SetActive(false);
 	}
 }
