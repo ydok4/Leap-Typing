@@ -344,7 +344,6 @@ public class controllerScript : MonoBehaviour {
 
 			if ((int)time < goal && characterList.Count!=26) 
 			{
-				Debug.Log("controllerscript mode=" + mode);
 				Vector3 v3Pos=new Vector3(0,0,0);
 				string c="a";
 				int side=0;
@@ -353,7 +352,6 @@ public class controllerScript : MonoBehaviour {
 				//FOR TESTING
 				//rowToUse=3;
 
-				Debug.Log ("contr.rowtouse = " + rowToUse);
 
 				int row;
 				if(rowToUse==0)//(rush) top 
@@ -496,9 +494,9 @@ public class controllerScript : MonoBehaviour {
 				else if(mode == 2)
 				{
 					//Spawn positions of each string
-					Vector3 v3Pos1= new Vector3(-4.0f,0.0f,15f);
-					Vector3 v3Pos2= new Vector3(-1.0f,0.0f,15f);
-					Vector3 v3Pos3= new Vector3(2.0f,0.0f,15f);
+					Vector3 v3Pos1= new Vector3(-3.0f,0.0f,15f);
+					Vector3 v3Pos2= new Vector3(0.0f,0.0f,15f);
+					Vector3 v3Pos3= new Vector3(3.0f,0.0f,15f);
 
 					//String value of each string
 					string c1="";

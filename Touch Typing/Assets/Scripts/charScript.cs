@@ -149,7 +149,7 @@ public class charScript : MonoBehaviour {
 		{
 			
 			//Checks if the the key pressed meets conditions to be considered for checking. Ie A button has been pressed, the word is not completed and the current typing char is empty or already set to the current char
-			if (((Input.anyKeyDown) && fired == false && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1" || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping==val[checkedChar].ToString())) && (mode==0 || mode==2))
+			if (((Input.anyKeyDown) && fired == false && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=="-1" || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping==val[checkedChar].ToString())) && (mode==0 || mode==2) && (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping==loc || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping==-1 ||mode==0))
 			{
 				
 				bool foundLetter=false;
@@ -378,7 +378,7 @@ public class charScript : MonoBehaviour {
 			}
 			aliveTime-= Time.deltaTime;
 			//Despawn if criteria has been met
-			if (aliveTime<=0 && GetComponent<Renderer>().isVisible==false || (mode != 0 && gameObject.transform.position.z < 0.5)) 
+			if ((aliveTime<=0 && GetComponent<Renderer>().isVisible==false) || (mode != 0 && gameObject.transform.position.z < 3)) 
 			{
 				
 				if (GameObject.Find ("Projectile :" + val) != null) {
@@ -387,7 +387,7 @@ public class charScript : MonoBehaviour {
 				GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed++;
 				GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = true;
 				Invoke ("PopUp", 0.5f);
-				if(mode==1)
+				if(mode==1 || mode==0)
 				{
 					destroyCharacterString ();
 					removeCharacter();
@@ -395,8 +395,16 @@ public class charScript : MonoBehaviour {
 				if(mode==2)
 				{
 					destroy3CharacterString ();
+					//Once collision between the projectile and object is met, it will instantiate the explosion prefab.
+					Object explosionObj = Instantiate(explosion, transform.position, transform.rotation);
+					
+					//This destroys the created prefab after 2 seconds, freeing up resources
+					Destroy (explosionObj,3.0f);
+					//Makes sure that the data structure are updated to reflect the destruction of the 3 asteroids
 					if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount == 3)
+					{
 						remove3Character();
+					}
 				}
 			}	
 		}
