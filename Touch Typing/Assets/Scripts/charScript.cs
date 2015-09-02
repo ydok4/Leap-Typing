@@ -94,7 +94,7 @@ public class charScript : MonoBehaviour {
 		text.GetComponent<Text> ().horizontalOverflow = HorizontalWrapMode.Overflow;
 		text.GetComponent<Text> ().verticalOverflow = VerticalWrapMode.Overflow;
 		text.GetComponent<Text>().text=val;
-		text.GetComponent<Text> ().color = new Color (0f, 0f, 0f);
+		//text.GetComponent<Text> ().color = new Color (0f, 0f, 0f);	Remove comment to turn text black
 		text.GetComponent<Text> ().fontSize = 3;
 		text.GetComponent<CanvasScaler> ().dynamicPixelsPerUnit = 80;
 		text.GetComponent<Text> ().alignment = TextAnchor.MiddleCenter;
