@@ -9,7 +9,7 @@ public class controllerScript : MonoBehaviour {
 	//Camera camera; 
 	//Set these variables inside the editor
 	public Mesh characterMesh;
-
+	//Actually the projectile materials
 	public Material characterMaterial;
 	public Material characterMaterialRed;
 	public Material characterMaterialOrange;
@@ -19,6 +19,16 @@ public class controllerScript : MonoBehaviour {
 	public Material characterMaterialCyan;
 	public Material characterMaterialGreen;
 	public Material characterMaterialBrown;
+	//The asteroid materials
+	public Material asteroidMaterial;
+	public Material asteroidMaterialRed;
+	public Material asteroidMaterialOrange;
+	public Material asteroidMaterialYellow;
+	public Material asteroidMaterialPurple;
+	public Material asteroidMaterialBlue;
+	public Material asteroidMaterialCyan;
+	public Material asteroidMaterialGreen;
+	public Material asteroidMaterialBrown;
 
 	public Mesh projectileMesh;
 	public Material projectileMaterial;

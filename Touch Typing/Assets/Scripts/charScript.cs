@@ -543,37 +543,37 @@ public class charScript : MonoBehaviour {
 		val = val.ToLower ();
 		if (val == "q" || val == "a" || val == "z") {
 			//Debug.Log ("In RED");
-			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialRed;
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialRed;
 		}
 		else if (val == "w" || val == "s" || val == "x") {
 			//Debug.Log ("In ORANGE");
-			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialOrange;
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialOrange;
 		}
 		else if (val == "e" || val == "d" || val == "c") {
 			//Debug.Log ("In YELLOW");
-			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialYellow;
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialYellow;
 		}
 		else if (val == "r" || val == "f" || val == "v" || val == "t" || val == "g" || val == "b") {
 			//Debug.Log ("In PURPLE");
-			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialPurple;
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialPurple;
 		}
 		else if (val == "y" || val == "h" || val == "n" || val == "u" || val == "j" || val == "m") {
 			//Debug.Log ("In BLUE");
-			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBlue;
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialBlue;
 		}
 		else if (val == "i" || val == "k" || val == "," || val == "<") {
 			//Debug.Log ("In CYAN");
-			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialCyan;
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialCyan;
 		}
 		else if (val == "o" || val == "l" || val == "." || val == ">") {
 			//Debug.Log ("In GREEN");
-			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialGreen;
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialGreen;
 		}
 		else if (val == "p" || val == ";" || val == "[" || val == "\'" || val == "]" || val == "{" || val == "}" || val == ":" || val == "\"" || val == "/" || val == "?") {
 			//Debug.Log ("In BROWN");
-			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBrown;
+			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialBrown;
 		}
 		//Debug.Log ("In DEFAULT");
-		return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterial;
+		return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterial;
 	}
 }

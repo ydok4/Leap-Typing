@@ -1,11 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\controllerScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\charScript.cs">
     <Files>
-      <File FileName="Assets\Scripts\MainMenuScript.cs" Line="95" Column="4" />
-      <File FileName="Assets\Scripts\controllerScript.cs" Line="359" Column="29" />
+      <File FileName="Assets\Scripts\charScript.cs" Line="399" Column="1" />
+      <File FileName="Assets\Scripts\MainMenuScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\controllerScript.cs" Line="363" Column="51" />
       <File FileName="Assets\Scripts\gestures.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ReservoirScript.cs" Line="1" Column="19" />
+      <File FileName="Assets\Scripts\ReservoirScript.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
