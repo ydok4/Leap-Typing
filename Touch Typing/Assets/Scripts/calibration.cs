@@ -45,6 +45,7 @@ public class calibration : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!leap_controller.IsConnected){
+			Application.LoadLevel(1);
 			Debug.Log("is Not connected");
 			//ConnectLeap image
 		}
