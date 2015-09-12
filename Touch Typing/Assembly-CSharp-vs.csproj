@@ -145,6 +145,7 @@
      <Compile Include="Assets\OVR\Scripts\Util\OVRScreenFade.cs" />
      <Compile Include="Assets\OVR\Scripts\Util\OVRUGUI.cs" />
      <Compile Include="Assets\OVR\Scripts\Util\OVRVisionGuide.cs" />
+     <Compile Include="Assets\Scripts\AsteroidKeyboard.cs" />
      <Compile Include="Assets\Scripts\FingerPosition.cs" />
      <Compile Include="Assets\Scripts\HUDUpdater.cs" />
      <Compile Include="Assets\Scripts\IsLeapConnected.cs" />
@@ -194,7 +195,7 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="LeapCSharp.NET3.5">
- <HintPath>C:/Users/ydok4/Documents/GitHub/Touch-Typing-Dylan-and-Kody/Touch Typing/Assets/Plugins/LeapCSharp.NET3.5.dll</HintPath>
+ <HintPath>C:/Users/Dylan/Documents/GitHub/Touch-Typing-Dylan-and-Kody/Touch Typing/Assets/Plugins/LeapCSharp.NET3.5.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

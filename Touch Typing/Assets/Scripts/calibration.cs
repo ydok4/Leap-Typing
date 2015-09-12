@@ -1,16 +1,30 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System;
 using System.Collections.Generic;
 using Leap;
 
 public class calibration : MonoBehaviour {
 
+	public Material asteroidMaterialYellow;
+	public Material asteroidMaterialRed;
+	public Material asteroidMaterial;
+
+	public AudioClip wrong;
+	public AudioClip correct;
+	
+	
+	private AudioSource source;
+	
+
+	//public AudioClip correct;
+
 	/*Accessing HandController script*/
 	public HandController controller;
 
 	/*Accessing the leap device*/
 	Controller leap_controller;
-	
+
 	/*Input for keyboard calibration*/
 	protected readonly string[] Key = { "q", "]", "z", "/"};
 
@@ -24,7 +38,7 @@ public class calibration : MonoBehaviour {
 	protected bool Finish = false;
 
 	/*x,y,z of each key position */
-	public static List <Vector3> KeyPos =new List<Vector3>();
+	public static List <Vector3> KeyPos = new List<Vector3>();
 	
 	void Awake(){
 		//DontDestroyOnLoad (this.gameObject);
@@ -32,6 +46,7 @@ public class calibration : MonoBehaviour {
 
 	/*Inialises the starting condition*/
 	void Start(){
+		source = GetComponent<AudioSource>();
 		CurrentLeap();
 	}
 
@@ -44,25 +59,41 @@ public class calibration : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if(index < 4)
+			AsteroidKeyboard.characterList[AsteroidKeyboard.Pos[AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialYellow;
 		if(!leap_controller.IsConnected){
 			Application.LoadLevel(1);
 			Debug.Log("is Not connected");
 			//ConnectLeap image
 		}
-		if(index == 4){
-			Debug.Log ("Calibration Done. Loading......");
-			Calibrate();
-			Application.LoadLevel("Main");
-		}else if (Input.GetKeyDown (Key [index])) {
+		if (index == 4) {
+			Calibrate ();
+			Application.LoadLevel ("Main");
+		} else if (Input.GetKeyDown (Key [index])) {
 			Debug.Log (Key [index]);
 			Vector3 tmp = RightIndexPosition ();
 			Debug.Log (tmp);
-			if(tmp.x != 0 && tmp.y != 0 && tmp.z != 0){
-				KeyPos.Add(tmp);
+			if (tmp.x != 0 && tmp.y != 0 && tmp.z != 0) {
+				AudioSource.PlayClipAtPoint(correct, Vector3.zero, 1.0f); 
+				KeyPos.Add (tmp);
 				index++;
+				AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterial;
+				AsteroidKeyboard.index++;
+			} else {
+				Debug.Log("WRONG");
+				AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialRed;
+				AudioSource.PlayClipAtPoint(wrong, Vector3.zero, 1.0f); 
+				AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialYellow;
+
 			}
+			/*} else if (Input.anyKeyDown) {
+			AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialRed;
+			StartCoroutine (Example ());
+			AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialYellow;
+		}*/
 		}
 	}
+
 
 	//Returns the leap controller from HandController 
 	void CurrentLeap(){
