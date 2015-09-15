@@ -50,50 +50,37 @@ public class calibration : MonoBehaviour {
 		CurrentLeap();
 	}
 
-	void test () { 
-		while (!Input.GetKeyDown(KeyCode.Return)){
-			
-			// do stuff
-		}
-	}
-
 	// Update is called once per frame
 	void Update () {
-		if(index < 4)
-			AsteroidKeyboard.characterList[AsteroidKeyboard.Pos[AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialYellow;
-		if(!leap_controller.IsConnected){
-			Application.LoadLevel(1);
-			Debug.Log("is Not connected");
-			//ConnectLeap image
+		if (index < 4)
+			AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialYellow;
+		if (!leap_controller.IsConnected) {
+			Exit ();
 		}
 		if (index == 4) {
 			Calibrate ();
-			Application.LoadLevel ("Main");
-		} else if (Input.GetKeyDown (Key [index])) {
-			Debug.Log (Key [index]);
-			Vector3 tmp = RightIndexPosition ();
-			Debug.Log (tmp);
-			if (tmp.x != 0 && tmp.y != 0 && tmp.z != 0) {
-				AudioSource.PlayClipAtPoint(correct, Vector3.zero, 1.0f); 
-				KeyPos.Add (tmp);
-				index++;
-				AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterial;
-				AsteroidKeyboard.index++;
-			} else {
-				Debug.Log("WRONG");
+			Application.LoadLevel (1);
+		}else if (Input.anyKeyDown) {
+			if (Input.GetKeyDown (Key [index])) {
+				Debug.Log (Key [index]);
+				Vector3 tmp = RightIndexPosition ();
+				Debug.Log (tmp);
+				if (tmp.x != 0 && tmp.y != 0 && tmp.z != 0) {
+					AudioSource.PlayClipAtPoint (correct, Vector3.zero, 1.0f); 
+					KeyPos.Add (tmp);
+					index++;
+					AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterial;
+					AsteroidKeyboard.index++;
+				} else {
+					AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialRed;
+					AudioSource.PlayClipAtPoint (wrong, Vector3.zero, 1.0f);
+				}
+			}else if(!Input.GetMouseButtonDown(0)){
 				AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialRed;
-				AudioSource.PlayClipAtPoint(wrong, Vector3.zero, 1.0f); 
-				AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialYellow;
-
+				AudioSource.PlayClipAtPoint (wrong, Vector3.zero, 1.0f);
 			}
-			/*} else if (Input.anyKeyDown) {
-			AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialRed;
-			StartCoroutine (Example ());
-			AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialYellow;
-		}*/
 		}
 	}
-
 
 	//Returns the leap controller from HandController 
 	void CurrentLeap(){
@@ -188,6 +175,16 @@ public class calibration : MonoBehaviour {
 			z *= -1;
 		Vector3 tmp = new Vector3(x,y,z);
 		return tmp;
+	}
+
+	void Exit(){
+		KeyPos.Clear();
+		Application.LoadLevel(1);
+	}
+
+	public Void MainMenu(){
+		AudioSource.PlayClipAtPoint (correct, Vector3.zero, 1.0f);
+		Application.LoadLevel (1);
 	}
 }
 
