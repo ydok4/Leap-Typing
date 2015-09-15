@@ -87,11 +87,11 @@ public class MainMenuScript : MonoBehaviour {
 
 	public void RowMenu(int button)
 	{
-		if (button == 0) {	//Back to Main Menu
+		if (button == -1) {	//Back to Main Menu
 			toggleMenu ("RowMenu");
 		}else {
 			GameObject.Find ("Reservoir").GetComponent<ReservoirScript>().row = button;
-			Debug.Log ("row=" + GameObject.Find ("Reservoir").GetComponent<ReservoirScript>().row);
+			//Debug.Log ("row=" + GameObject.Find ("Reservoir").GetComponent<ReservoirScript>().row);
 			
 			GameObject.Find ("Reservoir").GetComponent<ReservoirScript>().mode = 0;
 			showInputMenu ();
@@ -171,6 +171,8 @@ public class MainMenuScript : MonoBehaviour {
 			ReservoirScript.inputtedTime = 60 * GameObject.Find ("TimeSlider").GetComponent<Slider> ().value;
 		else 
 			ReservoirScript.inputtedTime = 60;
+
+		HUDUpdater.timePlayed = ReservoirScript.inputtedTime;
 
 		//set capital chance
 		if (capSlider.activeSelf == true)

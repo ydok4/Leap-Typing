@@ -4,11 +4,13 @@ using System.Collections;
 
 public class HUDUpdater : MonoBehaviour {
 	
-	public Text scoreText, missedText, timeText, rightText, leftText;
+	public Text scoreText, missedText, timeText, rightText, leftText, accuracy, asteroids, timeStat;
+	public static float timePlayed;
 	void Start () {
 		//ensure is not visible on start, press F5 to activate
 		GameObject.Find ("DebugMenu").GetComponentInChildren<Canvas>().enabled = false;
 		GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = false;
+		GameObject.Find ("StatsMenu").GetComponentInChildren<Canvas>().enabled = false;
 	}
 
 	void Update () {
@@ -44,6 +46,12 @@ public class HUDUpdater : MonoBehaviour {
 			rightText.text = "Right Palm x: " + GameObject.Find ("DebugMenu").GetComponent<PalmPosition>().right.x + "\nRight Palm y: " + GameObject.Find ("DebugMenu").GetComponent<PalmPosition>().right.y + "\nRight Palm z: " + GameObject.Find ("DebugMenu").GetComponent<PalmPosition>().right.z;
 		if (leftText != null)
 			leftText.text = "Left Palm x: " + GameObject.Find ("DebugMenu").GetComponent<PalmPosition>().left.x + "\nLeft Palm y: " + GameObject.Find ("DebugMenu").GetComponent<PalmPosition>().left.y + "\nLeft Palm z: " + GameObject.Find ("DebugMenu").GetComponent<PalmPosition>().left.z;
+		if(timeStat!=null)
+			timeStat.text = "Time: "+timePlayed;
+		if(asteroids!=null)
+			asteroids.text = "Asteroids: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids;
+		//if(accuracy!=null)
+			//accuracy.text = "Accuracy: " + ((GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids - GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed) / GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids) + "%";
 	}
 
 
@@ -59,4 +67,17 @@ public class HUDUpdater : MonoBehaviour {
 		}
 	}
 
+	public void PopulateStatsMenu()
+	{
+		float t = GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids;
+		float m = GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed;
+		Debug.Log ("STATS MENU " + timePlayed + " " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids + " t:" + t + " m:" + m);
+		/*if(timeStat!=null)
+			timeStat.text = "Time: "+timePlayed;
+		if(asteroids!=null)
+			asteroids.text = "Asteroids: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids;
+		*/
+			//if(accuracy!=null)
+			//accuracy.text = "Accuracy: " + ((GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids - GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed) / GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids) + "%";
+	}
 }

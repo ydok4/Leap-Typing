@@ -38,6 +38,8 @@ public class controllerScript : MonoBehaviour {
 	public static int mode;
 	//boot camp level mode
 	public static bool infinite;
+	//track total spawned letters/words
+	public int totalAsteroids;
 
 	//The potential alphabet of the lesson
 	public static string alpha;
@@ -567,6 +569,9 @@ public class controllerScript : MonoBehaviour {
 					//Spawns the new character. v3Pos is where it spawns in the world
 					characters newChar=new characters(characterList.Count, c,v3Pos,mode);
 
+					totalAsteroids++;
+					//Debug.Log ("totalAsteroids="+totalAsteroids);
+
 					//Adds them to the list which keeps track of all active characters
 					characterList.Add(newChar);
 				}
@@ -574,8 +579,13 @@ public class controllerScript : MonoBehaviour {
 				goal-=spawn;
 			}
 		}
-		if (time <= 0)
-			paused = true;
+		if (time <= 0) //when time runs out, show end of level statistics
+		{
+			GameObject.Find ("HUD").GetComponentInChildren<Canvas> ().enabled = false;
+			GameObject.Find ("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
+			GameObject.Find ("StatsMenu").GetComponentInChildren<Canvas> ().enabled = true;
+			//paused = true;
+		}
 	}
 	int sideLocation(string letter)
 	{
