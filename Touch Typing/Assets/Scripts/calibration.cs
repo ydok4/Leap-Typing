@@ -53,12 +53,16 @@ public class calibration : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (index < 4)
+		if (index < 4) {
+			Debug.Log ("AI: "+AsteroidKeyboard.index);
 			AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialYellow;
+		}
 		if (!leap_controller.IsConnected) {
 			Exit ();
 		}
 		if (index == 4) {
 			Calibrate ();
+			Exit();
 			Application.LoadLevel (1);
 		}else if (Input.anyKeyDown) {
 			if (Input.GetKeyDown (Key [index])) {
@@ -143,24 +147,6 @@ public class calibration : MonoBehaviour {
 			Vector3 tmp = new Vector3(x,y,z);
 			KeyPos.Insert(Pos + i, tmp);
 		}
-
-		//*****also have to move a and z
-		//add ] to the correct position
-		//KeyPos.Add(right);
-		//KeyPos.RemoveAt(1);
-
-		//add ' to the correct position
-		//KeyPos.Add(right);
-		//KeyPos.RemoveAt(1);
-
-		//add / to the correct position
-		//KeyPos.Add(right);
-		//KeyPos.RemoveAt(1);
-
-		//int Num = KeyPos.Count;//this will only work if i remove/add the index 2,3,4,5
-
-		//if (KeyPos.Count < 30)
-		//	CalibrateKeyboard (KeyPos[],KeyPos[], Row-1);//change the index of KeyPos to the correct ones
 	}
 
 	Vector3 KeyDistance (){
@@ -179,10 +165,13 @@ public class calibration : MonoBehaviour {
 
 	void Exit(){
 		KeyPos.Clear();
+		AsteroidKeyboard.Exit ();
 		Application.LoadLevel(1);
 	}
 
 	public Void MainMenu(){
+		KeyPos.Clear();
+		AsteroidKeyboard.Exit ();
 		AudioSource.PlayClipAtPoint (correct, Vector3.zero, 1.0f);
 		Application.LoadLevel (1);
 	}

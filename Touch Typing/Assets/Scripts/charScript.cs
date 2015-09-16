@@ -217,7 +217,7 @@ public class charScript : MonoBehaviour {
 					int findFinger=0;
 					if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true)
 						findFinger=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().finger.IsPressed(val[checkedChar].ToString());
-					if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false)
+					//if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false)
 					{
 						//Checks if the char is the first char of the string and that there is string currently being typed and sets the the current typed string to this objects value
 
@@ -247,6 +247,8 @@ public class charScript : MonoBehaviour {
 								else
 									projectile.GetComponent<projectileScript> ().target = val;
 								fired=true;
+								if(findFinger==2)
+									GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score += 1;
 								//If the game is in single char keyboard mode remove the char, if it is in string mode remove 3 chars
 								//if(mode==0)
 								removeCharacter();
