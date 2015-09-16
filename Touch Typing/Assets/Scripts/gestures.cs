@@ -18,8 +18,8 @@ public class gestures : MonoBehaviour {
 		leap_controller = CurrentLeap ();
 		leap_controller.EnableGesture (Gesture.GestureType.TYPE_KEY_TAP);
 		leap_controller.Config.SetFloat ("Gesture.KeyTap.MinDownVelocity", 30.0f);
-		leap_controller.Config.SetFloat ("Gesture.KeyTap.HistorySeconds", .05f);
-		leap_controller.Config.SetFloat ("Gesture.KeyTap.MinDistance", 2.0f);
+		leap_controller.Config.SetFloat ("Gesture.KeyTap.HistorySeconds", .1f);
+		leap_controller.Config.SetFloat ("Gesture.KeyTap.MinDistance", 1.0f);
 		leap_controller.Config.Save ();
 		//}
 	}
