@@ -459,7 +459,7 @@ public class charScript : MonoBehaviour {
 		//If the object is hit by the projectile it will update the score and destroy itself.
 		if (other.name == "Projectile :"+val) {
 			GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score += 1;
-			if(mode==0  )
+			if(mode==0 ||mode==1 )
 			{
 				destroyCharacterString();
 				removeCharacter();
@@ -472,7 +472,7 @@ public class charScript : MonoBehaviour {
 				if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount == 3)
 					remove3Character();
 			}
-			if(mode==0 || mode==2)
+			//if(mode==0 || mode==2)
 			{
 				//Once collision between the projectile and object is met, it will instantiate the explosion prefab.
 				Object explosionObj = Instantiate(explosion, transform.position, transform.rotation);
