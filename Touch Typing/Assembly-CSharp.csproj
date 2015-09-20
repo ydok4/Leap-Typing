@@ -146,6 +146,7 @@
      <Compile Include="Assets\OVR\Scripts\Util\OVRUGUI.cs" />
      <Compile Include="Assets\OVR\Scripts\Util\OVRVisionGuide.cs" />
      <Compile Include="Assets\Scripts\AsteroidKeyboard.cs" />
+     <Compile Include="Assets\Scripts\CameraProcessing.cs" />
      <Compile Include="Assets\Scripts\FingerPosition.cs" />
      <Compile Include="Assets\Scripts\HUDUpdater.cs" />
      <Compile Include="Assets\Scripts\IsLeapConnected.cs" />
