@@ -34,10 +34,11 @@ public class calibration : MonoBehaviour {
 	/*distance between keys*/
 	public static Vector3 KeyDist;
 
+	/**/
+	protected bool Finish = false;
+
 	/*x,y,z of each key position */
 	public static List <Vector3> KeyPos = new List<Vector3>();
-
-	//public CameraProcessing BlobScript;
 	
 	void Awake(){
 		//DontDestroyOnLoad (this.gameObject);
@@ -47,15 +48,13 @@ public class calibration : MonoBehaviour {
 	void Start(){
 		source = GetComponent<AudioSource>();
 		CurrentLeap();
-		KeyPos.Clear ();
 	}
 
 	// Update is called once per frame
 	void Update () {
-
-		//Debug.Log(BlobScript.Blobs[0].x);
 		if (index < 4)
 		if (index < 4) {
+			Debug.Log ("AI: "+AsteroidKeyboard.index);
 			AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialYellow;
 		}
 		if (!leap_controller.IsConnected) {
@@ -151,7 +150,7 @@ public class calibration : MonoBehaviour {
 	}
 
 	Vector3 KeyDistance (){
-		float x = (KeyPos[0].x - KeyPos[1].x) * 3;
+		float x = (KeyPos[0].x - KeyPos[1].x) * 2;
 		if (x < 0)
 			x *= -1;
 		float y = KeyPos [0].y;
@@ -165,6 +164,7 @@ public class calibration : MonoBehaviour {
 	}
 
 	void Exit(){
+		KeyPos.Clear();
 		AsteroidKeyboard.Exit ();
 		Application.LoadLevel(1);
 	}
