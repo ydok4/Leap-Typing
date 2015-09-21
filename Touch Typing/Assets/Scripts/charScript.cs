@@ -217,7 +217,7 @@ public class charScript : MonoBehaviour {
 					int findFinger=0;
 					if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true)
 						findFinger=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().finger.IsPressed(val[checkedChar].ToString());
-					if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false)
+					//if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false)
 					{
 						//Checks if the char is the first char of the string and that there is string currently being typed and sets the the current typed string to this objects value
 
@@ -247,6 +247,8 @@ public class charScript : MonoBehaviour {
 								else
 									projectile.GetComponent<projectileScript> ().target = val;
 								fired=true;
+								if(findFinger==2)
+									GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score += 1;
 								//If the game is in single char keyboard mode remove the char, if it is in string mode remove 3 chars
 								//if(mode==0)
 								removeCharacter();
@@ -457,7 +459,7 @@ public class charScript : MonoBehaviour {
 		//If the object is hit by the projectile it will update the score and destroy itself.
 		if (other.name == "Projectile :"+val) {
 			GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score += 1;
-			if(mode==0  )
+			if(mode==0 ||mode==1 )
 			{
 				destroyCharacterString();
 				removeCharacter();
@@ -470,7 +472,7 @@ public class charScript : MonoBehaviour {
 				if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount == 3)
 					remove3Character();
 			}
-			if(mode==0 || mode==2)
+			//if(mode==0 || mode==2)
 			{
 				//Once collision between the projectile and object is met, it will instantiate the explosion prefab.
 				Object explosionObj = Instantiate(explosion, transform.position, transform.rotation);
