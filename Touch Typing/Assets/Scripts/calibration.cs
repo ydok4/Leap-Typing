@@ -46,6 +46,8 @@ public class calibration : MonoBehaviour {
 
 	/*Inialises the starting condition*/
 	void Start(){
+		index = 0;
+		KeyPos.Clear();
 		source = GetComponent<AudioSource>();
 		CurrentLeap();
 	}
@@ -164,13 +166,11 @@ public class calibration : MonoBehaviour {
 	}
 
 	void Exit(){
-		KeyPos.Clear();
 		AsteroidKeyboard.Exit ();
 		Application.LoadLevel(1);
 	}
 
 	public Void MainMenu(){
-		KeyPos.Clear();
 		AsteroidKeyboard.Exit ();
 		AudioSource.PlayClipAtPoint (correct, Vector3.zero, 1.0f);
 		Application.LoadLevel (1);
