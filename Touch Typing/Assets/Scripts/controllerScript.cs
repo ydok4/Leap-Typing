@@ -52,10 +52,14 @@ public class controllerScript : MonoBehaviour {
 	//Total length of level
 	public float time; //change to int??
 
+
 	//Time when first spawn happens
 	public static float goal;
 
 	public float wait;
+
+    //Amount of words typed
+    public int wordsTyped;
 
 	//Float interval between next spawn
 	float spawn;
@@ -84,6 +88,9 @@ public class controllerScript : MonoBehaviour {
 	//Players score
 	public int score;
 
+    //Determines if the player has passed the current level or not
+    bool levelChecked;
+
 	//Contains the gesture checking class functionality
 	public gestures gestureVariable;
 
@@ -93,15 +100,27 @@ public class controllerScript : MonoBehaviour {
 	//Tell the game what row to select characters from
 	public static int rowToUse;
 
+    public bool gameOver;
+
 	//Sound stuff
 	public AudioClip miss;
 	AudioSource audio;
 
-	//Contains dictionary list of words
-	public static List<string> wordBank=new List<string>();
+    //How many words need to be typed this level
+    public int levelLimit;
+    float timeIncreasing;
+    int levelStartTime;
+    int level;
 
-	//Keeps track of how many asteroids the player has shot in keyboard mod
-	public int rowCount;
+	//Contains dictionary list of words
+    //Default Words
+	public static List<string> wordBank=new List<string>();
+    public static List<string> wordBankEasy = new List<string>();
+    public static List<string> wordBankMedium = new List<string>();
+    public static List<string> wordBankHard = new List<string>();
+
+    //Keeps track of how many asteroids the player has shot in keyboard mod
+    public int rowCount;
 
 	//External way to invoke the miss method
 	public bool playMissSound;
@@ -171,6 +190,7 @@ public class controllerScript : MonoBehaviour {
 			setUpWordBank ();
 			wordTyping=-1;
 			rowCount = 0;
+            wordsTyped = 0;
 		}
 		//Sets up alphabet
 		Camera.main.fieldOfView = 180.0f;
@@ -219,6 +239,14 @@ public class controllerScript : MonoBehaviour {
 		*/
 
 		wait = -1;
+        timeIncreasing = 0;
+        levelLimit = 20;
+        levelStartTime = 0;
+        level = 1;
+        gameOver = false;
+        levelChecked = false;
+        if (mode == 2 && infinite == false)
+            spawn = 5;
 
 	}
 	void Reset()
@@ -265,16 +293,49 @@ public class controllerScript : MonoBehaviour {
 			else
 				paused = false;
 		}
+        if(paused==false && mode==2 && infinite== false && delay <= 0)
+        { 
+            timeIncreasing += Time.deltaTime;
+            if (wordsTyped == levelLimit)
+            {
+                //if (timeIncreasing > 240)
+                levelLimit = levelLimit + 5;
+                //else
+                //    levelLimit = levelLimit + 20;
 
-		//Checks if there is any more time for the game to run or if the game is paused
-		if (time > 0 && paused==false && delay<=0) {
-			time -= Time.deltaTime;
+                score += (int)timeIncreasing - levelStartTime;
+                level++;
+                levelChecked = true;
+                if (level % 3 == 0)
+                    spawn--;
+            }
+            else if ((int)timeIncreasing % 60 == 0 && wordsTyped < levelLimit && (int)timeIncreasing != 0 && levelChecked == false)
+            {
+                //if (levelChecked == false)
+                {
+                    GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
+                    GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
+                    GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
+                    gameOver = true;
+                    paused = true;
+                }
+            }
+            else if(levelChecked==true && (int)timeIncreasing % 60 == 1)
+            {
+                levelChecked = false;
+            }
+        }
+        //Checks if there is any more time for the game to run or if the game is paused
+        if (time > 0 && paused == false && delay <= 0)
+        {
+            time -= Time.deltaTime;
 
-			/*if(wait>0)
+
+            /*if(wait>0)
 				wait-=Time.deltaTime;
 			if(wait<0)
 				wait=-1;*/
-			if(mode==0 || mode == 2) //Miss checking is performed externally from the characters in keyboard. It is handled in charScript for tap mode and it is handled here for single char and string mode
+            if (mode==0 || mode == 2) //Miss checking is performed externally from the characters in keyboard. It is handled in charScript for tap mode and it is handled here for single char and string mode
 			{
 				//string debug="";
 
@@ -515,31 +576,96 @@ public class controllerScript : MonoBehaviour {
 					string c2="";
 					string c3="";//(po)
 
-					//Build each string
-					/*for(int i=0;i<3;i++)
-					{
-						c1=alpha[Random.Range(0,alpha.Length)].ToString ();
-					}
-					for(int i=0;i<3;i++)
-					{
-						c2=alpha[Random.Range(0,alpha.Length)].ToString ();
-					}
-					for(int i=0;i<3;i++)
-					{
-						c3=alpha[Random.Range(0,alpha.Length)].ToString ();
-					}*/
-					c1=wordBank[Random.Range(0,wordBank.Count)];//Random.Range(0,wordBank.Count)
-					do 
-					{
-						c2=wordBank[Random.Range(0,wordBank.Count)];
-					}while(c2==c1 || c2[0]==c1[0]);
-					do 
-					{
-						c3=wordBank[Random.Range(0,wordBank.Count)];
-					}while(c3==c1 || c3==c2 || c3[0]==c1[0] || c3[0]==c2[0]);
-					
-
-
+                    if (infinite != true)
+                    {
+                        if (timeIncreasing > 240 && wordsTyped > levelLimit)
+                        {
+                           // Debug.Log("Hard Spawn");
+                            c1 = wordBankHard[Random.Range(0, wordBankHard.Count)];
+                            do
+                            {
+                                c2 = wordBankHard[Random.Range(0, wordBankHard.Count)];
+                            } while (c2 == c1 || c2[0] == c1[0]);
+                            do
+                            {
+                                c3 = wordBankHard[Random.Range(0, wordBankHard.Count)];
+                            } while (c3 == c1 || c3 == c2 || c3[0] == c1[0] || c3[0] == c2[0]);
+                        }
+                        else if(timeIncreasing > 120 && wordsTyped > levelLimit)
+                        {
+                           // Debug.Log("Medium Spawn");
+                            c1 = wordBankMedium[Random.Range(0, wordBankMedium.Count)];
+                            do
+                            {
+                                c2 = wordBankMedium[Random.Range(0, wordBankMedium.Count)];
+                            } while (c2 == c1 || c2[0] == c1[0]);
+                            do
+                            {
+                                c3 = wordBankMedium[Random.Range(0, wordBankMedium.Count)];
+                            } while (c3 == c1 || c3 == c2 || c3[0] == c1[0] || c3[0] == c2[0]);
+                        }
+                        else if(wordsTyped <= 40 )
+                        {
+                           // Debug.Log("Easy Spawn");
+                            c1 = wordBankEasy[Random.Range(0, wordBankEasy.Count)];
+                            do
+                            {
+                                c2 = wordBankEasy[Random.Range(0, wordBankEasy.Count)];
+                            } while (c2 == c1 || c2[0] == c1[0]);
+                            do
+                            {
+                                c3 = wordBankEasy[Random.Range(0, wordBankEasy.Count)];
+                            } while (c3 == c1 || c3 == c2 || c3[0] == c1[0] || c3[0] == c2[0]);
+                        }
+                    }
+                    else if (Random.Range(0, 2) == 0)
+                    {
+                        c1 = wordBankEasy[Random.Range(0, wordBankEasy.Count)];
+                        do
+                        {
+                            c2 = wordBankEasy[Random.Range(0, wordBankEasy.Count)];
+                        } while (c2 == c1 || c2[0] == c1[0]);
+                        do
+                        {
+                            c3 = wordBankEasy[Random.Range(0, wordBankEasy.Count)];
+                        } while (c3 == c1 || c3 == c2 || c3[0] == c1[0] || c3[0] == c2[0]);
+                    }
+                    else if (Random.Range(0, 2) == 1)
+                    {
+                        c1 = wordBankMedium[Random.Range(0, wordBankMedium.Count)];
+                        do
+                        {
+                            c2 = wordBankMedium[Random.Range(0, wordBankMedium.Count)];
+                        } while (c2 == c1 || c2[0] == c1[0]);
+                        do
+                        {
+                            c3 = wordBankMedium[Random.Range(0, wordBankMedium.Count)];
+                        } while (c3 == c1 || c3 == c2 || c3[0] == c1[0] || c3[0] == c2[0]);
+                    }
+                    else if (Random.Range(0, 2) == 2)
+                    {
+                        c1 = wordBankHard[Random.Range(0, wordBankHard.Count)];
+                        do
+                        {
+                            c2 = wordBankHard[Random.Range(0, wordBankHard.Count)];
+                        } while (c2 == c1 || c2[0] == c1[0]);
+                        do
+                        {
+                            c3 = wordBankHard[Random.Range(0, wordBankHard.Count)];
+                        } while (c3 == c1 || c3 == c2 || c3[0] == c1[0] || c3[0] == c2[0]);
+                    }
+                    else
+                    {
+                        c1 = wordBank[Random.Range(0, wordBank.Count)];
+                        do
+                        {
+                            c2 = wordBank[Random.Range(0, wordBank.Count)];
+                        } while (c2 == c1 || c2[0] == c1[0]);
+                        do
+                        {
+                            c3 = wordBank[Random.Range(0, wordBank.Count)];
+                        } while (c3 == c1 || c3 == c2 || c3[0] == c1[0] || c3[0] == c2[0]);
+                    }
 					//Spawn each string and Adds them to the list which keeps track of all active characters
 					characters newChar1=new characters(characterList.Count, c1,v3Pos1,mode);
 					characterList.Add(newChar1);
@@ -584,7 +710,8 @@ public class controllerScript : MonoBehaviour {
 			GameObject.Find ("HUD").GetComponentInChildren<Canvas> ().enabled = false;
 			GameObject.Find ("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
 			GameObject.Find ("StatsMenu").GetComponentInChildren<Canvas> ().enabled = true;
-			//paused = true;
+            gameOver = true;
+            paused = true;
 		}
 	}
 	int sideLocation(string letter)
@@ -685,9 +812,324 @@ public class controllerScript : MonoBehaviour {
 		wordBank.Add ("thousand");
 		wordBank.Add ("under");
 		wordBank.Add ("value");
-			
-	}
-	public void PopUp()
+
+        //Easy Words
+        wordBankEasy.Add("at");
+        wordBankEasy.Add("am");
+        wordBankEasy.Add("be");
+        wordBankEasy.Add("go");
+        wordBankEasy.Add("is");
+        wordBankEasy.Add("to");
+        wordBankEasy.Add("too");
+        wordBankEasy.Add("and");
+        wordBankEasy.Add("age");
+        wordBankEasy.Add("aid");
+        wordBankEasy.Add("all");
+        wordBankEasy.Add("bow");
+        wordBankEasy.Add("bye");
+        wordBankEasy.Add("cam");
+        wordBankEasy.Add("doe");
+        wordBankEasy.Add("dog");
+        wordBankEasy.Add("dot");
+        wordBankEasy.Add("dug");
+        wordBankEasy.Add("dye");
+        wordBankEasy.Add("eel");
+        wordBankEasy.Add("fig");
+        wordBankEasy.Add("gap");
+        wordBankEasy.Add("gum");
+        wordBankEasy.Add("ham");
+        wordBankEasy.Add("hex");
+        wordBankEasy.Add("jaw");
+        wordBankEasy.Add("jug");
+        wordBankEasy.Add("kid");
+        wordBankEasy.Add("lab");
+        wordBankEasy.Add("lag");
+        wordBankEasy.Add("lie");
+        wordBankEasy.Add("maw");
+        wordBankEasy.Add("moa");
+        wordBankEasy.Add("mob");
+        wordBankEasy.Add("mum");
+        wordBankEasy.Add("nap");
+        wordBankEasy.Add("net");
+        wordBankEasy.Add("new");
+        wordBankEasy.Add("nag");
+        wordBankEasy.Add("oak");
+        wordBankEasy.Add("oar");
+        wordBankEasy.Add("odd");
+        wordBankEasy.Add("off");
+        wordBankEasy.Add("one");
+        wordBankEasy.Add("pad");
+        wordBankEasy.Add("peg");
+        wordBankEasy.Add("pen");
+        wordBankEasy.Add("pod");
+        wordBankEasy.Add("pro");
+        wordBankEasy.Add("pur");
+        wordBankEasy.Add("pup");
+        wordBankEasy.Add("rev");
+        wordBankEasy.Add("rex");
+        wordBankEasy.Add("rib");
+        wordBankEasy.Add("run");
+        wordBankEasy.Add("sad");
+        wordBankEasy.Add("sap");
+        wordBankEasy.Add("sat");
+        wordBankEasy.Add("say");
+        wordBankEasy.Add("sim");
+        wordBankEasy.Add("sir");
+        wordBankEasy.Add("sky");
+        wordBankEasy.Add("tab");
+        wordBankEasy.Add("tar");
+        wordBankEasy.Add("ute");
+        wordBankEasy.Add("use");
+        wordBankEasy.Add("van");
+        wordBankEasy.Add("way");
+        wordBankEasy.Add("wax");
+        wordBankEasy.Add("web");
+        wordBankEasy.Add("wow");
+        wordBankEasy.Add("yak");
+        wordBankEasy.Add("you");
+        wordBankEasy.Add("zip");
+        wordBankEasy.Add("zit");
+        wordBankEasy.Add("zoo");
+        wordBankEasy.Add("beer");
+        wordBankEasy.Add("beet");
+        wordBankEasy.Add("bees");
+        wordBankEasy.Add("bell");
+        wordBankEasy.Add("cook");
+        wordBankEasy.Add("dodo");
+        wordBankEasy.Add("doom");
+        wordBankEasy.Add("food");
+        wordBankEasy.Add("fool");
+        wordBankEasy.Add("foot");
+        wordBankEasy.Add("free");
+        wordBankEasy.Add("keen");
+        wordBankEasy.Add("moon");
+        wordBankEasy.Add("null");
+        wordBankEasy.Add("noon");
+        wordBankEasy.Add("puss");
+        wordBankEasy.Add("putt");
+        wordBankEasy.Add("read");
+        wordBankEasy.Add("reel");
+        wordBankEasy.Add("reef");
+        wordBankEasy.Add("seen");
+        wordBankEasy.Add("soot");
+        wordBankEasy.Add("tutu");
+        wordBankEasy.Add("wall");
+
+
+        //Medium Words
+        wordBankMedium.Add("aloe");
+        wordBankMedium.Add("arid");
+        wordBankMedium.Add("apex");
+        wordBankMedium.Add("aqua");
+        wordBankMedium.Add("babe");
+        wordBankMedium.Add("baby");
+        wordBankMedium.Add("bent");
+        wordBankMedium.Add("beat");
+        wordBankMedium.Add("beta");
+        wordBankMedium.Add("cart");
+        wordBankMedium.Add("card");
+        wordBankMedium.Add("cash");
+        wordBankMedium.Add("cask");
+        wordBankMedium.Add("cold");
+        wordBankMedium.Add("duel");
+        wordBankMedium.Add("dogs");
+        wordBankMedium.Add("glue");
+        wordBankMedium.Add("grow");
+        wordBankMedium.Add("goal");
+        wordBankMedium.Add("jail");
+        wordBankMedium.Add("liar");
+        wordBankMedium.Add("lice");
+        wordBankMedium.Add("lick");
+        wordBankMedium.Add("mine");
+        wordBankMedium.Add("mane");
+        wordBankMedium.Add("mega");
+        wordBankMedium.Add("muck");
+        wordBankMedium.Add("nail");
+        wordBankMedium.Add("navy");
+        wordBankMedium.Add("neck");
+        wordBankMedium.Add("onyx");
+        wordBankMedium.Add("opal");
+        wordBankMedium.Add("open");
+        wordBankMedium.Add("path");
+        wordBankMedium.Add("pads");
+        wordBankMedium.Add("poem");
+        wordBankMedium.Add("rest");
+        wordBankMedium.Add("sewn");
+        wordBankMedium.Add("slim");
+        wordBankMedium.Add("slug");
+        wordBankMedium.Add("text");
+        wordBankMedium.Add("toes");
+        wordBankMedium.Add("toil");
+        wordBankMedium.Add("wren");
+        wordBankMedium.Add("jazzy");
+        wordBankMedium.Add("frizz");
+        wordBankMedium.Add("pizza");
+        wordBankMedium.Add("quack");
+        wordBankMedium.Add("junky");
+        wordBankMedium.Add("quirk");
+        wordBankMedium.Add("whiff");
+        wordBankMedium.Add("zesty");
+        wordBankMedium.Add("zebra");
+        wordBankMedium.Add("kinky");
+        wordBankMedium.Add("chick");
+        wordBankMedium.Add("fixed");
+        wordBankMedium.Add("picky");
+        wordBankMedium.Add("waxed");
+        wordBankMedium.Add("buffy");
+        wordBankMedium.Add("pixel");
+        wordBankMedium.Add("retina");
+        wordBankMedium.Add("retain");
+        wordBankMedium.Add("ratine");
+        wordBankMedium.Add("eolian");
+        wordBankMedium.Add("tonier");
+        wordBankMedium.Add("ornate");
+        wordBankMedium.Add("orient");
+        wordBankMedium.Add("norite");
+        wordBankMedium.Add("atoner");
+        wordBankMedium.Add("auntie");
+        wordBankMedium.Add("ration");
+        wordBankMedium.Add("aroint");
+        wordBankMedium.Add("teniae");
+        wordBankMedium.Add("iodate");
+        wordBankMedium.Add("roadie");
+        wordBankMedium.Add("renail");
+        wordBankMedium.Add("nailer");
+        wordBankMedium.Add("linear");
+        wordBankMedium.Add("larine");
+        wordBankMedium.Add("aliner");
+        wordBankMedium.Add("tolane");
+        wordBankMedium.Add("etalon");
+        wordBankMedium.Add("tineal");
+        wordBankMedium.Add("tenail");
+        wordBankMedium.Add("tailer");
+        wordBankMedium.Add("retial");
+        wordBankMedium.Add("retail");
+        wordBankMedium.Add("entail");
+        wordBankMedium.Add("ariose");
+        wordBankMedium.Add("entoil");
+        wordBankMedium.Add("retine");
+        wordBankMedium.Add("entire");
+        wordBankMedium.Add("qwerty");
+        wordBankMedium.Add("reloan");
+        wordBankMedium.Add("loaner");
+        wordBankMedium.Add("loiter");
+        wordBankMedium.Add("toiler");
+        wordBankMedium.Add("rained");
+        wordBankMedium.Add("uniter");
+        wordBankMedium.Add("triune");
+        wordBankMedium.Add("Dylan");
+        wordBankMedium.Add("Kody");
+        wordBankMedium.Add("Kane");
+        wordBankMedium.Add("Josh");
+        wordBankMedium.Add("Julian");
+
+        //Hard Words
+        wordBankHard.Add("elation ");
+        wordBankHard.Add("routine   ");
+        wordBankHard.Add("alphabet ");
+        wordBankHard.Add("outerwear   ");
+        wordBankHard.Add("urinate   ");
+        wordBankHard.Add("nitrate   ");
+        wordBankHard.Add("nectarine   ");
+        wordBankHard.Add("ruminate   ");
+        wordBankHard.Add("oriental   ");
+        wordBankHard.Add("aileron");
+        wordBankHard.Add("evasion");
+        wordBankHard.Add("toenail");
+        wordBankHard.Add("retinal");
+        wordBankHard.Add("reliant");
+        wordBankHard.Add("ratline");
+        wordBankHard.Add("latrine");
+        wordBankHard.Add("aneroid");
+        wordBankHard.Add("trainee");
+        wordBankHard.Add("retainer");
+        wordBankHard.Add("arenite");
+        wordBankHard.Add("inertia");
+        wordBankHard.Add("aeolian");
+        wordBankHard.Add("trained");
+        wordBankHard.Add("trainer");
+        wordBankHard.Add("attired");
+        wordBankHard.Add("probate");
+        wordBankHard.Add("aconite");
+        wordBankHard.Add("bandeau");
+        wordBankHard.Add("raincoat");
+        wordBankHard.Add("neurone");
+        wordBankHard.Add("facebook");
+        wordBankHard.Add("uranium");
+        wordBankHard.Add("unimpaired");
+        wordBankHard.Add("stonier");
+        wordBankHard.Add("orients");
+        wordBankHard.Add("shoestring");
+        wordBankHard.Add("nitrites");
+        wordBankHard.Add("venation");
+        wordBankHard.Add("neuronal");
+        wordBankHard.Add("steering");
+        wordBankHard.Add("stainer");
+        wordBankHard.Add("retsina");
+        wordBankHard.Add("retinas");
+        wordBankHard.Add("retains");
+        wordBankHard.Add("ratlines");
+        wordBankHard.Add("nastier");
+        wordBankHard.Add("antsier");
+        wordBankHard.Add("aesthetic");
+        wordBankHard.Add("alunite");
+        wordBankHard.Add("aliener");
+        wordBankHard.Add("treason");
+        wordBankHard.Add("senator");
+        wordBankHard.Add("stationers");
+        wordBankHard.Add("outlier");
+        wordBankHard.Add("mozzarella");
+        wordBankHard.Add("neutral");
+        wordBankHard.Add("moraine");
+        wordBankHard.Add("airline");
+        wordBankHard.Add("reginae");
+        wordBankHard.Add("niterie");
+        wordBankHard.Add("uterine");
+        wordBankHard.Add("reunite");
+        wordBankHard.Add("retinue");
+        wordBankHard.Add("outline");
+        wordBankHard.Add("elution");
+        wordBankHard.Add("potential");
+        wordBankHard.Add("regulator");
+        wordBankHard.Add("attained");
+        wordBankHard.Add("retinol");
+        wordBankHard.Add("radiation");
+        wordBankHard.Add("tearing");
+        wordBankHard.Add("tangier");
+        wordBankHard.Add("repaint");
+        wordBankHard.Add("pertain");
+        wordBankHard.Add("painter");
+        wordBankHard.Add("lineage");
+        wordBankHard.Add("ingrate");
+        wordBankHard.Add("ingratiate");
+        wordBankHard.Add("granite");
+        wordBankHard.Add("amniotic");
+        wordBankHard.Add("rations");
+        wordBankHard.Add("foliate");
+        wordBankHard.Add("aroints");
+        wordBankHard.Add("larcenous");
+        wordBankHard.Add("burnoose");
+        wordBankHard.Add("trailed");
+        wordBankHard.Add("swordtail");
+        wordBankHard.Add("artesian");
+        wordBankHard.Add("dilation");
+        wordBankHard.Add("alliterate");
+        wordBankHard.Add("cutaneous");
+        wordBankHard.Add("arteriole");
+        wordBankHard.Add("audience");
+        wordBankHard.Add("outland");
+        wordBankHard.Add("erotica");
+        wordBankHard.Add("entrain");
+        wordBankHard.Add("violate");
+        wordBankHard.Add("unities");
+        wordBankHard.Add("excellence");
+        wordBankHard.Add("extraordinary");
+
+
+
+
+    }
+    public void PopUp()
 	{
 		GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = false;
 	}

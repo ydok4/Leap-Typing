@@ -74,9 +74,12 @@ public class charScript : MonoBehaviour {
 		else if(mode==2)
 			gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial (val[0].ToString());
 
-		//Modify Asteroid Scale
-		gameObject.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
-		text = new GameObject ();
+        //Modify Asteroid Scale
+        if (mode == 0)
+            gameObject.transform.localScale = new Vector3(0.12f, 0.12f, 0.12f);
+        else
+            gameObject.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+        text = new GameObject ();
 		//ModifyAsteroidRotation - WIP. Issue is text wont orientate correctly
 		//Vector3 asRotate = new Vector3 (Random.Range (0, 360), Random.Range (0, 360), Random.Range (0, 360));
 		//gameObject.transform.localRotation = Quaternion.Euler (asRotate);
@@ -536,10 +539,11 @@ public class charScript : MonoBehaviour {
 		//else
 		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount++;
 		Destroy (this.gameObject);
-		//Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[0].charObj);
-		//Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[1].charObj);
-		//Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[2].charObj);
-	}
+        GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped++;
+        //Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[0].charObj);
+        //Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[1].charObj);
+        //Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[2].charObj);
+    }
 	Material asteroidMaterial(string val) //make 'spawn' for projectileScript
 	{
 		val = val.ToLower ();

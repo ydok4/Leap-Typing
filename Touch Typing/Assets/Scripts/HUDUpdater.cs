@@ -30,7 +30,7 @@ public class HUDUpdater : MonoBehaviour {
 			}
 		}
 		//toggle pause menu
-		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == true)
+		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == true && GameObject.Find("Main Camera").GetComponent<controllerScript>().gameOver ==false)
 			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = true;
 		 else 
 			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = false;
