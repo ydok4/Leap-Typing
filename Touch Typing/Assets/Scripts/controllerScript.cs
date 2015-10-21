@@ -127,6 +127,7 @@ public class controllerScript : MonoBehaviour {
 	//External way to invoke the miss method
 	public bool playMissSound;
 
+    public int wordsForLevel;
 
 	public class characters {
 		public GameObject charObj;
@@ -244,7 +245,7 @@ public class controllerScript : MonoBehaviour {
         timeIncreasing = 0;
         levelLimit = 20;
         levelStartTime = 0;
-        level = 1;
+        level = 0;
         gameOver = false;
         levelChecked = false;
         if (mode == 2 && infinite == false) {
@@ -254,7 +255,7 @@ public class controllerScript : MonoBehaviour {
 		}
 
 		setMode = mode;
-		Debug.Log ("Goal: " + goal);
+        wordsForLevel = 0;
 	}
 	void Reset()
 	{
@@ -305,20 +306,21 @@ public class controllerScript : MonoBehaviour {
         if(paused==false && mode==2 && infinite== false && delay <= 0)
         { 
             timeIncreasing += Time.deltaTime;
-            if (wordsTyped == levelLimit)
+            if (wordsForLevel == levelLimit)
             {
-                //if (timeIncreasing > 240)
-                levelLimit = levelLimit + 5;
-                //else
-                //    levelLimit = levelLimit + 20;
+                level++;
+                levelLimit = 20 + 5*level;
 
                 score += (int)timeIncreasing - levelStartTime;
-                level++;
+                
                 levelChecked = true;
                 if (level % 3 == 0)
-                    spawn--;
+                    spawn-=0.5f;
+                levelStartTime = (int)timeIncreasing;
+                timeIncreasing = 0;
+                wordsForLevel = 0; 
             }
-            else if ((int)timeIncreasing % 60 == 0 && wordsTyped < levelLimit && (int)timeIncreasing != 0 && levelChecked == false)
+            else if ((int)timeIncreasing % 60 == 0 && wordsForLevel < levelLimit && (int)timeIncreasing != 0 && levelChecked == false)
             {
                 //if (levelChecked == false)
                 {
@@ -587,7 +589,7 @@ public class controllerScript : MonoBehaviour {
 
                     if (infinite != true)
                     {
-                        if (timeIncreasing > 240 && wordsTyped > levelLimit)
+                        if (level>=2)
                         {
                            // Debug.Log("Hard Spawn");
                             c1 = wordBankHard[Random.Range(0, wordBankHard.Count)];
@@ -600,7 +602,7 @@ public class controllerScript : MonoBehaviour {
                                 c3 = wordBankHard[Random.Range(0, wordBankHard.Count)];
                             } while (c3 == c1 || c3 == c2 || c3[0] == c1[0] || c3[0] == c2[0]);
                         }
-                        else if(timeIncreasing > 120 && wordsTyped > levelLimit)
+                        else if(level==1)
                         {
                            // Debug.Log("Medium Spawn");
                             c1 = wordBankMedium[Random.Range(0, wordBankMedium.Count)];
@@ -613,7 +615,7 @@ public class controllerScript : MonoBehaviour {
                                 c3 = wordBankMedium[Random.Range(0, wordBankMedium.Count)];
                             } while (c3 == c1 || c3 == c2 || c3[0] == c1[0] || c3[0] == c2[0]);
                         }
-                        else if(wordsTyped <= 40 )
+                        else if(level==0 )
                         {
                            // Debug.Log("Easy Spawn");
                             c1 = wordBankEasy[Random.Range(0, wordBankEasy.Count)];

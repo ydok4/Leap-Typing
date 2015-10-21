@@ -437,7 +437,6 @@ public class charScript : MonoBehaviour {
 		//used to check if current char is upper or lowercase
 		charUpper=false;
 		isNonAlpha=false;
-		string testChar="{";
 		if (checkChar == checkChar.ToUpper()) 
 		{
 			charUpper=true;
@@ -462,7 +461,9 @@ public class charScript : MonoBehaviour {
 		//If the object is hit by the projectile it will update the score and destroy itself.
 		if (other.name == "Projectile :"+val) {
 			GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score += 1;
-			if(mode==0 ||mode==1 )
+            GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped++;
+            GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsForLevel++;
+            if (mode==0 ||mode==1 )
 			{
 				destroyCharacterString();
 				removeCharacter();
@@ -519,11 +520,14 @@ public class charScript : MonoBehaviour {
 		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.RemoveAt(0);
 		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount = 0;
 
-		//Change material to the correct colour
-		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[0].charObj.GetComponent<MeshRenderer> ().material = asteroidMaterial (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[0].charObj.GetComponent<charScript> ().val[0].ToString());
-		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[1].charObj.GetComponent<MeshRenderer> ().material = asteroidMaterial (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[1].charObj.GetComponent<charScript> ().val[0].ToString());
-		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[2].charObj.GetComponent<MeshRenderer> ().material = asteroidMaterial (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[2].charObj.GetComponent<charScript> ().val[0].ToString());
-	}
+        //Change material to the correct colour
+        if (GameObject.Find("Main Camera").GetComponent<controllerScript>().characterList.Count >=3)
+        {
+            GameObject.Find("Main Camera").GetComponent<controllerScript>().characterList[0].charObj.GetComponent<MeshRenderer>().material = asteroidMaterial(GameObject.Find("Main Camera").GetComponent<controllerScript>().characterList[0].charObj.GetComponent<charScript>().val[0].ToString());
+            GameObject.Find("Main Camera").GetComponent<controllerScript>().characterList[1].charObj.GetComponent<MeshRenderer>().material = asteroidMaterial(GameObject.Find("Main Camera").GetComponent<controllerScript>().characterList[1].charObj.GetComponent<charScript>().val[0].ToString());
+            GameObject.Find("Main Camera").GetComponent<controllerScript>().characterList[2].charObj.GetComponent<MeshRenderer>().material = asteroidMaterial(GameObject.Find("Main Camera").GetComponent<controllerScript>().characterList[2].charObj.GetComponent<charScript>().val[0].ToString());
+        }
+     }
 	void destroy3CharacterString() //Called whenever the string is destroyed. Ie hit by projectile or moves into the kill zone.
 	{
 		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount == 2) 
@@ -539,7 +543,6 @@ public class charScript : MonoBehaviour {
 		//else
 		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount++;
 		Destroy (this.gameObject);
-        GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped++;
         //Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[0].charObj);
         //Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[1].charObj);
         //Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[2].charObj);

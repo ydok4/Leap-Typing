@@ -29,11 +29,12 @@ public class HUDUpdater : MonoBehaviour {
 				timeText.text = "Time: ∞";
 			}
 		}
-		//THIS IS THE NEW SHIT
+        //THIS IS THE NEW SHIT
+        //Debug.Log("LEVEL: " + GameObject.Find("Main Camera").GetComponent<controllerScript>().level + " LEVEL LIMIT " + GameObject.Find("Main Camera").GetComponent<controllerScript>().levelLimit);
 		if(prog!=null)
-			prog.text = "Progress: " +  GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordsTyped +"/"+ GameObject.Find ("Main Camera").GetComponent<controllerScript> ().levelLimit;
+			prog.text = "Progress: " + GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsForLevel + "/"+ GameObject.Find ("Main Camera").GetComponent<controllerScript> ().levelLimit;
 		if(lvl!=null)
-			lvl.text = "Level: " +  GameObject.Find ("Main Camera").GetComponent<controllerScript> ().level;
+			lvl.text = "Level: " +  (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().level+1);
 
 		//toggle pause menu
 		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == true && GameObject.Find("Main Camera").GetComponent<controllerScript>().gameOver ==false)
@@ -54,11 +55,13 @@ public class HUDUpdater : MonoBehaviour {
 			leftText.text = "Left Palm x: " + GameObject.Find ("DebugMenu").GetComponent<PalmPosition>().left.x + "\nLeft Palm y: " + GameObject.Find ("DebugMenu").GetComponent<PalmPosition>().left.y + "\nLeft Palm z: " + GameObject.Find ("DebugMenu").GetComponent<PalmPosition>().left.z;
 		if(timeStat!=null)
 			timeStat.text = "Time: "+timePlayed;
-		if(asteroids!=null)
+		if(asteroids!=null && GameObject.Find("Main Camera").GetComponent<controllerScript>().setMode!=2)
 			asteroids.text = "Asteroids: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids;
-		//if(accuracy!=null)
-			//accuracy.text = "Accuracy: " + ((GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids - GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed) / GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids) + "%";
-	}
+        else if(asteroids != null && GameObject.Find("Main Camera").GetComponent<controllerScript>().setMode == 2)
+            asteroids.text = "Words Typed: " + GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped;
+        //if(accuracy!=null)
+        //accuracy.text = "Accuracy: " + ((GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids - GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed) / GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids) + "%";
+    }
 
 
 	public void PauseMenu(int button)

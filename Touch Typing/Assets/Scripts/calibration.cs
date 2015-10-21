@@ -170,7 +170,7 @@ public class calibration : MonoBehaviour {
 		Application.LoadLevel(1);
 	}
 
-	public Void MainMenu(){
+	public void MainMenu(){
 		AsteroidKeyboard.Exit ();
 		AudioSource.PlayClipAtPoint (correct, Vector3.zero, 1.0f);
 		Application.LoadLevel (1);
