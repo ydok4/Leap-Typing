@@ -77,7 +77,8 @@ public class MainMenuScript : MonoBehaviour {
 			break;
 		case 1:	//Words
 				GameObject.Find ("Reservoir").GetComponent<ReservoirScript>().mode = 2;
-				showInputMenu ();
+				loadLevel();
+				//showInputMenu ();
 			break;
 		case 2: //back
 				toggleMenu ("ModeMenu");

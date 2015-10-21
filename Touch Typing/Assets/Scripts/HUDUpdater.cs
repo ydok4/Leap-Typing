@@ -4,7 +4,7 @@ using System.Collections;
 
 public class HUDUpdater : MonoBehaviour {
 	
-	public Text scoreText, missedText, timeText, rightText, leftText, accuracy, asteroids, timeStat;
+	public Text scoreText, missedText, timeText, rightText, leftText, accuracy, asteroids, timeStat, prog, lvl;
 	public static float timePlayed;
 	void Start () {
 		//ensure is not visible on start, press F5 to activate
@@ -21,7 +21,7 @@ public class HUDUpdater : MonoBehaviour {
 			missedText.text = "Missed: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed;
 		if (timeText != null) {
 			if(controllerScript.infinite == false){
-				timeText.text = "Time: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().time.ToString ("F2");
+				timeText.text = "Time: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().timeIncreasing.ToString ("F2");
 				if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().time < 0)
 					timeText.text = "Time: 0";
 			}
@@ -29,6 +29,12 @@ public class HUDUpdater : MonoBehaviour {
 				timeText.text = "Time: ∞";
 			}
 		}
+		//THIS IS THE NEW SHIT
+		if(prog!=null)
+			prog.text = "Progress: " +  GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordsTyped +"/"+ GameObject.Find ("Main Camera").GetComponent<controllerScript> ().levelLimit;
+		if(lvl!=null)
+			lvl.text = "Level: " +  GameObject.Find ("Main Camera").GetComponent<controllerScript> ().level;
+
 		//toggle pause menu
 		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == true && GameObject.Find("Main Camera").GetComponent<controllerScript>().gameOver ==false)
 			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = true;

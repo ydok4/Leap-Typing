@@ -61,7 +61,7 @@ public class controllerScript : MonoBehaviour {
 	public float wait;
 
     //Amount of words typed
-    public int wordsTyped;
+    public int wordsTyped; //   /levellmit
 
 	//Float interval between next spawn
 	float spawn;
@@ -110,9 +110,9 @@ public class controllerScript : MonoBehaviour {
 
     //How many words need to be typed this level
     public int levelLimit;
-    float timeIncreasing;
+    public float timeIncreasing;
     int levelStartTime;
-    int level;
+    public int level;
 
 	//Contains dictionary list of words
     //Default Words
