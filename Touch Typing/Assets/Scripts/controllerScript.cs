@@ -36,6 +36,8 @@ public class controllerScript : MonoBehaviour {
 	//Determines what game mode the level is in. 0 is keyboard
 	//Default is 0
 	public static int mode;
+
+	public int setMode;
 	//boot camp level mode
 	public static bool infinite;
 	//track total spawned letters/words
@@ -245,9 +247,14 @@ public class controllerScript : MonoBehaviour {
         level = 1;
         gameOver = false;
         levelChecked = false;
-        if (mode == 2 && infinite == false)
-            spawn = 5;
+        if (mode == 2 && infinite == false) {
+			spawn = 5;
+			time = 10000;
+			goal = time - 5;
+		}
 
+		setMode = mode;
+		Debug.Log ("Goal: " + goal);
 	}
 	void Reset()
 	{
@@ -268,6 +275,8 @@ public class controllerScript : MonoBehaviour {
 			goal = 55;
 
 		spawn = time - goal;
+
+
 	}
 	void FixedUpdate()
 	{
@@ -705,7 +714,7 @@ public class controllerScript : MonoBehaviour {
 				goal-=spawn;
 			}
 		}
-		if (time <= 0) //when time runs out, show end of level statistics
+		if (time <= 0 && (mode==1 || mode==0)) //when time runs out, show end of level statistics
 		{
 			GameObject.Find ("HUD").GetComponentInChildren<Canvas> ().enabled = false;
 			GameObject.Find ("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();

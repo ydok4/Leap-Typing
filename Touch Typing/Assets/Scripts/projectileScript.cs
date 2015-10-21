@@ -69,7 +69,10 @@ public class projectileScript : MonoBehaviour {
 		{
 			//Makes sure the object is always looking at the target char and moves towards it
 			gameObject.transform.LookAt (GameObject.Find (target).transform.position); 
-			gameObject.transform.position += transform.forward * Time.deltaTime * 6;
+			if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().setMode==1 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().setMode==2)
+				gameObject.transform.position += transform.forward * Time.deltaTime * 12;
+			else
+				gameObject.transform.position += transform.forward * Time.deltaTime * 6;
 		}
 		if(GameObject.Find (target)==null)
 			Destroy(gameObject);
