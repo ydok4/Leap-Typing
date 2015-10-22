@@ -8,7 +8,7 @@ public class MainMenuScript : MonoBehaviour {
 	/*public static bool BCMode, timeOFF, capOFF;
 	public int row;//, mode;
 	public static float inputtedTime;*/
-	public Text gameTimeText, spawnRateText, capitalChanceText;
+	public Text gameTimeText, spawnRateText, capitalChanceText, first, second, third, fourth, fifth, firstl, secondl, thirdl, fourthl, fifthl;
 
 	GameObject capSlider, capText, capVText;
 	GameObject timeSlider, timeText, timeVText;
@@ -44,6 +44,28 @@ public class MainMenuScript : MonoBehaviour {
 			spawnRateText.text = GameObject.Find ("SpawnRateSlider").GetComponent<Slider> ().value + "/s";
 		if(capitalChanceText!=null)
 			capitalChanceText.text = (5 * (int)GameObject.Find ("CapitalChanceSlider").GetComponent<Slider> ().value) + "%";
+        if ((first != null) && (PlayerPrefs.GetInt(0.ToString(), 0) != -1))
+            first.text = PlayerPrefs.GetString(0.ToString() + "Name", "0") + ": " + PlayerPrefs.GetInt(0.ToString(), 0);
+        if ((second != null) && (PlayerPrefs.GetInt(1.ToString(), 0) != -1))
+            second.text = PlayerPrefs.GetString(1.ToString() + "Name", "0") + ": " + PlayerPrefs.GetInt(1.ToString(), 0);
+        if ((third != null) && (PlayerPrefs.GetInt(2.ToString(), 0) != -1))
+            third.text = PlayerPrefs.GetString(2.ToString() + "Name", "0") + ": " + PlayerPrefs.GetInt(1.ToString(), 0);
+        if ((fourth != null) && (PlayerPrefs.GetInt(3.ToString(), 0) != -1))
+            fourth.text = PlayerPrefs.GetString(3.ToString() + "Name", "0") + ": " + PlayerPrefs.GetInt(1.ToString(), 0);
+        if ((fifth != null) && (PlayerPrefs.GetInt(4.ToString(), 0) != -1))
+            fifth.text = PlayerPrefs.GetString(4.ToString() + "Name", "0") + ": " + PlayerPrefs.GetInt(1.ToString(), 0);
+        if ((firstl != null) && (PlayerPrefs.GetInt(0.ToString(), 0) != -1))
+            firstl.text = PlayerPrefs.GetString(0.ToString() + "Name" + "Letter", "0") + ": " + PlayerPrefs.GetInt(0.ToString() + "Letter", 0);
+        if ((secondl != null) && (PlayerPrefs.GetInt(1.ToString(), 0) != -1))
+            secondl.text = PlayerPrefs.GetString(1.ToString() + "Name" + "Letter", "0") + ": " + PlayerPrefs.GetInt(1.ToString() + "Letter", 0);
+        if ((thirdl != null) && (PlayerPrefs.GetInt(2.ToString(), 0) != -1))
+            thirdl.text = PlayerPrefs.GetString(2.ToString() + "Name" + "Letter", "0") + ": " + PlayerPrefs.GetInt(1.ToString() + "Letter", 0);
+        if ((fourthl != null) && (PlayerPrefs.GetInt(3.ToString(), 0) != -1))
+            fourthl.text = PlayerPrefs.GetString(3.ToString() + "Name" + "Letter", "0") + ": " + PlayerPrefs.GetInt(1.ToString() + "Letter", 0);
+        if ((fifthl != null) && (PlayerPrefs.GetInt(4.ToString(), 0) != -1))
+            fifthl.text = PlayerPrefs.GetString(4.ToString() + "Name" + "Letter", "0") + ": " + PlayerPrefs.GetInt(1.ToString() + "Letter", 0);
+       
+
 	}
 
 	public void MainMenu (int button)

@@ -23,14 +23,14 @@ public class FingerPosition : MonoBehaviour {
 	void Update () {
 	}
 
-	public static FingerStat[] GetFingerStat() {
+	/*public static FingerStat[] GetFingerStat() {
 		return FingerStat;
-	}
+	}*/
 
 	//Returns the score based on what finger was used to press the key
 	public int IsPressed(string key){
 		int score = 2;
-		int finger;
+		int finger = -1;
 		Vector3 location;
 		key = key.ToLower();
 		Debug.Log ("Key " + key);

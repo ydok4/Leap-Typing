@@ -6,11 +6,14 @@ public class HUDUpdater : MonoBehaviour {
 	
 	public Text scoreText, missedText, timeText, rightText, leftText, accuracy, asteroids, timeStat, prog, lvl;
 	public static float timePlayed;
+    public string currentPlayerName;
 	void Start () {
 		//ensure is not visible on start, press F5 to activate
 		GameObject.Find ("DebugMenu").GetComponentInChildren<Canvas>().enabled = false;
 		GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = false;
 		GameObject.Find ("StatsMenu").GetComponentInChildren<Canvas>().enabled = false;
+        GameObject.Find("NameEntry").GetComponentInChildren<Canvas>().enabled = true;
+        currentPlayerName = "Default";
 	}
 
 	void Update () {
@@ -35,6 +38,18 @@ public class HUDUpdater : MonoBehaviour {
 			prog.text = "Progress: " + GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsForLevel + "/"+ GameObject.Find ("Main Camera").GetComponent<controllerScript> ().levelLimit;
 		if(lvl!=null)
 			lvl.text = "Level: " +  (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().level+1);
+
+        if ((controllerScript.infinite == false) && (controllerScript.mode != 1))//arcade mode (not, bc or tap)
+            GameObject.Find("Arcade").GetComponentInChildren<Canvas>().enabled = true;
+        else
+            GameObject.Find("Arcade").GetComponentInChildren<Canvas>().enabled = false;
+
+        //on enter key pressed after entered name, unpause level
+        if (GameObject.Find("InputField").GetComponent<InputField>().isFocused && GameObject.Find("InputField").GetComponent<InputField>().text != "" && Input.GetKey(KeyCode.Return))
+        {
+            nameEntered();
+        }
+
 
 		//toggle pause menu
 		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == true && GameObject.Find("Main Camera").GetComponent<controllerScript>().gameOver ==false)
@@ -63,7 +78,16 @@ public class HUDUpdater : MonoBehaviour {
         //accuracy.text = "Accuracy: " + ((GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids - GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed) / GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids) + "%";
     }
 
-
+    public void nameEntered()
+    {
+        if (GameObject.Find("InputField").GetComponent<InputField>().text != "")
+        {
+            currentPlayerName = GameObject.Find("InputField").GetComponent<InputField>().text;
+            GameObject.Find("InputField").GetComponent<InputField>().text = "";
+            GameObject.Find("NameEntry").GetComponentInChildren<Canvas>().enabled = false;
+            GameObject.Find("Main Camera").GetComponent<controllerScript>().paused = false;
+        }
+    }
 	public void PauseMenu(int button)
 	{
 		switch (button) {
@@ -80,7 +104,7 @@ public class HUDUpdater : MonoBehaviour {
 	{
 		float t = GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids;
 		float m = GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed;
-		Debug.Log ("STATS MENU " + timePlayed + " " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids + " t:" + t + " m:" + m);
+		//Debug.Log ("STATS MENU " + timePlayed + " " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids + " t:" + t + " m:" + m);
 		/*if(timeStat!=null)
 			timeStat.text = "Time: "+timePlayed;
 		if(asteroids!=null)

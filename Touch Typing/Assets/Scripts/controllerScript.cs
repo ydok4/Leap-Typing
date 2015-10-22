@@ -199,8 +199,10 @@ public class controllerScript : MonoBehaviour {
 			rowCount = 0;
             wordsTyped = 0;
 		}
-		//Sets up alphabet
-		Camera.main.fieldOfView = 180.0f;
+        if(mode==0)
+            wordsTyped = 0;
+        //Sets up alphabet
+        Camera.main.fieldOfView = 180.0f;
 		//UPPER and Lower Case
 		//alpha = "abcdefghjklmnopqrstuvwxyz[];',.";
 		alpha = "abcdefghijklmnopqrstuvwxyz[];',./ABCDEFGHIJKLMNOPQRSTUVWXYZ{}:\"<>?";
@@ -247,20 +249,33 @@ public class controllerScript : MonoBehaviour {
 
 		wait = -1;
         timeIncreasing = 0;
-        levelLimit = 20;
+        if (mode == 2)
+            levelLimit = 20;
+        else if (mode == 0)
+            levelLimit = 15;
         levelStartTime = 0;
         level = 0;
         gameOver = false;
         levelChecked = false;
-        if (mode == 2 && infinite == false) {
-			spawn = 5;
-			time = 10000;
-			goal = time - 5;
-		}
+        if (mode == 2  && infinite == false)
+        {
+            spawn = 5;
+            time = 10000;
+            goal = time - 5;
+        }
+        else if(mode==0 && infinite == false)
+        {
+            spawn = 2;
+            time = 10000;
+            goal = time - 2;
+        }
+        capitalChance = 0;    
 
 		setMode = mode;
         wordsForLevel = 0;
 		name = "Default";
+        //####
+        paused = true;
 	}
 	void Reset()
 	{
@@ -282,20 +297,39 @@ public class controllerScript : MonoBehaviour {
 
 		spawn = time - goal;
 
-		for(int i=0; i<10;i++)
-		{
-			highScore.Add (PlayerPrefs.GetInt(i.ToString(),0));
-			highScoreName.Add (PlayerPrefs.GetString(i.ToString()+"Name","0"));
+        if (mode == 2 && infinite == false)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                highScore.Add(PlayerPrefs.GetInt(i.ToString(), 0));
+                highScoreName.Add(PlayerPrefs.GetString(i.ToString() + "Name", "0"));
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                if (highScore[i] == 0)
+                {
+                    PlayerPrefs.SetInt(i.ToString(), -1);
+                    PlayerPrefs.SetString(i.ToString() + "Name", "0");
+                }
+            }
         }
-       	for(int i=0; i<10;i++)
-       	{
-				if(highScore[i]==0)
-				{
-					PlayerPrefs.SetInt(i.ToString(), -1);
-					PlayerPrefs.SetString(i.ToString()+"Name","0");
-				}
-		}
+        else if(mode==0 && infinite==false)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                highScore.Add(PlayerPrefs.GetInt(i.ToString()+"Letter", 0));
+                highScoreName.Add(PlayerPrefs.GetString(i.ToString() + "Name" + "Letter", "0"));
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                if (highScore[i] == 0)
+                {
+                    PlayerPrefs.SetInt(i.ToString() + "Letter", -1);
+                    PlayerPrefs.SetString(i.ToString() + "Name" + "Letter", "0");
+                }
+            }
 
+        }
 
 	}
 	void FixedUpdate()
@@ -327,62 +361,121 @@ public class controllerScript : MonoBehaviour {
 			else
 				paused = false;
 		}
-        if(paused==false && mode==2 && infinite== false && delay <= 0)
+        if(paused==false && infinite== false && delay <= 0)
         { 
+
             timeIncreasing += Time.deltaTime;
-            if (wordsForLevel == levelLimit)
+            if (mode == 2)
             {
-                level++;
-                levelLimit = 20 + 5*level;
-
-                score += (int)timeIncreasing - levelStartTime;
-                
-                levelChecked = true;
-                if (level % 3 == 0)
-                    spawn-=0.5f;
-                levelStartTime = (int)timeIncreasing;
-                timeIncreasing = 0;
-                wordsForLevel = 0; 
-            }
-            else if ((int)timeIncreasing % 60 == 0 && wordsForLevel < levelLimit && (int)timeIncreasing != 0 && levelChecked == false)
-            {
-                //if (levelChecked == false)
+                if (wordsForLevel == levelLimit)
                 {
-                    GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
-                    GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
-                    GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
-                    gameOver = true;
-                    paused = true;
-					for(int i=0;i<10;i++)
-					{
-						if(score > highScore[i])
-						{
-							for(int j=i; j<10;j++)
-							{
-								if(PlayerPrefs.GetInt((j+1).ToString(), 0)!=0)
-								{
-									PlayerPrefs.SetInt((j+1).ToString(), PlayerPrefs.GetInt(j.ToString(), 0));
-									PlayerPrefs.SetString((j+1).ToString()+"Name", PlayerPrefs.GetString(j.ToString()+"Name", "0"));
-								}
-							}
-							PlayerPrefs.SetInt(i.ToString(), score);
-							PlayerPrefs.SetString(i.ToString()+"Name", name);
-							PlayerPrefs.Save();
-							break;
-						}
-					}
-					for(int i=0;i<10;i++)
-					{
-						Debug.Log ("Highscore "+i+" Score: "+PlayerPrefs.GetInt(i.ToString(), 0)+" Name: "+PlayerPrefs.GetString(i.ToString()+"Name", "0"));
-					}
+                    level++;
+                    levelLimit = 20 + 5 * level;
 
+                    score += (int)timeIncreasing - levelStartTime;
 
-
+                    levelChecked = true;
+                    if (level % 3 == 0)
+                        spawn -= 0.5f;
+                    levelStartTime = (int)timeIncreasing;
+                    timeIncreasing = 0;
+                    wordsForLevel = 0;
+                }
+                else if ((int)timeIncreasing % 60 == 0 && wordsForLevel < levelLimit && (int)timeIncreasing != 0 && levelChecked == false)
+                {
+                    //if (levelChecked == false)
+                    {
+                        GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
+                        GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
+                        GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
+                        gameOver = true;
+                        paused = true;
+                        for (int i = 0; i < 10; i++)
+                        {
+                            if (score > highScore[i])
+                            {
+                                for (int j = i; j < 10; j++)
+                                {
+                                    if (PlayerPrefs.GetInt((j + 1).ToString(), 0) != 0)
+                                    {
+                                        PlayerPrefs.SetInt((j + 1).ToString(), PlayerPrefs.GetInt(j.ToString(), 0));
+                                        PlayerPrefs.SetString((j + 1).ToString() + "Name", PlayerPrefs.GetString(j.ToString() + "Name", "0"));
+                                    }
+                                }
+                                PlayerPrefs.SetInt(i.ToString(), score);
+                                name = GameObject.Find("PauseMenu").GetComponent<HUDUpdater>().currentPlayerName;
+                                PlayerPrefs.SetString(i.ToString() + "Name", name);
+                                PlayerPrefs.Save();
+                                break;
+                            }
+                        }
+                        for (int i = 0; i < 10; i++)
+                        {
+                            Debug.Log("Highscore " + i + " Score: " + PlayerPrefs.GetInt(i.ToString(), 0) + " Name: " + PlayerPrefs.GetString(i.ToString() + "Name", "0"));
+                        }
+                    }
+                }
+                else if (levelChecked == true && (int)timeIncreasing % 60 == 1)
+                {
+                    levelChecked = false;
                 }
             }
-            else if(levelChecked==true && (int)timeIncreasing % 60 == 1)
+            else if(mode==0)
             {
-                levelChecked = false;
+                if (wordsForLevel == levelLimit)
+                {
+                    level++;
+                    if(levelLimit<=60)
+                        levelLimit = 15 + 5 * level;
+
+                    score += (int)timeIncreasing - levelStartTime;
+
+                    levelChecked = true;
+                    if (level % 2 == 0 && spawn!=1)
+                        spawn -= 0.5f;
+                    if (level % 3 == 0 && capitalChance <= 50)
+                        capitalChance += 5;
+                    levelStartTime = (int)timeIncreasing;
+                    timeIncreasing = 0;
+                    wordsForLevel = 0;
+                }
+                else if ((int)timeIncreasing % 60 == 0 && wordsForLevel < levelLimit && (int)timeIncreasing != 0 && levelChecked == false)
+                {
+                    //if (levelChecked == false)
+                    {
+                        GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
+                        GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
+                        GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
+                        gameOver = true;
+                        paused = true;
+                        for (int i = 0; i < 10; i++)
+                        {
+                            if (score > highScore[i])
+                            {
+                                for (int j = i; j < 10; j++)
+                                {
+                                    if (PlayerPrefs.GetInt((j + 1).ToString()+"Letter", 0) != 0)
+                                    {
+                                        PlayerPrefs.SetInt((j + 1).ToString() + "Letter", PlayerPrefs.GetInt(j.ToString() + "Letter", 0));
+                                        PlayerPrefs.SetString((j + 1).ToString() + "Name" + "Letter", PlayerPrefs.GetString(j.ToString() + "Letter" + "Name", "0"));
+                                    }
+                                }
+                                PlayerPrefs.SetInt(i.ToString() + "Letter", score);
+                                PlayerPrefs.SetString(i.ToString() + "Name" + "Letter", name);
+                                PlayerPrefs.Save();
+                                break;
+                            }
+                        }
+                        for (int i = 0; i < 10; i++)
+                        {
+                            Debug.Log("Highscore " + i + " Score: " + PlayerPrefs.GetInt(i.ToString() + "Letter", 0) + " Name: " + PlayerPrefs.GetString(i.ToString() + "Name" + "Letter", "0"));
+                        }
+                    }
+                }
+                else if (levelChecked == true && (int)timeIncreasing % 60 == 1)
+                {
+                    levelChecked = false;
+                }
             }
         }
         //Checks if there is any more time for the game to run or if the game is paused
