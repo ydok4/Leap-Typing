@@ -129,6 +129,10 @@ public class controllerScript : MonoBehaviour {
 
     public int wordsForLevel;
 
+	public List <int>highScore = new List<int>();
+	public List <string>highScoreName = new List<string>();
+	public string name;
+
 	public class characters {
 		public GameObject charObj;
 		public int location;
@@ -256,6 +260,7 @@ public class controllerScript : MonoBehaviour {
 
 		setMode = mode;
         wordsForLevel = 0;
+		name = "Default";
 	}
 	void Reset()
 	{
@@ -277,6 +282,20 @@ public class controllerScript : MonoBehaviour {
 
 		spawn = time - goal;
 
+		for(int i=0; i<10;i++)
+		{
+			highScore.Add (PlayerPrefs.GetInt(i.ToString(),0));
+			highScoreName.Add (PlayerPrefs.GetString(i.ToString()+"Name","0"));
+        }
+       	for(int i=0; i<10;i++)
+       	{
+				if(highScore[i]==0)
+				{
+					PlayerPrefs.SetInt(i.ToString(), -1);
+					PlayerPrefs.SetString(i.ToString()+"Name","0");
+				}
+		}
+
 
 	}
 	void FixedUpdate()
@@ -296,6 +315,11 @@ public class controllerScript : MonoBehaviour {
 	// Update is called once per frame before LateUpdate is called
 	void Update () {
 		//Pauses or unpauses the game if escape is pressed
+		if (Input.GetKeyDown (KeyCode.F10))
+			PlayerPrefs.DeleteAll ();
+		
+
+
 
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			if (paused == false)
@@ -329,6 +353,31 @@ public class controllerScript : MonoBehaviour {
                     GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
                     gameOver = true;
                     paused = true;
+					for(int i=0;i<10;i++)
+					{
+						if(score > highScore[i])
+						{
+							for(int j=i; j<10;j++)
+							{
+								if(PlayerPrefs.GetInt((j+1).ToString(), 0)!=0)
+								{
+									PlayerPrefs.SetInt((j+1).ToString(), PlayerPrefs.GetInt(j.ToString(), 0));
+									PlayerPrefs.SetString((j+1).ToString()+"Name", PlayerPrefs.GetString(j.ToString()+"Name", "0"));
+								}
+							}
+							PlayerPrefs.SetInt(i.ToString(), score);
+							PlayerPrefs.SetString(i.ToString()+"Name", name);
+							PlayerPrefs.Save();
+							break;
+						}
+					}
+					for(int i=0;i<10;i++)
+					{
+						Debug.Log ("Highscore "+i+" Score: "+PlayerPrefs.GetInt(i.ToString(), 0)+" Name: "+PlayerPrefs.GetString(i.ToString()+"Name", "0"));
+					}
+
+
+
                 }
             }
             else if(levelChecked==true && (int)timeIncreasing % 60 == 1)
@@ -589,7 +638,7 @@ public class controllerScript : MonoBehaviour {
 
                     if (infinite != true)
                     {
-                        if (level>=2)
+                        if (level>=4)
                         {
                            // Debug.Log("Hard Spawn");
                             c1 = wordBankHard[Random.Range(0, wordBankHard.Count)];
@@ -602,7 +651,7 @@ public class controllerScript : MonoBehaviour {
                                 c3 = wordBankHard[Random.Range(0, wordBankHard.Count)];
                             } while (c3 == c1 || c3 == c2 || c3[0] == c1[0] || c3[0] == c2[0]);
                         }
-                        else if(level==1)
+                        else if(level==2 || level==3)
                         {
                            // Debug.Log("Medium Spawn");
                             c1 = wordBankMedium[Random.Range(0, wordBankMedium.Count)];
@@ -615,7 +664,7 @@ public class controllerScript : MonoBehaviour {
                                 c3 = wordBankMedium[Random.Range(0, wordBankMedium.Count)];
                             } while (c3 == c1 || c3 == c2 || c3[0] == c1[0] || c3[0] == c2[0]);
                         }
-                        else if(level==0 )
+                        else if(level==0 || level==1)
                         {
                            // Debug.Log("Easy Spawn");
                             c1 = wordBankEasy[Random.Range(0, wordBankEasy.Count)];
@@ -1035,15 +1084,15 @@ public class controllerScript : MonoBehaviour {
         wordBankMedium.Add("Julian");
 
         //Hard Words
-        wordBankHard.Add("elation ");
-        wordBankHard.Add("routine   ");
-        wordBankHard.Add("alphabet ");
-        wordBankHard.Add("outerwear   ");
-        wordBankHard.Add("urinate   ");
-        wordBankHard.Add("nitrate   ");
-        wordBankHard.Add("nectarine   ");
-        wordBankHard.Add("ruminate   ");
-        wordBankHard.Add("oriental   ");
+        wordBankHard.Add("elation");
+        wordBankHard.Add("routine");
+        wordBankHard.Add("alphabet");
+        wordBankHard.Add("outerwear");
+        wordBankHard.Add("urinate");
+        wordBankHard.Add("nitrate");
+        wordBankHard.Add("nectarine");
+        wordBankHard.Add("ruminate");
+        wordBankHard.Add("oriental");
         wordBankHard.Add("aileron");
         wordBankHard.Add("evasion");
         wordBankHard.Add("toenail");

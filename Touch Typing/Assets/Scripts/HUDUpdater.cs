@@ -21,7 +21,7 @@ public class HUDUpdater : MonoBehaviour {
 			missedText.text = "Missed: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed;
 		if (timeText != null) {
 			if(controllerScript.infinite == false){
-				timeText.text = "Time: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().timeIncreasing.ToString ("F2");
+				timeText.text = "Time: " + (60f-GameObject.Find ("Main Camera").GetComponent<controllerScript> ().timeIncreasing).ToString ("F2");
 				if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().time < 0)
 					timeText.text = "Time: 0";
 			}

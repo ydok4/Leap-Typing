@@ -1,11 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\HUDUpdater.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MainMenuScript.cs">
     <Files>
-      <File FileName="Touch Typing.sln" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\HUDUpdater.cs" Line="32" Column="25" />
-      <File FileName="Assets\Scripts\projectileScript.cs" Line="72" Column="157" />
-      <File FileName="Assets\Scripts\controllerScript.cs" Line="115" Column="19" />
+      <File FileName="Assets\Scripts\controllerScript.cs" Line="1147" Column="2" />
+      <File FileName="Touch Typing.sln" Line="49" Column="1" />
+      <File FileName="Assets\Scripts\HUDUpdater.cs" Line="92" Column="2" />
+      <File FileName="Assets\Scripts\projectileScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\ReservoirScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\MainMenuScript.cs" Line="44" Column="1" />
     </Files>
