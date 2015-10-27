@@ -243,6 +243,7 @@ public class FingerPosition : MonoBehaviour {
 			FingerStat[finger]++;
 		}
 		FingerStat[finger+1]++;
+		Debug.Log (FingerStat [0] + "/" + FingerStat [1]);
 		return score;
  	}
 

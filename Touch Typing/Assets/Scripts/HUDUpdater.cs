@@ -121,9 +121,10 @@ public class HUDUpdater : MonoBehaviour {
         // lpinky, lring, lmiddle, lindex, rindex, rmiddle, rring, rpinky;
         if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
         {
+			Debug.Log ("fart nuggets");
             if (lpinky != null)
                 lpinky.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[0] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[1];
-            if (lring != null)
+			if (lring != null)
                 lring.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[2] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[3];
             if (lmiddle != null)
                 lmiddle.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[4] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[5];
