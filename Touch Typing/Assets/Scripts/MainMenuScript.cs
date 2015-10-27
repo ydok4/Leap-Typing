@@ -64,8 +64,6 @@ public class MainMenuScript : MonoBehaviour {
             fourthl.text = PlayerPrefs.GetString(3.ToString() + "Name" + "Letter", "0") + ": " + PlayerPrefs.GetInt(1.ToString() + "Letter", 0);
         if ((fifthl != null) && (PlayerPrefs.GetInt(4.ToString(), 0) != -1))
             fifthl.text = PlayerPrefs.GetString(4.ToString() + "Name" + "Letter", "0") + ": " + PlayerPrefs.GetInt(1.ToString() + "Letter", 0);
-       
-
 	}
 
 	public void MainMenu (int button)
@@ -212,7 +210,7 @@ public class MainMenuScript : MonoBehaviour {
 				controllerScript.goal = ReservoirScript.inputtedTime - GameObject.Find ("SpawnRateSlider").GetComponent<Slider> ().value;
 
 		}
-
+        GameObject.Find("Reservoir").GetComponent<ReservoirScript>().nameEntered = false;
 		Application.LoadLevel(2);
 	}
 	

@@ -5,6 +5,7 @@ using System.Collections;
 public class HUDUpdater : MonoBehaviour {
 	
 	public Text scoreText, missedText, timeText, rightText, leftText, accuracy, asteroids, timeStat, prog, lvl;
+    public Text lpinky, lring, lmiddle, lindex, rindex, rmiddle, rring, rpinky;
 	public static float timePlayed;
     public string currentPlayerName;
 	void Start () {
@@ -49,10 +50,14 @@ public class HUDUpdater : MonoBehaviour {
         {
             nameEntered();
         }
-
-
+        if (GameObject.Find("Main Camera").GetComponent<controllerScript>().gameOver == true)
+        {
+            GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
+            GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
+            GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
+        }
 		//toggle pause menu
-		if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().paused == true && GameObject.Find("Main Camera").GetComponent<controllerScript>().gameOver ==false)
+        if (GameObject.Find("Main Camera").GetComponent<controllerScript>().paused == true && GameObject.Find("Main Camera").GetComponent<controllerScript>().gameOver == false && GameObject.Find("Reservoir2").GetComponent<ReservoirScript>().nameEntered == true)
 			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = true;
 		 else 
 			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = false;
@@ -74,8 +79,7 @@ public class HUDUpdater : MonoBehaviour {
 			asteroids.text = "Asteroids: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids;
         else if(asteroids != null && GameObject.Find("Main Camera").GetComponent<controllerScript>().setMode == 2)
             asteroids.text = "Words Typed: " + GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped;
-        //if(accuracy!=null)
-        //accuracy.text = "Accuracy: " + ((GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids - GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed) / GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids) + "%";
+       
     }
 
     public void nameEntered()
@@ -86,6 +90,7 @@ public class HUDUpdater : MonoBehaviour {
             GameObject.Find("InputField").GetComponent<InputField>().text = "";
             GameObject.Find("NameEntry").GetComponentInChildren<Canvas>().enabled = false;
             GameObject.Find("Main Camera").GetComponent<controllerScript>().paused = false;
+            GameObject.Find("Reservoir2").GetComponent<ReservoirScript>().nameEntered = true;
         }
     }
 	public void PauseMenu(int button)
@@ -106,11 +111,33 @@ public class HUDUpdater : MonoBehaviour {
 		float m = GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed;
 		//Debug.Log ("STATS MENU " + timePlayed + " " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids + " t:" + t + " m:" + m);
 		/*if(timeStat!=null)
-			timeStat.text = "Time: "+timePlayed;
+			timeStat.text = "Time: "+timePlayed;*/
 		if(asteroids!=null)
-			asteroids.text = "Asteroids: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids;
-		*/
-			//if(accuracy!=null)
-			//accuracy.text = "Accuracy: " + ((GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids - GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed) / GameObject.Find ("Main Camera").GetComponent<controllerScript> ().totalAsteroids) + "%";
+			asteroids.text = "Asteroids: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordsTyped;
+        if (accuracy != null)
+            accuracy.text = "Accuracy: " + (GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped / GameObject.Find("Main Camera").GetComponent<controllerScript>().levelLimit) + "%";
+
+        //FINGER STATS
+        // lpinky, lring, lmiddle, lindex, rindex, rmiddle, rring, rpinky;
+        if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
+        {
+            if (lpinky != null)
+                lpinky.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[0] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[1];
+            if (lring != null)
+                lring.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[2] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[3];
+            if (lmiddle != null)
+                lmiddle.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[4] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[5];
+            if (lindex != null)
+                lindex.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[6] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[7];
+            if (rindex != null)
+                rindex.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[8] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[9];
+            if (rmiddle != null)
+                rmiddle.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[10] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[11];
+            if (rring != null)
+                rring.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[12] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[13];
+            if (rpinky != null)
+                rpinky.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[14] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[15];
+            
+        }
 	}
 }

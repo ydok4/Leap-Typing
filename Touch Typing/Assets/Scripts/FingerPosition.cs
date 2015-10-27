@@ -10,7 +10,7 @@ public class FingerPosition : MonoBehaviour {
 	
 	/*Accessing the leap device*/
 	Controller leap_controller;
-	public static int[] FingerStat = new int[16];
+	public int[] FingerStat = new int[16];
 
 	/*Inialises the starting condition*/
 	void Start(){
@@ -23,8 +23,8 @@ public class FingerPosition : MonoBehaviour {
 	void Update () {
 	}
 
-	/*public static FingerStat[] GetFingerStat() {
-		return FingerStat;
+	/*public static int GetFingerStat(int i) {
+		return FingerStat[i];
 	}*/
 
 	//Returns the score based on what finger was used to press the key

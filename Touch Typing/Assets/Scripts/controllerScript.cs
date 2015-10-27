@@ -275,7 +275,12 @@ public class controllerScript : MonoBehaviour {
         wordsForLevel = 0;
 		name = "Default";
         //####
-        paused = true;
+        GameObject.Find("Reservoir2").GetComponent<ReservoirScript>().nameEntered = false;
+
+
+        //for testing only
+        GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
+        GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
 	}
 	void Reset()
 	{
@@ -351,9 +356,10 @@ public class controllerScript : MonoBehaviour {
 		//Pauses or unpauses the game if escape is pressed
 		if (Input.GetKeyDown (KeyCode.F10))
 			PlayerPrefs.DeleteAll ();
-		
 
 
+        if (GameObject.Find("Reservoir2").GetComponent<ReservoirScript>().nameEntered == false)
+            paused = true;
 
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			if (paused == false)
@@ -444,8 +450,8 @@ public class controllerScript : MonoBehaviour {
                     //if (levelChecked == false)
                     {
                         GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
-                        GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
                         GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
+                        GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
                         gameOver = true;
                         paused = true;
                         for (int i = 0; i < 10; i++)
@@ -600,7 +606,7 @@ public class controllerScript : MonoBehaviour {
 									bool found=false;
 									//Checks if there is a chance for a capital letter to spawn
 									if(capitalChance==0)
-										side=Random.Range(0,alpha1.Length);
+										side=Random.Range(0,alpha1.Length/2);
 									else
 									{
 											side=Random.Range(0,alpha1.Length/2);
@@ -630,7 +636,7 @@ public class controllerScript : MonoBehaviour {
 								{
 									bool found=false;
 									if(capitalChance==0)
-										side=Random.Range(0,alpha2.Length);
+										side=Random.Range(0,alpha2.Length/2);
 									else
 									{
 										side=Random.Range(0,alpha2.Length/2);
@@ -659,7 +665,7 @@ public class controllerScript : MonoBehaviour {
 								{
 									bool found=false;
 									if(capitalChance==0)
-										side=Random.Range(0,alpha3.Length);
+										side=Random.Range(0,alpha3.Length/2);
 									else
 									{
 										side=Random.Range(0,alpha3.Length/2);
@@ -857,14 +863,6 @@ public class controllerScript : MonoBehaviour {
 				//DECREMENT: should match the interval between the initial time and intial goal.
 				goal-=spawn;
 			}
-		}
-		if (time <= 0 && (mode==1 || mode==0)) //when time runs out, show end of level statistics
-		{
-			GameObject.Find ("HUD").GetComponentInChildren<Canvas> ().enabled = false;
-			GameObject.Find ("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
-			GameObject.Find ("StatsMenu").GetComponentInChildren<Canvas> ().enabled = true;
-            gameOver = true;
-            paused = true;
 		}
 	}
 	int sideLocation(string letter)
