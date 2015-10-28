@@ -91,38 +91,32 @@ public class HUDUpdater : MonoBehaviour {
         {
             if (accuracy != null)
                 accuracy.text = "Accuracy: " + (GameObject.Find("Main Camera").GetComponent<controllerScript>().score / (float)(GameObject.Find("Main Camera").GetComponent<controllerScript>().totalAsteroids + GameObject.Find("Main Camera").GetComponent<controllerScript>().missed)) + "%";//total + missed####
-            //Debug.Log("score " + GameObject.Find("Main Camera").GetComponent<controllerScript>().score +"/ totalAseroids"+ GameObject.Find("Main Camera").GetComponent<controllerScript>().totalAsteroids);
         }
         else
         {
             if (accuracy != null)
                 accuracy.text = "Accuracy: " + (GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped / (float)(GameObject.Find("Main Camera").GetComponent<controllerScript>().totalAsteroids + GameObject.Find("Main Camera").GetComponent<controllerScript>().missed)) * 100 + "%";
-            double acc = (GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped / (float)(GameObject.Find("Main Camera").GetComponent<controllerScript>().totalAsteroids + GameObject.Find("Main Camera").GetComponent<controllerScript>().missed)) * 100;
-            //Debug.Log("acc: " +acc +" wordsTyped " + GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped + "/ totalAseroids" + GameObject.Find("Main Camera").GetComponent<controllerScript>().totalAsteroids);
-        }
+          }
         //FINGER STATS
         // lpinky, lring, lmiddle, lindex, rindex, rmiddle, rring, rpinky;
         // if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
         // {
-        if (lpinky != null)
-            lpinky.text = "PINKYWINKY";
-        //if (lpinky != null)
-        // lpinky.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[0] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[1];
-        if (lring != null)
-            lring.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[2] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[3];
-        if (lmiddle != null)
-            lmiddle.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[4] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[5];
-        if (lindex != null)
-            lindex.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[6] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[7];
-        if (rindex != null)
-            rindex.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[8] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[9];
-        if (rmiddle != null)
-            rmiddle.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[10] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[11];
-        if (rring != null)
-            rring.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[12] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[13];
-        if (rpinky != null)
-            rpinky.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[14] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[15];
-
+            if (lpinky != null)
+                lpinky.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[0] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[1];
+            if (lring != null)
+                lring.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[2] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[3];
+            if (lmiddle != null)
+                lmiddle.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[4] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[5];
+            if (lindex != null)
+                lindex.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[6] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[7];
+            if (rindex != null)
+                rindex.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[8] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[9];
+            if (rmiddle != null)
+                rmiddle.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[10] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[11];
+            if (rring != null)
+                rring.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[12] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[13];
+            if (rpinky != null)
+                rpinky.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[14] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[15];
         // }
 
     }

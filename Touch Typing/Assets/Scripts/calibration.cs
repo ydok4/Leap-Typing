@@ -54,9 +54,7 @@ public class calibration : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (index < 4)
 		if (index < 4) {
-			Debug.Log ("AI: "+AsteroidKeyboard.index);
 			AsteroidKeyboard.characterList [AsteroidKeyboard.Pos [AsteroidKeyboard.index]].GetComponent<MeshRenderer> ().material = asteroidMaterialYellow;
 		}
 		if (!leap_controller.IsConnected) {

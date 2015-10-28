@@ -182,11 +182,8 @@ public class controllerScript : MonoBehaviour {
 		//Sets up function resevoir
 		finger = new FingerPosition(); 
 		con = new IsLeapConnected ();
-		//^^^These 2 lines give an error, not sure if thats ok or not (*note by kane), error below
-		//You are trying to create a MonoBehaviour using the 'new' keyword.  This is not allowed.  MonoBehaviours can only be added using AddComponent().  Alternatively, your script can inherit from ScriptableObject or no base class at all
+		
 
-
-		//for testing purposes
 		//mode = 0;
 		if (mode == 1) 
 		{
@@ -289,7 +286,7 @@ public class controllerScript : MonoBehaviour {
         //Set time depending on mode or user input from main menu
        
       
-        time = 10;//############ remove in final build
+       // time = 10;//############ remove in final build
 	}
 	void Reset()
 	{
@@ -893,8 +890,6 @@ public class controllerScript : MonoBehaviour {
             paused = true;
             GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
             GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
-            if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
-                GameObject.Find("FingerStats").GetComponentInChildren<Canvas>().enabled = true;
         }
 	}
 	int sideLocation(string letter)
