@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/**
+*Filename ResevoirScript.cs
+*Description Holds the variables used in main menus
+*/
+using UnityEngine;
 using System.Collections;
 
 public class ReservoirScript : MonoBehaviour {

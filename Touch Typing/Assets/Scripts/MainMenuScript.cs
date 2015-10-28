@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/**
+*Filename MainMenuScript.cs
+*Description Handles all GUI/HUD for the scene Main (Main Menu)
+*/
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 

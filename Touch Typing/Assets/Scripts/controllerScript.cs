@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/**
+*Filename controllerScript.cs
+*Description This handles game flow. Includes setup, end and spawning
+*/
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -285,7 +289,7 @@ public class controllerScript : MonoBehaviour {
         //Set time depending on mode or user input from main menu
        
       
-        //time = 1;//############ remove in final build
+        time = 10;//############ remove in final build
 	}
 	void Reset()
 	{
@@ -306,9 +310,9 @@ public class controllerScript : MonoBehaviour {
 		else if( goal ==0)
 			goal = 55;
 
-        Debug.Log("Setup BEFORE: Goal: " + goal + " time " + time + " spawn " + spawn);
+        //Debug.Log("Setup BEFORE: Goal: " + goal + " time " + time + " spawn " + spawn);
         goal = time - spawn;
-        Debug.Log("Setup AFTER: Goal: " + goal + " time " + time + " spawn " + spawn);
+       // Debug.Log("Setup AFTER: Goal: " + goal + " time " + time + " spawn " + spawn);
 
         if (mode == 2 && infinite == false)
         {
@@ -406,7 +410,6 @@ public class controllerScript : MonoBehaviour {
                         gameOver = true;
                         paused = true;
                         GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
-                        GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
                         GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
                         if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
                             GameObject.Find("FingerStats").GetComponentInChildren<Canvas>().enabled = true;
@@ -470,7 +473,6 @@ public class controllerScript : MonoBehaviour {
                         gameOver = true;
                         paused = true;
                         GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
-                        GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
                         GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
                         if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
                             GameObject.Find("FingerStats").GetComponentInChildren<Canvas>().enabled = true;
@@ -885,12 +887,11 @@ public class controllerScript : MonoBehaviour {
 				goal-=spawn;
 			}
 		}
-        if (time <= 0)
+        if (time <= 0)//tap mode's game over
         {
             gameOver = true;
             paused = true;
             GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
-            GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
             GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
             if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
                 GameObject.Find("FingerStats").GetComponentInChildren<Canvas>().enabled = true;
