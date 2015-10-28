@@ -226,14 +226,10 @@ public class MainMenuScript : MonoBehaviour {
         {
             if (GameObject.Find("SpawnRateSlider").activeSelf == true)
             {
-                if (GameObject.Find("Reservoir").GetComponent<ReservoirScript>().BCMode == true)
-                    controllerScript.goal = 10000 - GameObject.Find("SpawnRateSlider").GetComponent<Slider>().value;
-                else
-                    controllerScript.goal = ReservoirScript.inputtedTime - GameObject.Find("SpawnRateSlider").GetComponent<Slider>().value;
-
+                ReservoirScript.inputtedSpawn = GameObject.Find("SpawnRateSlider").GetComponent<Slider>().value;
             }
         }
-        GameObject.Find("Reservoir").GetComponent<ReservoirScript>().nameEntered = false;
+        ReservoirScript.nameEntered = false;
 		Application.LoadLevel(2);
 	}
 	
