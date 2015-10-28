@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ReservoirScript : MonoBehaviour {
 
-	public bool BCMode, timeOFF, capOFF;
+	public bool BCMode, timeOFF, capOFF, spawnOFF;
 	public int row, mode;
 	public static float inputtedTime;
     public bool nameEntered;

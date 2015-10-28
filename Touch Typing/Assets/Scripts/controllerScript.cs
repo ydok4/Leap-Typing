@@ -173,11 +173,7 @@ public class controllerScript : MonoBehaviour {
 			GameObject.Find ("GestureController").transform.localRotation = Quaternion.Euler (0f,0f,0f);
 		}
 
-		//Set time depending on mode or user input from main menu
-		if (infinite == true)
-			time = 10000;
-		else 
-			time = ReservoirScript.inputtedTime;
+		
 		
 		//Sets up function resevoir
 		finger = new FingerPosition(); 
@@ -274,13 +270,15 @@ public class controllerScript : MonoBehaviour {
 		setMode = mode;
         wordsForLevel = 0;
 		name = "Default";
+        //set time
+        //Set time depending on mode or user input from main menu
+       /* if (infinite == true)
+            time = 10000;
+        else
+            time = ReservoirScript.inputtedTime;*/
+
         //####
         GameObject.Find("Reservoir2").GetComponent<ReservoirScript>().nameEntered = false;
-
-
-        //for testing only
-        GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
-        GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
 	}
 	void Reset()
 	{
@@ -394,6 +392,8 @@ public class controllerScript : MonoBehaviour {
                         GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
                         GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
                         GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
+                        if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
+                            GameObject.Find("FingerStats").GetComponentInChildren<Canvas>().enabled = true;
                         gameOver = true;
                         paused = true;
                         for (int i = 0; i < 10; i++)
@@ -452,6 +452,8 @@ public class controllerScript : MonoBehaviour {
                         GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
                         GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
                         GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
+                        if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
+                            GameObject.Find("FingerStats").GetComponentInChildren<Canvas>().enabled = true;
                         gameOver = true;
                         paused = true;
                         for (int i = 0; i < 10; i++)

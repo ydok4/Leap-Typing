@@ -14,6 +14,7 @@ public class HUDUpdater : MonoBehaviour {
 		GameObject.Find ("MissedPopup").GetComponentInChildren<Canvas>().enabled = false;
 		GameObject.Find ("StatsMenu").GetComponentInChildren<Canvas>().enabled = false;
         GameObject.Find("NameEntry").GetComponentInChildren<Canvas>().enabled = true;
+        GameObject.Find("FingerStats").GetComponentInChildren<Canvas>().enabled = false;
         currentPlayerName = "Default";
 	}
 
@@ -119,11 +120,13 @@ public class HUDUpdater : MonoBehaviour {
 
         //FINGER STATS
         // lpinky, lring, lmiddle, lindex, rindex, rmiddle, rring, rpinky;
-        if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
-        {
+       // if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
+       // {
 			Debug.Log ("fart nuggets");
             if (lpinky != null)
-                lpinky.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[0] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[1];
+                lpinky.text = "PINKYWINKY";
+            //if (lpinky != null)
+               // lpinky.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[0] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[1];
 			if (lring != null)
                 lring.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[2] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[3];
             if (lmiddle != null)
@@ -139,6 +142,6 @@ public class HUDUpdater : MonoBehaviour {
             if (rpinky != null)
                 rpinky.text = GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[14] + "/" + GameObject.Find("LeapTracker").GetComponent<FingerPosition>().FingerStat[15];
             
-        }
+       // }
 	}
 }

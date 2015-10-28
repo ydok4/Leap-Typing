@@ -12,6 +12,7 @@ public class MainMenuScript : MonoBehaviour {
 
 	GameObject capSlider, capText, capVText;
 	GameObject timeSlider, timeText, timeVText;
+    GameObject spawnSlider, spawnText, spawnVText;
 	
 	void Start(){
 		//mode = -1;
@@ -33,6 +34,10 @@ public class MainMenuScript : MonoBehaviour {
 		timeSlider = GameObject.Find ("TimeSlider");
 		timeText = GameObject.Find ("GameTimeText");
 		timeVText = GameObject.Find ("GameTimeValueText");
+
+        spawnSlider = GameObject.Find("SpawnRateSlider");
+        spawnText = GameObject.Find("SpawnRateText");
+        spawnVText = GameObject.Find("SpawnRateValueText");
 	
 	}
 	
@@ -141,18 +146,19 @@ public class MainMenuScript : MonoBehaviour {
 		toggleMenu ("InputMenu");
 
 		//toggle individual sliders OFF
-		if (GameObject.Find ("Reservoir").GetComponent<ReservoirScript>().BCMode == true && GameObject.Find ("Reservoir").GetComponent<ReservoirScript>().timeOFF == false) 
+		if ((GameObject.Find ("Reservoir").GetComponent<ReservoirScript>().mode == 1) && (GameObject.Find("Reservoir").GetComponent<ReservoirScript>().BCMode == false)) 
 		{
-			GameObject.Find ("TimeSlider").SetActive(false);
-			GameObject.Find ("GameTimeText").SetActive(false);
-			GameObject.Find ("GameTimeValueText").SetActive (false);
-			GameObject.Find ("Reservoir").GetComponent<ReservoirScript>().timeOFF = true;
-		}
-		if(GameObject.Find ("Reservoir").GetComponent<ReservoirScript>().BCMode == false)
+            timeSlider.SetActive(true);
+            timeText.SetActive(true);
+            timeVText.SetActive(true);
+            GameObject.Find("Reservoir").GetComponent<ReservoirScript>().timeOFF = false;
+			
+		}else
 		{
-			timeSlider.SetActive(true);
-			timeText.SetActive(true);
-			timeVText.SetActive(true);
+            GameObject.Find("TimeSlider").SetActive(false);
+            GameObject.Find("GameTimeText").SetActive(false);
+            GameObject.Find("GameTimeValueText").SetActive(false);
+            GameObject.Find("Reservoir").GetComponent<ReservoirScript>().timeOFF = true;
 		}
 		switch (GameObject.Find ("Reservoir").GetComponent<ReservoirScript>().mode) {
 			case 0:
@@ -174,6 +180,20 @@ public class MainMenuScript : MonoBehaviour {
 					}
 				break;
 		}
+        if ((GameObject.Find("Reservoir").GetComponent<ReservoirScript>().BCMode == false) && (GameObject.Find("Reservoir").GetComponent<ReservoirScript>().mode != 1) && (GameObject.Find("Reservoir").GetComponent<ReservoirScript>().spawnOFF == false))
+        {
+            GameObject.Find("SpawnRateSlider").SetActive(false);
+            GameObject.Find("SpawnRateText").SetActive(false);
+            GameObject.Find("SpawnRateValueText").SetActive(false);
+            GameObject.Find("Reservoir").GetComponent<ReservoirScript>().spawnOFF = true;
+        }
+        else
+        {
+            spawnSlider.SetActive(true);
+            spawnText.SetActive(true);
+            spawnVText.SetActive(true);
+            GameObject.Find("Reservoir").GetComponent<ReservoirScript>().spawnOFF = false;
+        }
 	}
 
 	public void loadLevel ()
@@ -202,14 +222,17 @@ public class MainMenuScript : MonoBehaviour {
 			controllerScript.capitalChance = 25;
 
 		//set spawn rate
-		if (GameObject.Find ("SpawnRateSlider").activeSelf == true) 
-		{
-			if (GameObject.Find ("Reservoir").GetComponent<ReservoirScript>().BCMode == true)
-				controllerScript.goal = 10000 - GameObject.Find ("SpawnRateSlider").GetComponent<Slider> ().value;
-			else
-				controllerScript.goal = ReservoirScript.inputtedTime - GameObject.Find ("SpawnRateSlider").GetComponent<Slider> ().value;
+        if ((GameObject.Find("Reservoir").GetComponent<ReservoirScript>().mode != 0) && (GameObject.Find("Reservoir").GetComponent<ReservoirScript>().mode != 2))
+        {
+            if (GameObject.Find("SpawnRateSlider").activeSelf == true)
+            {
+                if (GameObject.Find("Reservoir").GetComponent<ReservoirScript>().BCMode == true)
+                    controllerScript.goal = 10000 - GameObject.Find("SpawnRateSlider").GetComponent<Slider>().value;
+                else
+                    controllerScript.goal = ReservoirScript.inputtedTime - GameObject.Find("SpawnRateSlider").GetComponent<Slider>().value;
 
-		}
+            }
+        }
         GameObject.Find("Reservoir").GetComponent<ReservoirScript>().nameEntered = false;
 		Application.LoadLevel(2);
 	}
