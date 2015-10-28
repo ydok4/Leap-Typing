@@ -123,11 +123,13 @@ public class HUDUpdater : MonoBehaviour {
         {
             if (accuracy != null)
                 accuracy.text = "Accuracy: " + (GameObject.Find("Main Camera").GetComponent<controllerScript>().score / GameObject.Find("Main Camera").GetComponent<controllerScript>().totalAsteroids) + "%";
+            Debug.Log("score " + GameObject.Find("Main Camera").GetComponent<controllerScript>().score +"/ totalAseroids"+ GameObject.Find("Main Camera").GetComponent<controllerScript>().totalAsteroids);
         }
         else
         {
             if (accuracy != null)
                 accuracy.text = "Accuracy: " + (GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped / GameObject.Find("Main Camera").GetComponent<controllerScript>().totalAsteroids) + "%";
+            Debug.Log("wordsTyped " + GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped + "/ totalAseroids" + GameObject.Find("Main Camera").GetComponent<controllerScript>().totalAsteroids);
         }
         //FINGER STATS
         // lpinky, lring, lmiddle, lindex, rindex, rmiddle, rring, rpinky;

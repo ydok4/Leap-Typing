@@ -321,7 +321,7 @@ public class controllerScript : MonoBehaviour {
             {
                 if (highScore[i] == 0)
                 {
-                    PlayerPrefs.SetInt(i.ToString(), -1);
+                    PlayerPrefs.SetInt(i.ToString(), 0);
                     PlayerPrefs.SetString(i.ToString() + "Name", "0");
                 }
             }
@@ -337,7 +337,7 @@ public class controllerScript : MonoBehaviour {
             {
                 if (highScore[i] == 0)
                 {
-                    PlayerPrefs.SetInt(i.ToString() + "Letter", -1);
+                    PlayerPrefs.SetInt(i.ToString() + "Letter", 0);
                     PlayerPrefs.SetString(i.ToString() + "Name" + "Letter", "0");
                 }
             }
@@ -410,12 +410,12 @@ public class controllerScript : MonoBehaviour {
                         {
                             if (score > highScore[i])
                             {
-                                for (int j = i; j < 10; j++)
+                                for (int j = 10; j >= i+1; j--)
                                 {
-                                    if (PlayerPrefs.GetInt((j + 1).ToString(), 0) != 0)
+                                    if (PlayerPrefs.GetInt((j - 1).ToString(), 0) != 0)
                                     {
-                                        PlayerPrefs.SetInt((j + 1).ToString(), PlayerPrefs.GetInt(j.ToString(), 0));
-                                        PlayerPrefs.SetString((j + 1).ToString() + "Name", PlayerPrefs.GetString(j.ToString() + "Name", "0"));
+                                        PlayerPrefs.SetInt((j).ToString(), PlayerPrefs.GetInt((j - 1).ToString(), 0));
+                                        PlayerPrefs.SetString((j).ToString() + "Name", PlayerPrefs.GetString((j - 1).ToString() + "Name", "0"));
                                     }
                                 }
                                 PlayerPrefs.SetInt(i.ToString(), score);
@@ -470,15 +470,16 @@ public class controllerScript : MonoBehaviour {
                         {
                             if (score > highScore[i])
                             {
-                                for (int j = i; j < 10; j++)
+                                for (int j = 10; j >= i+1; j--)
                                 {
-                                    if (PlayerPrefs.GetInt((j + 1).ToString()+"Letter", 0) != 0)
+                                    if (PlayerPrefs.GetInt((j - 1).ToString() + "Letter", 0) != 0)
                                     {
-                                        PlayerPrefs.SetInt((j + 1).ToString() + "Letter", PlayerPrefs.GetInt(j.ToString() + "Letter", 0));
-                                        PlayerPrefs.SetString((j + 1).ToString() + "Name" + "Letter", PlayerPrefs.GetString(j.ToString() + "Letter" + "Name", "0"));
+                                        PlayerPrefs.SetInt((j).ToString() + "Letter", PlayerPrefs.GetInt((j - 1).ToString() + "Letter", 0));
+                                        PlayerPrefs.SetString((j).ToString() + "Name" + "Letter", PlayerPrefs.GetString((j - 1).ToString() + "Name" + "Letter", "0"));
                                     }
                                 }
                                 PlayerPrefs.SetInt(i.ToString() + "Letter", score);
+                                name = GameObject.Find("PauseMenu").GetComponent<HUDUpdater>().currentPlayerName;
                                 PlayerPrefs.SetString(i.ToString() + "Name" + "Letter", name);
                                 PlayerPrefs.Save();
                                 break;
