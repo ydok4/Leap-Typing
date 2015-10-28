@@ -26,7 +26,10 @@ public class HUDUpdater : MonoBehaviour {
 			missedText.text = "Missed: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().missed;
 		if (timeText != null) {
 			if(controllerScript.infinite == false){
-				timeText.text = "Time: " + (60f-GameObject.Find ("Main Camera").GetComponent<controllerScript> ().timeIncreasing).ToString ("F2");
+                if(controllerScript.mode == 1)
+                    timeText.text = "Time: " + (GameObject.Find("Main Camera").GetComponent<controllerScript>().time).ToString("F2");
+                else
+				    timeText.text = "Time: " + (60f-GameObject.Find ("Main Camera").GetComponent<controllerScript> ().timeIncreasing).ToString ("F2");
 				if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().time < 0)
 					timeText.text = "Time: 0";
 			}
@@ -58,7 +61,7 @@ public class HUDUpdater : MonoBehaviour {
             GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
         }
 		//toggle pause menu
-        if (GameObject.Find("Main Camera").GetComponent<controllerScript>().paused == true && GameObject.Find("Main Camera").GetComponent<controllerScript>().gameOver == false && GameObject.Find("Reservoir2").GetComponent<ReservoirScript>().nameEntered == true)
+        if (GameObject.Find("Main Camera").GetComponent<controllerScript>().paused == true && GameObject.Find("Main Camera").GetComponent<controllerScript>().gameOver == false && ReservoirScript.nameEntered == true)
 			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = true;
 		 else 
 			GameObject.Find ("PauseMenu").GetComponentInChildren<Canvas>().enabled = false;
@@ -91,7 +94,7 @@ public class HUDUpdater : MonoBehaviour {
             GameObject.Find("InputField").GetComponent<InputField>().text = "";
             GameObject.Find("NameEntry").GetComponentInChildren<Canvas>().enabled = false;
             GameObject.Find("Main Camera").GetComponent<controllerScript>().paused = false;
-            GameObject.Find("Reservoir2").GetComponent<ReservoirScript>().nameEntered = true;
+            ReservoirScript.nameEntered = true;
         }
     }
 	public void PauseMenu(int button)
@@ -114,15 +117,22 @@ public class HUDUpdater : MonoBehaviour {
 		/*if(timeStat!=null)
 			timeStat.text = "Time: "+timePlayed;*/
 		if(asteroids!=null)
-			asteroids.text = "Asteroids: " + GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordsTyped;
-        if (accuracy != null)
-            accuracy.text = "Accuracy: " + (GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped / GameObject.Find("Main Camera").GetComponent<controllerScript>().levelLimit) + "%";
+            asteroids.text = "Asteroids: " + GameObject.Find("Main Camera").GetComponent<controllerScript>().totalAsteroids;
 
+        if (controllerScript.mode == 1)
+        {
+            if (accuracy != null)
+                accuracy.text = "Accuracy: " + (GameObject.Find("Main Camera").GetComponent<controllerScript>().score / GameObject.Find("Main Camera").GetComponent<controllerScript>().totalAsteroids) + "%";
+        }
+        else
+        {
+            if (accuracy != null)
+                accuracy.text = "Accuracy: " + (GameObject.Find("Main Camera").GetComponent<controllerScript>().wordsTyped / GameObject.Find("Main Camera").GetComponent<controllerScript>().totalAsteroids) + "%";
+        }
         //FINGER STATS
         // lpinky, lring, lmiddle, lindex, rindex, rmiddle, rring, rpinky;
        // if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
        // {
-			Debug.Log ("fart nuggets");
             if (lpinky != null)
                 lpinky.text = "PINKYWINKY";
             //if (lpinky != null)

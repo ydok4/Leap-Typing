@@ -214,6 +214,16 @@ public class controllerScript : MonoBehaviour {
 		//alpha2="asdfghjkl;'";
 		//alpha3="zxcvbnm,./";
 		currentCharTyping = "-1";
+
+        //SET VARIABLES
+        //####
+        ReservoirScript.nameEntered = false;
+        if (infinite == true)
+            time = 10000;
+        else
+            time = ReservoirScript.inputtedTime;
+        spawn = ReservoirScript.inputtedSpawn;
+
 		//Sets variables to default
 		Reset ();
 		//Sets the players model to where the camera is
@@ -265,23 +275,21 @@ public class controllerScript : MonoBehaviour {
             time = 10000;
             goal = time - 2;
         }
-        capitalChance = 0;    
+        //capitalChance = 0;    
+
 
 		setMode = mode;
         wordsForLevel = 0;
 		name = "Default";
         //set time
         //Set time depending on mode or user input from main menu
-       /* if (infinite == true)
-            time = 10000;
-        else
-            time = ReservoirScript.inputtedTime;*/
-
-        //####
-        GameObject.Find("Reservoir2").GetComponent<ReservoirScript>().nameEntered = false;
+       
+      
+        //time = 1;//############ remove in final build
 	}
 	void Reset()
 	{
+       
 		//controls Speed of the FoV Zoom effect
 		delay = 5;
 		delayGoal =4;
@@ -298,7 +306,9 @@ public class controllerScript : MonoBehaviour {
 		else if( goal ==0)
 			goal = 55;
 
-		spawn = time - goal;
+        Debug.Log("Setup BEFORE: Goal: " + goal + " time " + time + " spawn " + spawn);
+        goal = time - spawn;
+        Debug.Log("Setup AFTER: Goal: " + goal + " time " + time + " spawn " + spawn);
 
         if (mode == 2 && infinite == false)
         {
@@ -356,7 +366,7 @@ public class controllerScript : MonoBehaviour {
 			PlayerPrefs.DeleteAll ();
 
 
-        if (GameObject.Find("Reservoir2").GetComponent<ReservoirScript>().nameEntered == false)
+        if (ReservoirScript.nameEntered == false)
             paused = true;
 
 		if (Input.GetKeyDown (KeyCode.Escape)) {
@@ -389,13 +399,13 @@ public class controllerScript : MonoBehaviour {
                 {
                     //if (levelChecked == false)
                     {
+                        gameOver = true;
+                        paused = true;
                         GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
                         GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
                         GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
                         if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
                             GameObject.Find("FingerStats").GetComponentInChildren<Canvas>().enabled = true;
-                        gameOver = true;
-                        paused = true;
                         for (int i = 0; i < 10; i++)
                         {
                             if (score > highScore[i])
@@ -449,13 +459,13 @@ public class controllerScript : MonoBehaviour {
                 {
                     //if (levelChecked == false)
                     {
+                        gameOver = true;
+                        paused = true;
                         GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
                         GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
                         GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
                         if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
                             GameObject.Find("FingerStats").GetComponentInChildren<Canvas>().enabled = true;
-                        gameOver = true;
-                        paused = true;
                         for (int i = 0; i < 10; i++)
                         {
                             if (score > highScore[i])
@@ -866,6 +876,16 @@ public class controllerScript : MonoBehaviour {
 				goal-=spawn;
 			}
 		}
+        if (time <= 0)
+        {
+            gameOver = true;
+            paused = true;
+            GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
+            GameObject.Find("StatsMenu").GetComponent<HUDUpdater>().PopulateStatsMenu();
+            GameObject.Find("StatsMenu").GetComponentInChildren<Canvas>().enabled = true;
+            if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
+                GameObject.Find("FingerStats").GetComponentInChildren<Canvas>().enabled = true;
+        }
 	}
 	int sideLocation(string letter)
 	{
@@ -1123,7 +1143,6 @@ public class controllerScript : MonoBehaviour {
         wordBankMedium.Add("whiff");
         wordBankMedium.Add("zesty");
         wordBankMedium.Add("zebra");
-        wordBankMedium.Add("kinky");
         wordBankMedium.Add("chick");
         wordBankMedium.Add("fixed");
         wordBankMedium.Add("picky");
@@ -1271,7 +1290,6 @@ public class controllerScript : MonoBehaviour {
         wordBankHard.Add("arteriole");
         wordBankHard.Add("audience");
         wordBankHard.Add("outland");
-        wordBankHard.Add("erotica");
         wordBankHard.Add("entrain");
         wordBankHard.Add("violate");
         wordBankHard.Add("unities");
