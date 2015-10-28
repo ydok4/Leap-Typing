@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/**
+*Filename charScript.cs
+*Description This handles letter/word functionality. This includes movement, letter management and despawning.
+*/
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 public class charScript : MonoBehaviour {
@@ -74,15 +79,13 @@ public class charScript : MonoBehaviour {
 		else if(mode==2)
 			gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial (val[0].ToString());
 
-        //Modify Asteroid Scale
+        //Modify Asteroid Scale depending on mode
         if (mode == 0)
             gameObject.transform.localScale = new Vector3(0.12f, 0.12f, 0.12f);
         else
             gameObject.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
         text = new GameObject ();
-		//ModifyAsteroidRotation - WIP. Issue is text wont orientate correctly
-		//Vector3 asRotate = new Vector3 (Random.Range (0, 360), Random.Range (0, 360), Random.Range (0, 360));
-		//gameObject.transform.localRotation = Quaternion.Euler (asRotate);
+
 		
 		text.transform.parent=gameObject.transform;
 		//Adds components to text
@@ -97,7 +100,6 @@ public class charScript : MonoBehaviour {
 		text.GetComponent<Text> ().horizontalOverflow = HorizontalWrapMode.Overflow;
 		text.GetComponent<Text> ().verticalOverflow = VerticalWrapMode.Overflow;
 		text.GetComponent<Text>().text=val;
-		//text.GetComponent<Text> ().color = new Color (0f, 0f, 0f);	Remove comment to turn text black
 		text.GetComponent<Text> ().fontSize = 3;
 		text.GetComponent<CanvasScaler> ().dynamicPixelsPerUnit = 80;
 		text.GetComponent<Text> ().alignment = TextAnchor.MiddleCenter;
@@ -138,8 +140,6 @@ public class charScript : MonoBehaviour {
 			underScore.transform.parent=gameObject.transform;
 			underScore.name="underScore";
 			underScore.transform.localPosition=new Vector3(-0.05f, -0.67f, 6.66f);
-			//underScore.GetComponent<CanvasScaler> ().dynamicPixelsPerUnit = 100;
-			//underScore.GetComponent<Text> ().fontSize =1;
 			underScore.transform.localScale=new Vector3(1f,1f,1.0f);
 		}
 	}
@@ -162,44 +162,36 @@ public class charScript : MonoBehaviour {
 				{
 					if(checkChar=="{" && Input.GetKeyDown("[") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
-						//Debug.Log("KEY { CHECKED");
 						continueOn=true;
 					}
 					else if(checkChar=="}" && Input.GetKeyDown("]") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
-						//Debug.Log("KEY } CHECKED");
 						continueOn=true;
 					}
 					else if(checkChar==":" && Input.GetKeyDown(";") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
-						//Debug.Log("KEY : CHECKED");
 						continueOn=true;
 					}
 					else if(checkChar=="\"" && Input.GetKeyDown("'") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
-						//Debug.Log("KEY \" CHECKED");
 						continueOn=true;
 					}
 					else if(checkChar=="<" && Input.GetKeyDown(",") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
-						//Debug.Log("KEY < CHECKED");
 						continueOn=true;
 					}
 					else if(checkChar==">" && Input.GetKeyDown(".") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
-						//Debug.Log("KEY > CHECKED");
 						continueOn=true;
 					}
 					else if(checkChar=="?" && Input.GetKeyDown("/") && (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)))
 					{
-						//Debug.Log("KEY ? CHECKED");
 						continueOn=true;
 					}
 					else if(checkChar!="{" && checkChar!="}")
 					{
 						if (Input.GetKeyDown (checkChar) &&!Input.GetKey (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
 						{
-							//Debug.Log("STANDARD NONALPHA CHECKING METHOD CHECKED");
 							continueOn=true;
 						}
 					}
@@ -220,7 +212,7 @@ public class charScript : MonoBehaviour {
 					int findFinger=0;
 					if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == true)
 						findFinger=GameObject.Find ("Main Camera").GetComponent<controllerScript> ().finger.IsPressed(val[checkedChar].ToString());
-					//if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false)
+					//if(findFinger==2 || GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected() == false) //Uncomment to only let a letter be typed if it is the correct finger
 					{
 						//Checks if the char is the first char of the string and that there is string currently being typed and sets the the current typed string to this objects value
 
@@ -240,7 +232,7 @@ public class charScript : MonoBehaviour {
 								GameObject projectile = new GameObject ();
 								
 								projectile.AddComponent<projectileScript> ();
-								//Special case for / because unity cant find the object by name ie /
+								//Special case for / because unity cant find the object by name ie '/'
 								if(val=="/")
 								{
 									gameObject.name="slash";
@@ -253,16 +245,13 @@ public class charScript : MonoBehaviour {
 								if(findFinger==2)
 									GameObject.Find ("Main Camera").GetComponent<controllerScript> ().score += 1;
 								//If the game is in single char keyboard mode remove the char, if it is in string mode remove 3 chars
-								//if(mode==0)
 								removeCharacter();
-								//else if(mode==2)
-								//	remove3Character();
+
 								GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping="-1";
 								audio.PlayOneShot(hit, 1F);
 								if(mode==2)
 								{
 									GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping=-1;
-									//GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wait=0.01f;
 								}
 							}
 							//Picks the next char and updates components to reflect that
@@ -275,7 +264,6 @@ public class charScript : MonoBehaviour {
 									removeCharacter();
 									//Gets the next char in the string by passing it the index of the current char
 									NextLetter(checkedChar,true);
-									//Debug.Log ("Checkchar: " + checkChar);
 									GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping=checkChar;
 									//Change character/mesh colour 
 									//apply small explosion / shake effect 
@@ -296,7 +284,6 @@ public class charScript : MonoBehaviour {
 						}
 						else if(!Input.GetKeyDown (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
 						{
-							//Debug.Log("RESET STRING 1");
 							ResetString (false);
 						}
 
@@ -309,7 +296,6 @@ public class charScript : MonoBehaviour {
 					//Makes sure left shift (by itself) doesnt reset char string
 					if(!Input.GetKeyDown (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
 					{
-						//Debug.Log("RESET STRING 2");
 						ResetString (true);
 					}
 				}
@@ -359,7 +345,6 @@ public class charScript : MonoBehaviour {
 				//Makes sure left shift (by itself) doesnt reset char string
 				if(!Input.GetKeyDown (KeyCode.LeftShift) &&!Input.GetKey (KeyCode.RightShift))
 				{
-					//Debug.Log("RESET STRING 3");
 					ResetString (false);
 				}
 			}
@@ -420,11 +405,10 @@ public class charScript : MonoBehaviour {
 		removeCharacter();
 		checkedChar=-1;
 		NextLetter(checkedChar,addNewChar);
-		//GameObject.Find ("Main Camera").GetComponent<controllerScript> ().currentCharTyping = "-1";
 		text.GetComponent<Text>().text=val;
-		//GameObject.Find ("Main Camera").GetComponent<controllerScript> ().wordTyping=-1;
 		gameObject.GetComponent<MeshRenderer> ().material = asteroidMaterial (val[checkedChar].ToString());
 	}
+    //Changes to the next letter in a string
 	void NextLetter(int currLetter, bool addNewChar)
 	{
 		//Change to the next char and check case
@@ -476,7 +460,6 @@ public class charScript : MonoBehaviour {
 				if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount == 3)
 					remove3Character();
 			}
-			//if(mode==0 || mode==2)
 			{
 				//Once collision between the projectile and object is met, it will instantiate the explosion prefab.
 				Object explosionObj = Instantiate(explosion, transform.position, transform.rotation);
@@ -496,8 +479,6 @@ public class charScript : MonoBehaviour {
 			GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[i].charObj.GetComponent<charScript>().loc--;
 
 			//Finds the character object in the list and removes itself from it OLD
-			//if(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[i].chars==val)
-			//	GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList.RemoveAt(i);
 		}
 		Destroy (this.gameObject);
 	}
@@ -540,49 +521,36 @@ public class charScript : MonoBehaviour {
 				GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList [i].charObj.GetComponent<charScript> ().loc -= 3;
 			}
 		} 
-		//else
 		GameObject.Find ("Main Camera").GetComponent<controllerScript> ().rowCount++;
 		Destroy (this.gameObject);
-        //Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[0].charObj);
-        //Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[1].charObj);
-        //Destroy(GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterList[2].charObj);
     }
 	Material asteroidMaterial(string val) //make 'spawn' for projectileScript
 	{
 		val = val.ToLower ();
 		if (val == "q" || val == "a" || val == "z") {
-			//Debug.Log ("In RED");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialRed;
 		}
 		else if (val == "w" || val == "s" || val == "x") {
-			//Debug.Log ("In ORANGE");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialOrange;
 		}
 		else if (val == "e" || val == "d" || val == "c") {
-			//Debug.Log ("In YELLOW");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialYellow;
 		}
 		else if (val == "r" || val == "f" || val == "v" || val == "t" || val == "g" || val == "b") {
-			//Debug.Log ("In PURPLE");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialPurple;
 		}
 		else if (val == "y" || val == "h" || val == "n" || val == "u" || val == "j" || val == "m") {
-			//Debug.Log ("In BLUE");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialBlue;
 		}
 		else if (val == "i" || val == "k" || val == "," || val == "<") {
-			//Debug.Log ("In CYAN");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialCyan;
 		}
 		else if (val == "o" || val == "l" || val == "." || val == ">") {
-			//Debug.Log ("In GREEN");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialGreen;
 		}
 		else if (val == "p" || val == ";" || val == "[" || val == "\'" || val == "]" || val == "{" || val == "}" || val == ":" || val == "\"" || val == "/" || val == "?") {
-			//Debug.Log ("In BROWN");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterialBrown;
 		}
-		//Debug.Log ("In DEFAULT");
 		return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().asteroidMaterial;
 	}
 }

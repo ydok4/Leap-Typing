@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/**
+*Filename controllerScript.cs
+*Description This file handles game mode operation, including the beginning of the game, end and spawning
+*/
+using UnityEngine;
 using System.Collections;
 
 public class projectileScript : MonoBehaviour {
@@ -84,42 +88,34 @@ public class projectileScript : MonoBehaviour {
 			Destroy (gameObject);
 		}
 	}
+    //Returns the material based on the value of a string
 	Material projectileMaterial(string val)
 	{
 		val = val.ToLower ();
 		if (val == "q" || val == "a" || val == "z") {
-			//Debug.Log ("In RED");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialRed;
 		}
 		else if (val == "w" || val == "s" || val == "x") {
-			//Debug.Log ("In ORANGE");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialOrange;
 		}
 		else if (val == "e" || val == "d" || val == "c") {
-			//Debug.Log ("In YELLOW");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialYellow;
 		}
 		else if (val == "r" || val == "f" || val == "v" || val == "t" || val == "g" || val == "b") {
-			//Debug.Log ("In PURPLE");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialPurple;
 		}
 		else if (val == "y" || val == "h" || val == "n" || val == "u" || val == "j" || val == "m") {
-			//Debug.Log ("In BLUE");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBlue;
 		}
 		else if (val == "i" || val == "k" || val == "," || val == "<") {
-			//Debug.Log ("In CYAN");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialCyan;
 		}
 		else if (val == "o" || val == "l" || val == "." || val == ">") {
-			//Debug.Log ("In GREEN");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialGreen;
 		}
 		else if (val == "p" || val == ";" || val == "[" || val == "\'" || val == "]" || val == "{" || val == "}" || val == ":" || val == "\"" || val == "/" || val == "?" || spawn=="slash") {
-			//Debug.Log ("In BROWN");
 			return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialBrown;
 		}
-		//Debug.Log ("In DEFAULT");
 		return GameObject.Find ("Main Camera").GetComponent<controllerScript> ().characterMaterialRed;
 	}
 }
