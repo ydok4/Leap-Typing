@@ -400,8 +400,8 @@ public class controllerScript : MonoBehaviour {
                 {
                     //if (levelChecked == false)
                     {
-                        if (score - missed >= 0)
-                            score = score - missed;
+                        if (score - missed/2 >= 0)
+                            score = score - missed/2;
                         else
                             score = 0;
                         gameOver = true;
@@ -463,8 +463,8 @@ public class controllerScript : MonoBehaviour {
                 {
                     //if (levelChecked == false)
                     {
-                        if (score - missed >= 0)
-                            score = score - missed;
+                        if (score - missed/2 >= 0)
+                            score = score - missed/2;
                         else
                             score = 0;
                         gameOver = true;
