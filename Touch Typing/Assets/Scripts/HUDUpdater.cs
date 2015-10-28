@@ -102,21 +102,21 @@ public class HUDUpdater : MonoBehaviour {
         // if (GameObject.Find("Main Camera").GetComponent<controllerScript>().con.LeapConnected() == true)
         // {
             if (lpinky != null)
-                lpinky.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[0] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[1];
+                lpinky.text = "Pinky " + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[0] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[1];
             if (lring != null)
-                lring.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[2] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[3];
+                lring.text = "Ring " + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[2] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[3];
             if (lmiddle != null)
-                lmiddle.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[4] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[5];
+                lmiddle.text = "Middle " + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[4] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[5];
             if (lindex != null)
-                lindex.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[6] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[7];
+                lindex.text = "Index " + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[6] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[7];
             if (rindex != null)
-                rindex.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[8] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[9];
+                rindex.text = "Index " + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[8] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[9];
             if (rmiddle != null)
-                rmiddle.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[10] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[11];
+                rmiddle.text = "Middle " + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[10] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[11];
             if (rring != null)
-                rring.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[12] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[13];
+                rring.text = "Ring " + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[12] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[13];
             if (rpinky != null)
-                rpinky.text = GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[14] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[15];
+                rpinky.text = "Pinky " + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[14] + "/" + GameObject.Find("Main Camera").GetComponent<controllerScript>().finger.FingerStat[15];
         // }
 
     }

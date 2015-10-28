@@ -14,7 +14,7 @@ public class gestures : MonoBehaviour {
 	/*Inialises the starting condition*/
 	void Start(){
 		//if (GameObject.Find ("Main Camera").GetComponent<controllerScript> ().con.LeapConnected () == true) {
-		Debug.Log("Gestures Start");
+		//Debug.Log("Gestures Start");
 		leap_controller = CurrentLeap ();
 		leap_controller.EnableGesture (Gesture.GestureType.TYPE_KEY_TAP);
 		leap_controller.Config.SetFloat ("Gesture.KeyTap.MinDownVelocity", 30.0f);

@@ -429,10 +429,10 @@ public class controllerScript : MonoBehaviour {
                                 break;
                             }
                         }
-                        for (int i = 0; i < 10; i++)
+                       /* for (int i = 0; i < 10; i++)
                         {
                             Debug.Log("Highscore " + i + " Score: " + PlayerPrefs.GetInt(i.ToString(), 0) + " Name: " + PlayerPrefs.GetString(i.ToString() + "Name", "0"));
-                        }
+                        }*/
                     }
                 }
                 else if (levelChecked == true && (int)timeIncreasing % 60 == 1)
