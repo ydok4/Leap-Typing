@@ -399,6 +399,10 @@ public class controllerScript : MonoBehaviour {
                 {
                     //if (levelChecked == false)
                     {
+                        if (score - missed >= 0)
+                            score = score - missed;
+                        else
+                            score = 0;
                         gameOver = true;
                         paused = true;
                         GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
@@ -459,6 +463,10 @@ public class controllerScript : MonoBehaviour {
                 {
                     //if (levelChecked == false)
                     {
+                        if (score - missed >= 0)
+                            score = score - missed;
+                        else
+                            score = 0;
                         gameOver = true;
                         paused = true;
                         GameObject.Find("HUD").GetComponentInChildren<Canvas>().enabled = false;
